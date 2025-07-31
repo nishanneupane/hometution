@@ -95,3 +95,29 @@ model Admin {
   
   @@map("admins")
 }
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String   // student, parent
+  message   String
+  rating    Int      @default(5)
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("testimonials")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   // student_registration, teacher_application, tuition_request
+  relatedId String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("notifications")
+}

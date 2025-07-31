@@ -6,14 +6,29 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { LayoutDashboard, Users, GraduationCap, FileText, BarChart3, Settings, Menu, X, Shield } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  FileText,
+  BarChart3,
+  Settings,
+  Menu,
+  X,
+  Shield,
+  MessageSquare,
+  Bell,
+} from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Students", href: "/admin/students", icon: Users },
-  { name: "Teachers", href: "/admin/teachers", icon: GraduationCap },
+  { name: "Students", href: "/admin/students", icon: Users, badge: "12" },
+  { name: "Teachers", href: "/admin/teachers", icon: GraduationCap, badge: "5" },
   { name: "Tuition Requests", href: "/admin/requests", icon: FileText },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Notifications", href: "/admin/notifications", icon: Bell, badge: "3" },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
@@ -71,14 +86,24 @@ export function AdminSidebar() {
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center space-x-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
+                    "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 group",
                     isActive
                       ? "bg-slate-900 text-white shadow-lg"
                       : "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
                   )}
                 >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.name}</span>
+                  <div className="flex items-center space-x-3">
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <Badge
+                      variant={isActive ? "secondary" : "outline"}
+                      className={cn("text-xs px-2 py-0.5", isActive ? "bg-white/20 text-white border-white/20" : "")}
+                    >
+                      {item.badge}
+                    </Badge>
+                  )}
                 </Link>
               )
             })}
