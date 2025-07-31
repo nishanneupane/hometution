@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id                   String   @id @default(cuid())
+  name                 String
+  schoolName           String
+  phoneOrWhatsapp      String
+  province             String
+  district             String
+  municipality         String
+  city                 String
+  subject              String[] // Array of subjects
+  preferredTimeFrom    String
+  preferredTimeTo      String
+  parentCtzOrStudentCtz String? // UploadThing URL
+  extraInfo            String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  // Relations
+  tuitionRequests      TuitionRequest[]
+  
+  @@map("students")
+}
+
+model Teacher {
+  id              String   @id @default(cuid())
+  name            String
+  phoneOrWhatsapp String
+  province        String
+  district        String
+  municipality    String
+  city            String
+  gender          String
+  citizenship     String? // UploadThing URL
+  cv              String? // UploadThing URL
+  teacherCode     String   @unique
+  isApproved      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  applications    Application[]
+  
+  @@map("teachers")
+}
+
+model TuitionRequest {
+  id        String   @id @default(cuid())
+  studentId String
+  status    String   @default("active") // active, filled, cancelled
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  applications Application[]
+  
+  @@map("tuition_requests")
+}
+
+model Application {
+  id               String   @id @default(cuid())
+  teacherId        String
+  tuitionRequestId String
+  status           String   @default("pending") // pending, approved, rejected
+  appliedAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Relations
+  teacher         Teacher        @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  tuitionRequest  TuitionRequest @relation(fields: [tuitionRequestId], references: [id], onDelete: Cascade)
+  
+  @@unique([teacherId, tuitionRequestId])
+  @@map("applications")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admins")
+}
