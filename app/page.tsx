@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { Users, GraduationCap, Star, MapPin, Clock, BookOpen, Award, Shield, ArrowRight, Quote } from "lucide-react"
+import Image from "next/image"
 
 export default function HomePage() {
   return (
@@ -74,10 +74,12 @@ export default function HomePage() {
 
             <div className="relative">
               <div className="relative z-10">
-                <img
-                  src="/placeholder.svg?height=600&width=500&text=Hero+Image"
+                <Image
+                  src="/images/hero.jpg"
                   alt="Students learning with tutors"
                   className="w-full h-auto rounded-2xl shadow-2xl"
+                  height={500}
+                  width={600}
                 />
               </div>
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
@@ -261,13 +263,13 @@ export default function HomePage() {
             {/* For Teachers */}
             <div className="space-y-8">
               <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-bold text-secondary mb-4">For Teachers</h3>
+                <h3 className="text-2xl font-bold text-primary/80 mb-4">For Teachers</h3>
                 <p className="text-muted-foreground">Start earning by teaching from home</p>
               </div>
 
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary/80 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     1
                   </div>
                   <div className="space-y-2">
@@ -280,7 +282,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary/70 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     2
                   </div>
                   <div className="space-y-2">
@@ -293,7 +295,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary/60 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     3
                   </div>
                   <div className="space-y-2">
@@ -430,7 +432,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

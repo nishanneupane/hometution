@@ -64,7 +64,7 @@ export default function AboutPage() {
             </div>
             <div className="relative">
               <img
-                src="/placeholder.svg?height=500&width=600&text=Our+Story"
+                src="/images/hero2.jpg"
                 alt="Students learning"
                 className="w-full h-auto rounded-2xl shadow-xl"
               />
@@ -198,7 +198,7 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <img
-                src="/placeholder.svg?height=500&width=600&text=Our+Commitment"
+                src="/images/hero3.jpg"
                 alt="Quality education commitment"
                 className="w-full h-auto rounded-2xl shadow-xl"
               />
@@ -283,7 +283,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

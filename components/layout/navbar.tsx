@@ -40,16 +40,12 @@ export function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/auth/login">
-              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/20">
-                Login
+            <Link href="/login">
+              <Button variant="secondary" size="sm" >
+                Admin Panel
               </Button>
             </Link>
-            <Link href="/auth/register">
-              <Button variant="secondary" size="sm">
-                Register
-              </Button>
-            </Link>
+
           </div>
         </div>
       </div>
@@ -87,11 +83,11 @@ export function Navbar() {
 
             {/* CTA Button */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link href="/admin">
+              {/* <Link href="/admin">
                 <Button variant="outline" size="sm">
                   Admin Panel
                 </Button>
-              </Link>
+              </Link> */}
               <Link href="/student">
                 <Button size="sm" className="bg-primary hover:bg-primary/90">
                   Get Started

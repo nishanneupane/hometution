@@ -80,7 +80,6 @@ export default function AdminLoginPage() {
                   placeholder="admin@hrhometuition.com"
                   required
                   className="h-11"
-                  defaultValue="admin@hrhometuition.com"
                 />
               </div>
 
@@ -94,7 +93,6 @@ export default function AdminLoginPage() {
                     placeholder="Enter admin password"
                     required
                     className="h-11 pr-10"
-                    defaultValue="admin123"
                   />
                   <Button
                     type="button"
