@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navbar } from "@/components/navbar"
-import { Users, GraduationCap, Briefcase, Star, MapPin, Clock } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Navbar } from "@/components/layout/navbar"
+import { Footer } from "@/components/layout/footer"
+import { Users, GraduationCap, Star, MapPin, Clock, BookOpen, Award, Shield, ArrowRight, Quote } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -10,73 +12,182 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-            Find the Perfect <span className="text-primary">Home Tutor</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Connect with qualified tutors across Nepal. Professional home tutoring services for all subjects and grades,
-            tailored to your learning needs.
-          </p>
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="container section-padding relative">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <Badge variant="secondary" className="w-fit">
+                  🎓 Nepal's #1 Home Tutoring Platform
+                </Badge>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                  Find the Perfect{" "}
+                  <span className="text-primary relative">
+                    Home Tutor
+                    <svg
+                      className="absolute -bottom-2 left-0 w-full h-3 text-primary/30"
+                      viewBox="0 0 100 12"
+                      fill="currentColor"
+                    >
+                      <path d="M0 8c30-4 70-4 100 0v4H0z" />
+                    </svg>
+                  </span>
+                </h1>
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
+                  Connect with qualified, verified tutors across Nepal. Get personalized home tutoring for all subjects
+                  and grades, tailored to your learning needs.
+                </p>
+              </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/student">
-              <Button size="lg" className="w-full sm:w-auto">
-                <Users className="mr-2 h-5 w-5" />I Need a Tutor
-              </Button>
-            </Link>
-            <Link href="/teacher">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto bg-transparent">
-                <GraduationCap className="mr-2 h-5 w-5" />
-                I'm a Teacher
-              </Button>
-            </Link>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/student">
+                  <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base">
+                    <Users className="mr-2 h-5 w-5" />
+                    Find a Tutor
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link href="/teacher">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base bg-transparent">
+                    <GraduationCap className="mr-2 h-5 w-5" />
+                    Become a Tutor
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-8 pt-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">500+</div>
+                  <div className="text-sm text-muted-foreground">Verified Tutors</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">1000+</div>
+                  <div className="text-sm text-muted-foreground">Happy Students</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">4.9</div>
+                  <div className="text-sm text-muted-foreground">Average Rating</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="relative z-10">
+                <img
+                  src="/placeholder.svg?height=600&width=500&text=Hero+Image"
+                  alt="Students learning with tutors"
+                  className="w-full h-auto rounded-2xl shadow-2xl"
+                />
+              </div>
+              <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl"></div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose HR Home Tuition?</h2>
+      <section className="section-padding bg-white">
+        <div className="container">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Why Choose Us
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why HR Home Tuition is Different</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              We're committed to providing the highest quality tutoring experience with verified tutors and personalized
+              learning.
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center">
-              <CardHeader>
-                <Star className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Qualified Tutors</CardTitle>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Verified Tutors</CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  All our tutors are verified and approved by our admin team. Each tutor goes through a rigorous
-                  screening process.
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  All our tutors go through rigorous background checks and verification processes. Only qualified
+                  professionals make it to our platform.
                 </CardDescription>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
-              <CardHeader>
-                <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Local Tutors</CardTitle>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <MapPin className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Local Tutors</CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Find tutors in your area across all provinces, districts, and municipalities in Nepal for convenient
-                  home tutoring.
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  Find experienced tutors in your area across all provinces and districts in Nepal. Convenient home
+                  tutoring at your doorstep.
                 </CardDescription>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
-              <CardHeader>
-                <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Flexible Timing</CardTitle>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Clock className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Flexible Timing</CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Choose your preferred time slots that work best for your schedule. Morning, afternoon, or evening
-                  sessions available.
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  Choose your preferred time slots that work with your schedule. Morning, afternoon, or evening sessions
+                  available.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <BookOpen className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">All Subjects</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  From Mathematics to Science, English to Nepali - we have expert tutors for all subjects and grade
+                  levels.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Award className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Proven Results</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  Our students consistently show improved grades and confidence. Track progress with regular assessments
+                  and feedback.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Star className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl">5-Star Support</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed">
+                  Our dedicated support team is always ready to help. Get assistance with tutor matching, scheduling,
+                  and more.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -85,76 +196,112 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+      <section className="section-padding bg-slate-50">
+        <div className="container">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Simple Process
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Getting started with quality home tutoring is easier than ever. Follow these simple steps.
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-16">
             {/* For Students */}
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-primary">For Students</h3>
-              <div className="space-y-4">
+            <div className="space-y-8">
+              <div className="text-center lg:text-left">
+                <h3 className="text-2xl font-bold text-primary mb-4">For Students</h3>
+                <p className="text-muted-foreground">Find your perfect tutor in 3 easy steps</p>
+              </div>
+
+              <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     1
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Submit Your Request</h4>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Submit Your Request</h4>
                     <p className="text-muted-foreground">
-                      Fill out our simple form with your subject needs and preferences.
+                      Fill out our detailed form with your subject needs, preferred schedule, and location. The more
+                      details, the better we can match you.
                     </p>
                   </div>
                 </div>
+
                 <div className="flex items-start space-x-4">
-                  <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     2
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Get Matched</h4>
-                    <p className="text-muted-foreground">Qualified tutors in your area will apply to teach you.</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Get Matched</h4>
+                    <p className="text-muted-foreground">
+                      Our algorithm finds the best tutors in your area. Review profiles, ratings, and experience before
+                      making your choice.
+                    </p>
                   </div>
                 </div>
+
                 <div className="flex items-start space-x-4">
-                  <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     3
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Start Learning</h4>
-                    <p className="text-muted-foreground">Begin your personalized tutoring sessions at home.</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Start Learning</h4>
+                    <p className="text-muted-foreground">
+                      Begin your personalized tutoring sessions at home. Track progress and provide feedback through our
+                      platform.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* For Teachers */}
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-secondary">For Teachers</h3>
-              <div className="space-y-4">
+            <div className="space-y-8">
+              <div className="text-center lg:text-left">
+                <h3 className="text-2xl font-bold text-secondary mb-4">For Teachers</h3>
+                <p className="text-muted-foreground">Start earning by teaching from home</p>
+              </div>
+
+              <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-secondary text-foreground rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     1
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Register & Verify</h4>
-                    <p className="text-muted-foreground">Create your profile and get verified by our admin team.</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Create Your Profile</h4>
+                    <p className="text-muted-foreground">
+                      Sign up and create a comprehensive profile showcasing your qualifications, experience, and
+                      teaching subjects.
+                    </p>
                   </div>
                 </div>
+
                 <div className="flex items-start space-x-4">
-                  <div className="bg-secondary text-foreground rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     2
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Browse Opportunities</h4>
-                    <p className="text-muted-foreground">View available tutoring requests in your area.</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Get Verified</h4>
+                    <p className="text-muted-foreground">
+                      Our team will verify your credentials and approve your profile. This ensures quality and builds
+                      student trust.
+                    </p>
                   </div>
                 </div>
+
                 <div className="flex items-start space-x-4">
-                  <div className="bg-secondary text-foreground rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-lg">
                     3
                   </div>
-                  <div>
-                    <h4 className="font-semibold">Start Teaching</h4>
-                    <p className="text-muted-foreground">Apply to teach and begin earning from home tutoring.</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold">Start Teaching</h4>
+                    <p className="text-muted-foreground">
+                      Browse available tutoring opportunities, apply to teach students, and start earning from your
+                      expertise.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -163,43 +310,127 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-primary text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join thousands of students and teachers already using HR Home Tuition
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/student">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                Find a Tutor
-              </Button>
-            </Link>
-            <Link href="/careers">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-primary bg-transparent"
-              >
-                <Briefcase className="mr-2 h-5 w-5" />
-                View Opportunities
-              </Button>
-            </Link>
+      {/* Testimonials */}
+      <section className="section-padding bg-white">
+        <div className="container">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Success Stories
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Users Say</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Don't just take our word for it. Here's what students and parents have to say about their experience.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-primary/20 mb-4" />
+                <p className="text-muted-foreground mb-4">
+                  "The tutor we found through HR Home Tuition helped my daughter improve her math grades from C to A+ in
+                  just 3 months. Highly recommended!"
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary">SM</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Sunita Maharjan</p>
+                    <p className="text-sm text-muted-foreground">Parent, Lalitpur</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-primary/20 mb-4" />
+                <p className="text-muted-foreground mb-4">
+                  "As a teacher, this platform has given me the flexibility to work from home while helping students
+                  achieve their academic goals."
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary">RK</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Rajesh KC</p>
+                    <p className="text-sm text-muted-foreground">Math Tutor, Kathmandu</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-primary/20 mb-4" />
+                <p className="text-muted-foreground mb-4">
+                  "The quality of tutors is exceptional. My son's confidence in English has improved dramatically since
+                  we started using this service."
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary">PS</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Priya Shrestha</p>
+                    <p className="text-sm text-muted-foreground">Parent, Bhaktapur</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-foreground text-white">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <GraduationCap className="h-6 w-6" />
-            <span className="text-xl font-bold">HR Home Tuition</span>
+      {/* CTA Section */}
+      <section className="section-padding gradient-bg text-white">
+        <div className="container text-center">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <h2 className="text-3xl md:text-4xl font-bold">Ready to Transform Your Learning Experience?</h2>
+            <p className="text-xl opacity-90">
+              Join thousands of students and teachers who are already part of Nepal's most trusted home tutoring
+              platform.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/student">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto h-12 px-8 text-base">
+                  Find a Tutor Now
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/teacher">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto h-12 px-8 text-base border-white text-white hover:bg-white hover:text-primary bg-transparent"
+                >
+                  <GraduationCap className="mr-2 h-5 w-5" />
+                  Become a Tutor
+                </Button>
+              </Link>
+            </div>
           </div>
-          <p className="text-muted-foreground">© 2024 HR Home Tuition. All rights reserved.</p>
         </div>
-      </footer>
+      </section>
+
+      <Footer />
     </div>
   )
 }

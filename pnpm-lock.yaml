@@ -12,7 +12,7 @@ importers:
         specifier: latest
         version: 5.2.1(react-hook-form@7.61.1(react@19.1.1))
       '@prisma/client':
-        specifier: ^6.13.0
+        specifier: latest
         version: 6.13.0(prisma@5.22.0)(typescript@5.8.3)
       '@radix-ui/react-accordion':
         specifier: latest
@@ -36,7 +36,7 @@ importers:
         specifier: latest
         version: 2.2.15(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-dialog':
-        specifier: ^1.1.14
+        specifier: latest
         version: 1.1.14(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-dropdown-menu':
         specifier: latest
