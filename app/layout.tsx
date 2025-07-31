@@ -8,10 +8,9 @@ import { Toaster } from "@/components/ui/sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "HR Home Tuition - Find Quality Home Tutors",
+  title: "HR Home Tuition - Quality Education at Home",
   description:
-    "Connect students with qualified home tutors in Nepal. Professional tutoring services for all subjects and grades.",
-  keywords: "home tuition, tutors, Nepal, education, learning, private tutoring",
+    "Connect with qualified tutors for personalized home tuition services. Expert teachers for all subjects and grades.",
     generator: 'v0.dev'
 }
 
@@ -25,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
