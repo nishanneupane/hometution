@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { TeacherForm } from "@/components/admin/teacher-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteTeacher, approveTeacher, rejectTeacher } from "@/lib/actions/teacher-actions"
-import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap } from "lucide-react"
+import { Edit, Trash2, GraduationCap, Phone, MapPin, CheckCircle, XCircle, Plus } from "lucide-react"
 import { toast } from "sonner"
 
 interface TeachersTableClientProps {
@@ -16,28 +16,34 @@ interface TeachersTableClientProps {
 }
 
 export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
-  const [selectedTeacher, setSelectedTeacher] = useState<any>(null)
   const [teacherFormOpen, setTeacherFormOpen] = useState(false)
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+  const [selectedTeacher, setSelectedTeacher] = useState<any>(null)
   const [formMode, setFormMode] = useState<"create" | "edit">("create")
 
-  const handleEdit = (teacher: any) => {
+  const handleEditTeacher = (teacher: any) => {
     setSelectedTeacher(teacher)
     setFormMode("edit")
     setTeacherFormOpen(true)
   }
 
-  const handleDelete = (teacher: any) => {
+  const handleDeleteTeacher = (teacher: any) => {
     setSelectedTeacher(teacher)
     setDeleteConfirmOpen(true)
   }
 
   const handleConfirmDelete = async () => {
-    if (!selectedTeacher) return
-    return await deleteTeacher(selectedTeacher.id)
+    if (selectedTeacher) {
+      const result = await deleteTeacher(selectedTeacher.id)
+      if (result.success) {
+        toast.success(result.message)
+      } else {
+        toast.error(result.message)
+      }
+    }
   }
 
-  const handleApprove = async (teacherId: string) => {
+  const handleApproveTeacher = async (teacherId: string) => {
     const result = await approveTeacher(teacherId)
     if (result.success) {
       toast.success(result.message)
@@ -46,7 +52,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     }
   }
 
-  const handleReject = async (teacherId: string) => {
+  const handleRejectTeacher = async (teacherId: string) => {
     const result = await rejectTeacher(teacherId)
     if (result.success) {
       toast.success(result.message)
@@ -55,105 +61,123 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     }
   }
 
-  if (teachers.length === 0) {
-    return (
-      <Card className="border-0 shadow-sm">
-        <CardContent className="flex flex-col items-center justify-center py-16">
-          <GraduationCap className="h-16 w-16 text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No teachers found</h3>
-          <p className="text-gray-600 text-center max-w-md">
-            Get started by adding your first teacher to the platform.
-          </p>
-        </CardContent>
-      </Card>
-    )
-  }
-
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teachers.map((teacher) => (
-          <Card key={teacher.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={teacher.profileImage || "/placeholder.svg"} />
-                    <AvatarFallback className="bg-primary text-white">
-                      {teacher.name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{teacher.name}</h3>
-                    <Badge variant="outline" className="text-xs">
-                      {teacher.teacherCode}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="flex space-x-1">
-                  <Button variant="ghost" size="sm" onClick={() => handleEdit(teacher)}>
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(teacher)}>
-                    <Trash2 className="h-4 w-4 text-red-500" />
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center text-sm text-gray-600">
-                  <Phone className="h-4 w-4 mr-2" />
-                  {teacher.phoneOrWhatsapp}
-                </div>
-
-                <div className="flex items-center text-sm text-gray-600">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {teacher.city}, {teacher.district}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 capitalize">Gender: {teacher.gender}</span>
-                  <Badge variant={teacher.isApproved ? "default" : "secondary"}>
-                    {teacher.isApproved ? "Approved" : "Pending"}
-                  </Badge>
-                </div>
-              </div>
-
-              {!teacher.isApproved && (
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleApprove(teacher.id)}
-                      className="flex-1 bg-green-600 hover:bg-green-700"
-                    >
-                      <CheckCircle className="h-4 w-4 mr-1" />
-                      Approve
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleReject(teacher.id)}
-                      className="flex-1 text-red-600 border-red-600 hover:bg-red-50"
-                    >
-                      <XCircle className="h-4 w-4 mr-1" />
-                      Reject
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Applications</span>
-                  <Badge variant="secondary">{teacher.applications?.length || 0}</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card className="border-0 shadow-md bg-white">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <GraduationCap className="h-5 w-5" />
+            <span>All Teachers ({teachers.length})</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {teachers.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Teacher</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Gender</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {teachers.map((teacher) => (
+                  <TableRow key={teacher.id}>
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                          <GraduationCap className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">{teacher.name}</p>
+                          <Badge variant="outline" className="text-xs mt-1">
+                            {teacher.teacherCode}
+                          </Badge>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Phone className="h-4 w-4 text-slate-400" />
+                        <span className="text-sm">{teacher.phoneOrWhatsapp}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-slate-400" />
+                        <span className="text-sm">
+                          {teacher.city}, {teacher.district}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="capitalize text-sm">{teacher.gender}</span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={teacher.isApproved ? "default" : "secondary"}>
+                        {teacher.isApproved ? "Approved" : "Pending"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        {!teacher.isApproved && (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleApproveTeacher(teacher.id)}
+                              className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50"
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRejectTeacher(teacher.id)}
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditTeacher(teacher)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteTeacher(teacher)}
+                          className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="text-center py-12">
+              <GraduationCap className="h-16 w-16 mx-auto mb-4 text-slate-300" />
+              <h3 className="text-lg font-medium text-slate-900 mb-2">No teachers found</h3>
+              <p className="text-slate-600 mb-4">Get started by adding your first teacher.</p>
+              <Button onClick={() => setTeacherFormOpen(true)} className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Teacher
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <TeacherForm open={teacherFormOpen} onOpenChange={setTeacherFormOpen} teacher={selectedTeacher} mode={formMode} />
 
@@ -161,7 +185,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         open={deleteConfirmOpen}
         onOpenChange={setDeleteConfirmOpen}
         title="Delete Teacher"
-        description={`Are you sure you want to delete ${selectedTeacher?.name}? This action cannot be undone and will remove all associated applications.`}
+        description={`Are you sure you want to delete ${selectedTeacher?.name}? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
       />
     </>

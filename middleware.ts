@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import type { NextRequest } from "next/request"
 
 export function middleware(request: NextRequest) {
   // Check if the request is for admin routes

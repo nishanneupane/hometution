@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { LayoutDashboard, Users, GraduationCap, FileText, BarChart3, Settings, Menu, X } from "lucide-react"
+import { LayoutDashboard, Users, GraduationCap, DollarSign, Settings, Menu, X, BarChart3 } from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Students", href: "/admin/students", icon: Users },
   { name: "Teachers", href: "/admin/teachers", icon: GraduationCap },
-  { name: "Tuition Requests", href: "/admin/requests", icon: FileText },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Fees", href: "/admin/fees", icon: DollarSign },
+  { name: "Reports", href: "/admin/reports", icon: BarChart3 },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
@@ -29,7 +29,7 @@ export function AdminSidebar() {
           variant="outline"
           size="sm"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="bg-white shadow-md"
+          className="bg-white shadow-md border-slate-200"
         >
           {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </Button>
@@ -43,22 +43,24 @@ export function AdminSidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200 lg:translate-x-0 transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
-        <div className="flex h-16 items-center justify-center border-b border-gray-200 px-6">
+        {/* Logo */}
+        <div className="flex h-16 items-center justify-center border-b border-slate-200 px-6">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-primary rounded-lg">
+            <div className="p-2 bg-blue-600 rounded-lg">
               <GraduationCap className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">HR Tuition</h1>
-              <p className="text-xs text-gray-500">Admin Panel</p>
+              <h1 className="text-lg font-semibold text-slate-900">HR Tuition</h1>
+              <p className="text-xs text-slate-500">Admin Panel</p>
             </div>
           </div>
         </div>
 
+        {/* Navigation */}
         <ScrollArea className="flex-1 px-4 py-6">
           <nav className="space-y-2">
             {navigation.map((item) => {
@@ -69,10 +71,10 @@ export function AdminSidebar() {
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    "flex items-center space-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "bg-primary text-white shadow-sm"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -83,13 +85,14 @@ export function AdminSidebar() {
           </nav>
         </ScrollArea>
 
-        <div className="border-t border-gray-200 p-4">
-          <div className="flex items-center space-x-3 text-sm text-gray-600">
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <Settings className="h-4 w-4 text-primary" />
+        {/* Footer */}
+        <div className="border-t border-slate-200 p-4">
+          <div className="flex items-center space-x-3 text-sm text-slate-600">
+            <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+              <div className="h-2 w-2 rounded-full bg-green-500"></div>
             </div>
             <div>
-              <p className="font-medium">System Status</p>
+              <p className="font-medium text-slate-900">System Status</p>
               <p className="text-xs text-green-600">All systems operational</p>
             </div>
           </div>

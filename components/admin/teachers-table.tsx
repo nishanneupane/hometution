@@ -1,5 +1,5 @@
 import { getTeachers } from "@/lib/actions/teacher-actions"
-import { TeachersTableClient } from "@/components/admin/teachers-table-client"
+import { TeachersTableClient } from "./teachers-table-client"
 
 export async function TeachersTable() {
   const teachers = await getTeachers()
