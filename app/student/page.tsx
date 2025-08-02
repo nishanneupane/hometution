@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Navbar } from "@/components/navbar"
 import { LocationSelector } from "@/components/location-selector"
 import { studentRegistrationSchema, type StudentRegistrationData } from "@/lib/validations"
+import { createStudentRequest } from "@/lib/actions/student-actions"
 import { toast } from "sonner"
 import { Upload, Clock, BookOpen, User, School } from "lucide-react"
 
@@ -81,18 +82,26 @@ export default function StudentRegistrationPage() {
   const onSubmit = async (data: StudentRegistrationData) => {
     setIsSubmitting(true)
     try {
-      const response = await fetch("/api/students", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, subject: selectedSubjects }),
+      const formData = new FormData()
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "subject" && Array.isArray(value)) {
+          value.forEach((subject) => formData.append("subject", subject))
+        } else {
+          formData.append(key, value as string)
+        }
       })
 
-      if (response.ok) {
+      // Add selected subjects to form data
+      selectedSubjects.forEach((subject) => formData.append("subject", subject))
+
+      const result = await createStudentRequest(formData)
+
+      if (result.success) {
         toast.success("Registration successful! Your tuition request has been published.")
         form.reset()
         setSelectedSubjects([])
       } else {
-        toast.error("Registration failed. Please try again.")
+        toast.error(result.message || "Registration failed. Please try again.")
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.")

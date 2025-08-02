@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Navbar } from "@/components/navbar"
 import { LocationSelector } from "@/components/location-selector"
 import { teacherRegistrationSchema, type TeacherRegistrationData } from "@/lib/validations"
+import { createTeacherRequest } from "@/lib/actions/teacher-actions"
 import { toast } from "sonner"
 import { Upload, GraduationCap, FileText, User } from "lucide-react"
 
@@ -35,18 +36,18 @@ export default function TeacherRegistrationPage() {
   const onSubmit = async (data: TeacherRegistrationData) => {
     setIsSubmitting(true)
     try {
-      const response = await fetch("/api/teachers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const formData = new FormData()
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value as string)
       })
 
-      if (response.ok) {
-        const result = await response.json()
+      const result = await createTeacherRequest(formData)
+
+      if (result.success) {
         toast.success(`Registration successful! Your teacher code is: ${result.teacherCode}`)
         form.reset()
       } else {
-        toast.error("Registration failed. Please try again.")
+        toast.error(result.message || "Registration failed. Please try again.")
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.")

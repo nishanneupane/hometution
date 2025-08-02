@@ -4,9 +4,60 @@ import { prisma } from "@/lib/prisma"
 import { studentRegistrationSchema } from "@/lib/validations"
 import { revalidatePath } from "next/cache"
 
+export async function createStudentRequest(formData: FormData) {
+  try {
+    const data = {
+      requestType: formData.get("requestType") as string,
+      name: formData.get("name") as string,
+      schoolName: formData.get("schoolName") as string,
+      phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
+      province: formData.get("province") as string,
+      district: formData.get("district") as string,
+      municipality: formData.get("municipality") as string,
+      city: formData.get("city") as string,
+      subject: formData.getAll("subject") as string[],
+      preferredTimeFrom: formData.get("preferredTimeFrom") as string,
+      preferredTimeTo: formData.get("preferredTimeTo") as string,
+      parentCtzOrStudentCtz: formData.get("parentCtzOrStudentCtz") as string,
+      extraInfo: formData.get("extraInfo") as string,
+    }
+
+    const validatedData = studentRegistrationSchema.parse(data)
+
+    const student = await prisma.student.create({
+      data: validatedData,
+    })
+
+    // Create tuition request
+    await prisma.tuitionRequest.create({
+      data: {
+        studentId: student.id,
+        status: "active",
+      },
+    })
+
+    // Create notification
+    await prisma.notification.create({
+      data: {
+        title: `New ${validatedData.requestType === "school" ? "School" : "Student"} Request`,
+        message: `${validatedData.name} has submitted a tuition request for ${validatedData.subject.join(", ")}`,
+        type: "student_registration",
+      },
+    })
+
+    revalidatePath("/careers")
+    revalidatePath("/admin")
+    return { success: true, message: "Registration successful" }
+  } catch (error) {
+    console.error("Error creating student request:", error)
+    return { success: false, message: "Registration failed" }
+  }
+}
+
 export async function createStudent(formData: FormData) {
   try {
     const data = {
+      requestType: (formData.get("requestType") as string) || "student",
       name: formData.get("name") as string,
       schoolName: formData.get("schoolName") as string,
       phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
@@ -46,6 +97,7 @@ export async function createStudent(formData: FormData) {
 export async function updateStudent(id: string, formData: FormData) {
   try {
     const data = {
+      requestType: (formData.get("requestType") as string) || "student",
       name: formData.get("name") as string,
       schoolName: formData.get("schoolName") as string,
       phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
@@ -95,6 +147,7 @@ export async function deleteStudent(id: string) {
     })
 
     revalidatePath("/admin")
+    revalidatePath("/careers")
     return { success: true, message: "Student deleted successfully" }
   } catch (error) {
     console.error("Error deleting student:", error)
@@ -132,6 +185,27 @@ export async function getStudents(searchTerm?: string) {
     return students
   } catch (error) {
     console.error("Error fetching students:", error)
+    return []
+  }
+}
+
+export async function getActiveStudentRequests() {
+  try {
+    const students = await prisma.student.findMany({
+      include: {
+        tuitionRequests: {
+          where: {
+            status: "active",
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    })
+
+    // Filter students who have active tuition requests
+    return students.filter((student) => student.tuitionRequests.length > 0)
+  } catch (error) {
+    console.error("Error fetching active student requests:", error)
     return []
   }
 }

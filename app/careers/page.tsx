@@ -1,133 +1,184 @@
+import { Suspense } from "react"
 import { Navbar } from "@/components/navbar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { prisma } from "@/lib/prisma"
-import { MapPin, Clock, BookOpen, Users, User, School } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { getActiveStudentRequests } from "@/lib/actions/student-actions"
+import { MapPin, Clock, BookOpen, User, School, Phone } from "lucide-react"
+import Link from "next/link"
 
-async function getTuitionRequests() {
-  try {
-    const requests = await prisma.tuitionRequest.findMany({
-      where: {
-        status: "active",
-      },
-      include: {
-        student: true,
-        applications: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
-    return requests
-  } catch (error) {
-    console.error("Error fetching tuition requests:", error)
-    return []
-  }
+function CareersSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Card key={i} className="border-0 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <div>
+                  <Skeleton className="h-4 w-32 mb-2" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+              </div>
+              <Skeleton className="h-6 w-16" />
+            </div>
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+            <div className="mt-4">
+              <Skeleton className="h-4 w-20 mb-2" />
+              <div className="flex flex-wrap gap-1">
+                <Skeleton className="h-6 w-16" />
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-6 w-14" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
 }
 
-export default async function CareersPage() {
-  const tuitionRequests = await getTuitionRequests()
+async function CareersContent() {
+  const students = await getActiveStudentRequests()
 
+  if (students.length === 0) {
+    return (
+      <Card className="border-0 shadow-sm">
+        <CardContent className="flex flex-col items-center justify-center py-16">
+          <BookOpen className="h-16 w-16 text-gray-300 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No tuition requests available</h3>
+          <p className="text-gray-600 text-center max-w-md">
+            Check back later for new tutoring opportunities in your area.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {students.map((student) => (
+        <Card key={student.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  {student.requestType === "school" ? (
+                    <School className="h-6 w-6 text-primary" />
+                  ) : (
+                    <User className="h-6 w-6 text-primary" />
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{student.name}</h3>
+                  <p className="text-sm text-gray-600">{student.schoolName}</p>
+                </div>
+              </div>
+              <Badge
+                variant={student.requestType === "school" ? "default" : "secondary"}
+                className={
+                  student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                }
+              >
+                {student.requestType === "school" ? "School" : "Student"}
+              </Badge>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center text-sm text-gray-600">
+                <Phone className="h-4 w-4 mr-2" />
+                {student.phoneOrWhatsapp}
+              </div>
+
+              <div className="flex items-center text-sm text-gray-600">
+                <MapPin className="h-4 w-4 mr-2" />
+                {student.city}, {student.district}
+              </div>
+
+              <div className="flex items-center text-sm text-gray-600">
+                <Clock className="h-4 w-4 mr-2" />
+                {student.preferredTimeFrom} - {student.preferredTimeTo}
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <p className="text-sm font-medium text-gray-900 mb-2">Subjects Needed</p>
+              <div className="flex flex-wrap gap-1">
+                {student.subject.slice(0, 3).map((subject: string) => (
+                  <Badge key={subject} variant="outline" className="text-xs">
+                    {subject}
+                  </Badge>
+                ))}
+                {student.subject.length > 3 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{student.subject.length - 3}
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            {student.extraInfo && (
+              <div className="mt-4">
+                <p className="text-sm font-medium text-gray-900 mb-1">Additional Info</p>
+                <p className="text-sm text-gray-600 line-clamp-2">{student.extraInfo}</p>
+              </div>
+            )}
+
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Posted {new Date(student.createdAt).toLocaleDateString()}</span>
+                <Button size="sm" asChild>
+                  <Link href="/teacher">Apply Now</Link>
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+export default function CareersPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Tutoring Opportunities</h1>
-          <p className="text-xl text-muted-foreground">
-            Browse available tutoring requests from students and schools in your area
-          </p>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-foreground mb-4">Teaching Opportunities</h1>
+            <p className="text-xl text-muted-foreground">
+              Find tutoring opportunities in your area and start earning from home
+            </p>
+          </div>
+
+          <div className="mb-8">
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="text-blue-900">Ready to Start Teaching?</CardTitle>
+                <CardDescription className="text-blue-700">
+                  Register as a teacher to apply for these opportunities and connect with students in your area.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link href="/teacher">Register as Teacher</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Suspense fallback={<CareersSkeleton />}>
+            <CareersContent />
+          </Suspense>
         </div>
-
-        {tuitionRequests.length === 0 ? (
-          <div className="text-center py-12">
-            <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-2xl font-semibold text-muted-foreground mb-2">No opportunities available</h3>
-            <p className="text-muted-foreground">Check back later for new tutoring requests</p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {tuitionRequests.map((request) => (
-              <Card key={request.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        {request.student.requestType === "school" ? (
-                          <School className="h-4 w-4 text-blue-600" />
-                        ) : (
-                          <User className="h-4 w-4 text-green-600" />
-                        )}
-                        <Badge
-                          variant={request.student.requestType === "school" ? "default" : "secondary"}
-                          className={
-                            request.student.requestType === "school"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-green-100 text-green-800"
-                          }
-                        >
-                          {request.student.requestType === "school" ? "School" : "Student"}
-                        </Badge>
-                      </div>
-                      <CardTitle className="text-lg">{request.student.name}</CardTitle>
-                      <CardDescription className="flex items-center space-x-1 mt-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>
-                          {request.student.city}, {request.student.district}
-                        </span>
-                      </CardDescription>
-                    </div>
-                    <Badge variant="outline">{request.applications.length} Applied</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-2">
-                      {request.student.requestType === "school" ? "INSTITUTION" : "SCHOOL"}
-                    </h4>
-                    <p className="text-sm">{request.student.schoolName}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-2">SUBJECTS</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {request.student.subject.map((subject) => (
-                        <Badge key={subject} variant="outline" className="text-xs">
-                          {subject}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>
-                        {request.student.preferredTimeFrom} - {request.student.preferredTimeTo}
-                      </span>
-                    </div>
-                  </div>
-
-                  {request.student.extraInfo && (
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-2">ADDITIONAL INFO</h4>
-                      <p className="text-sm text-muted-foreground line-clamp-3">{request.student.extraInfo}</p>
-                    </div>
-                  )}
-
-                  <div className="pt-4 border-t">
-                    <Button className="w-full" size="sm">
-                      <Users className="h-4 w-4 mr-2" />
-                      Apply to Teach
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

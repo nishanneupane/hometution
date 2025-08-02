@@ -12,6 +12,64 @@ function generateTeacherCode(): string {
   return `${prefix}${randomNum}`
 }
 
+export async function createTeacherRequest(formData: FormData) {
+  try {
+    const data = {
+      name: formData.get("name") as string,
+      phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
+      province: formData.get("province") as string,
+      district: formData.get("district") as string,
+      municipality: formData.get("municipality") as string,
+      city: formData.get("city") as string,
+      gender: formData.get("gender") as "male" | "female" | "other",
+      citizenship: formData.get("citizenship") as string,
+      cv: formData.get("cv") as string,
+    }
+
+    const validatedData = teacherRegistrationSchema.parse(data)
+
+    // Generate unique teacher code
+    let teacherCode = generateTeacherCode()
+    let existingTeacher = await prisma.teacher.findUnique({
+      where: { teacherCode },
+    })
+
+    while (existingTeacher) {
+      teacherCode = generateTeacherCode()
+      existingTeacher = await prisma.teacher.findUnique({
+        where: { teacherCode },
+      })
+    }
+
+    const teacher = await prisma.teacher.create({
+      data: {
+        ...validatedData,
+        teacherCode,
+        isApproved: false,
+      },
+    })
+
+    // Create notification
+    await prisma.notification.create({
+      data: {
+        title: "New Teacher Application",
+        message: `${validatedData.name} has applied to become a teacher`,
+        type: "teacher_registration",
+      },
+    })
+
+    revalidatePath("/admin")
+    return {
+      success: true,
+      message: "Registration successful",
+      teacherCode: teacher.teacherCode,
+    }
+  } catch (error) {
+    console.error("Error creating teacher request:", error)
+    return { success: false, message: "Registration failed" }
+  }
+}
+
 export async function createTeacher(formData: FormData) {
   try {
     const data = {
