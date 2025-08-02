@@ -35,8 +35,7 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                  Connect with qualified, verified tutors across Nepal. Get personalized home tutoring for all subjects
-                  and grades, tailored to your learning needs.
+                  Connect with trusted tutors from all over Nepal. Get home tuition for any subject or grade — just the way you need it.
                 </p>
               </div>
 
@@ -58,16 +57,16 @@ export default function HomePage() {
 
               <div className="flex items-center gap-8 pt-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">500+</div>
+                  <div className="text-2xl font-bold text-primary">3000+</div>
                   <div className="text-sm text-muted-foreground">Verified Tutors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">1000+</div>
-                  <div className="text-sm text-muted-foreground">Happy Students</div>
+                  <div className="text-2xl font-bold text-primary">500+</div>
+                  <div className="text-sm text-muted-foreground"> Happy Students</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">4.9</div>
-                  <div className="text-sm text-muted-foreground">Average Rating</div>
+                  <div className="text-2xl font-bold text-primary">10+</div>
+                  <div className="text-sm text-muted-foreground">Schools</div>
                 </div>
               </div>
             </div>
