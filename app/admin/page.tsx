@@ -1,13 +1,14 @@
 import { Suspense } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DashboardChart } from "@/components/admin/dashboard-chart"
 import { RecentActivity } from "@/components/admin/recent-activity"
+import { QuickActions } from "@/components/admin/quick-actions"
 import { getStudents } from "@/lib/actions/student-actions"
 import { getTeachers } from "@/lib/actions/teacher-actions"
 import { getTuitionRequests } from "@/lib/actions/application-actions"
-import { Users, GraduationCap, FileText, TrendingUp, Clock, ArrowUpRight, Calendar } from "lucide-react"
+import { Users, GraduationCap, FileText, Clock, ArrowUpRight, Calendar } from "lucide-react"
 
 async function getAdminStats() {
   try {
@@ -37,6 +38,8 @@ async function getAdminStats() {
       pendingApplications,
       recentStudents: students.slice(0, 3),
       recentTeachers: teachers.slice(0, 3),
+      allStudents: students,
+      allTeachers: teachers,
       growthData,
     }
   } catch (error) {
@@ -50,6 +53,8 @@ async function getAdminStats() {
       pendingApplications: 0,
       recentStudents: [],
       recentTeachers: [],
+      allStudents: [],
+      allTeachers: [],
       growthData: { students: 0, teachers: 0, requests: 0, applications: 0 },
     }
   }
@@ -178,43 +183,18 @@ export default async function AdminDashboard() {
         </div>
         <div>
           <Suspense fallback={<div className="h-96 bg-white rounded-xl animate-pulse" />}>
-            <RecentActivity recentStudents={stats.recentStudents} recentTeachers={stats.recentTeachers} />
+            <RecentActivity
+              recentStudents={stats.recentStudents}
+              recentTeachers={stats.recentTeachers}
+              allStudents={stats.allStudents}
+              allTeachers={stats.allTeachers}
+            />
           </Suspense>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <Card className="border-0 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg">Quick Actions</CardTitle>
-          <CardDescription>Common tasks and shortcuts</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2 bg-transparent">
-              <Users className="h-5 w-5" />
-              <div className="text-left">
-                <div className="font-medium">Add Student</div>
-                <div className="text-xs text-muted-foreground">Register new student</div>
-              </div>
-            </Button>
-            <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2 bg-transparent">
-              <GraduationCap className="h-5 w-5" />
-              <div className="text-left">
-                <div className="font-medium">Add Teacher</div>
-                <div className="text-xs text-muted-foreground">Register new teacher</div>
-              </div>
-            </Button>
-            <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2 bg-transparent">
-              <TrendingUp className="h-5 w-5" />
-              <div className="text-left">
-                <div className="font-medium">View Analytics</div>
-                <div className="text-xs text-muted-foreground">Detailed insights</div>
-              </div>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <QuickActions />
     </div>
   )
 }

@@ -3,25 +3,17 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-export async function createNotification(data: {
-  title: string
-  message: string
-  type: string
-  relatedId?: string
-}) {
+export async function getNotifications() {
   try {
-    await prisma.notification.create({
-      data: {
-        ...data,
-        isRead: false,
+    const notifications = await prisma.notification.findMany({
+      orderBy: {
+        createdAt: "desc",
       },
     })
-
-    revalidatePath("/admin/notifications")
-    return { success: true, message: "Notification created successfully" }
+    return notifications
   } catch (error) {
-    console.error("Error creating notification:", error)
-    return { success: false, message: "Failed to create notification" }
+    console.error("Error fetching notifications:", error)
+    return []
   }
 }
 
@@ -31,12 +23,11 @@ export async function markNotificationAsRead(id: string) {
       where: { id },
       data: { isRead: true },
     })
-
-    revalidatePath("/admin/notifications")
-    return { success: true, message: "Notification marked as read" }
+    revalidatePath("/admin")
+    return { success: true }
   } catch (error) {
-    console.error("Error updating notification:", error)
-    return { success: false, message: "Failed to update notification" }
+    console.error("Error marking notification as read:", error)
+    throw new Error("Failed to mark notification as read")
   }
 }
 
@@ -45,25 +36,28 @@ export async function deleteNotification(id: string) {
     await prisma.notification.delete({
       where: { id },
     })
-
-    revalidatePath("/admin/notifications")
-    return { success: true, message: "Notification deleted successfully" }
+    revalidatePath("/admin")
+    return { success: true }
   } catch (error) {
     console.error("Error deleting notification:", error)
-    return { success: false, message: "Failed to delete notification" }
+    throw new Error("Failed to delete notification")
   }
 }
 
-export async function getNotifications() {
+export async function createNotification(data: {
+  title: string
+  message: string
+  type: string
+}) {
   try {
-    const notifications = await prisma.notification.findMany({
-      orderBy: { createdAt: "desc" },
+    const notification = await prisma.notification.create({
+      data,
     })
-
-    return notifications
+    revalidatePath("/admin")
+    return notification
   } catch (error) {
-    console.error("Error fetching notifications:", error)
-    return []
+    console.error("Error creating notification:", error)
+    throw new Error("Failed to create notification")
   }
 }
 
@@ -73,11 +67,10 @@ export async function markAllNotificationsAsRead() {
       where: { isRead: false },
       data: { isRead: true },
     })
-
-    revalidatePath("/admin/notifications")
-    return { success: true, message: "All notifications marked as read" }
+    revalidatePath("/admin")
+    return { success: true }
   } catch (error) {
-    console.error("Error updating notifications:", error)
-    return { success: false, message: "Failed to update notifications" }
+    console.error("Error marking all notifications as read:", error)
+    throw new Error("Failed to mark all notifications as read")
   }
 }
