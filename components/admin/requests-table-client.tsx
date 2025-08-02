@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { approveApplication, rejectApplication } from "@/lib/actions/application-actions"
-import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone } from "lucide-react"
+import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone, User, School } from "lucide-react"
 import { toast } from "sonner"
 
 interface RequestsTableClientProps {
@@ -38,7 +38,7 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
           <FileText className="h-16 w-16 text-gray-300 mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No tuition requests found</h3>
           <p className="text-gray-600 text-center max-w-md">
-            Tuition requests will appear here when students register for tutoring services.
+            Tuition requests will appear here when students or schools register for tutoring services.
           </p>
         </CardContent>
       </Card>
@@ -58,7 +58,26 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{request.student.name}</h3>
+                  <div className="flex items-center space-x-2 mb-1">
+                    <h3 className="text-lg font-semibold text-gray-900">{request.student.name}</h3>
+                    <div className="flex items-center space-x-1">
+                      {request.student.requestType === "school" ? (
+                        <School className="h-4 w-4 text-blue-600" />
+                      ) : (
+                        <User className="h-4 w-4 text-green-600" />
+                      )}
+                      <Badge
+                        variant={request.student.requestType === "school" ? "default" : "secondary"}
+                        className={
+                          request.student.requestType === "school"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-green-100 text-green-800"
+                        }
+                      >
+                        {request.student.requestType === "school" ? "School" : "Student"}
+                      </Badge>
+                    </div>
+                  </div>
                   <p className="text-gray-600">{request.student.schoolName}</p>
                 </div>
               </div>

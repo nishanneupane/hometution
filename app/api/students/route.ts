@@ -7,9 +7,22 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = studentRegistrationSchema.parse(body)
 
-    // Create student record
     const student = await prisma.student.create({
-      data: validatedData,
+      data: {
+        requestType: validatedData.requestType,
+        name: validatedData.name,
+        schoolName: validatedData.schoolName,
+        phoneOrWhatsapp: validatedData.phoneOrWhatsapp,
+        province: validatedData.province,
+        district: validatedData.district,
+        municipality: validatedData.municipality,
+        city: validatedData.city,
+        subject: validatedData.subject,
+        preferredTimeFrom: validatedData.preferredTimeFrom,
+        preferredTimeTo: validatedData.preferredTimeTo,
+        parentCtzOrStudentCtz: validatedData.parentCtzOrStudentCtz,
+        extraInfo: validatedData.extraInfo,
+      },
     })
 
     // Create tuition request
@@ -20,10 +33,19 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    return NextResponse.json({ success: true, studentId: student.id })
+    // Create notification
+    await prisma.notification.create({
+      data: {
+        title: `New ${validatedData.requestType === "school" ? "School" : "Student"} Request`,
+        message: `${validatedData.name} has submitted a tuition request for ${validatedData.subject.join(", ")}`,
+        type: "student_registration",
+      },
+    })
+
+    return NextResponse.json({ success: true, message: "Registration successful" })
   } catch (error) {
     console.error("Error creating student:", error)
-    return NextResponse.json({ error: "Failed to create student record" }, { status: 500 })
+    return NextResponse.json({ success: false, message: "Registration failed" }, { status: 500 })
   }
 }
 
@@ -41,9 +63,7 @@ export async function GET() {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     })
 
     return NextResponse.json(students)

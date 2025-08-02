@@ -10,11 +10,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Navbar } from "@/components/navbar"
 import { LocationSelector } from "@/components/location-selector"
 import { studentRegistrationSchema, type StudentRegistrationData } from "@/lib/validations"
 import { toast } from "sonner"
-import { Upload, Clock, BookOpen } from "lucide-react"
+import { Upload, Clock, BookOpen, User, School } from "lucide-react"
 
 const subjects = [
   "Mathematics",
@@ -59,6 +60,7 @@ export default function StudentRegistrationPage() {
   const form = useForm<StudentRegistrationData>({
     resolver: zodResolver(studentRegistrationSchema),
     defaultValues: {
+      requestType: "student",
       name: "",
       schoolName: "",
       phoneOrWhatsapp: "",
@@ -73,6 +75,8 @@ export default function StudentRegistrationPage() {
       extraInfo: "",
     },
   })
+
+  const requestType = form.watch("requestType")
 
   const onSubmit = async (data: StudentRegistrationData) => {
     setIsSubmitting(true)
@@ -123,7 +127,7 @@ export default function StudentRegistrationPage() {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <BookOpen className="h-6 w-6 text-primary" />
-                <span>Student Registration</span>
+                <span>Tuition Request</span>
               </CardTitle>
               <CardDescription>
                 No account required - just submit your details and we'll connect you with tutors
@@ -132,6 +136,56 @@ export default function StudentRegistrationPage() {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Request Type Selection */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">I'm requesting tuition as:</h3>
+                    <FormField
+                      control={form.control}
+                      name="requestType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              value={field.value}
+                              className="flex flex-col space-y-3"
+                            >
+                              <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                                <RadioGroupItem value="student" id="student" />
+                                <div className="flex items-center space-x-3">
+                                  <User className="h-5 w-5 text-primary" />
+                                  <div>
+                                    <label htmlFor="student" className="text-sm font-medium cursor-pointer">
+                                      Individual Student
+                                    </label>
+                                    <p className="text-xs text-muted-foreground">
+                                      I'm a student or parent looking for a tutor
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                                <RadioGroupItem value="school" id="school" />
+                                <div className="flex items-center space-x-3">
+                                  <School className="h-5 w-5 text-primary" />
+                                  <div>
+                                    <label htmlFor="school" className="text-sm font-medium cursor-pointer">
+                                      School/Institution
+                                    </label>
+                                    <p className="text-xs text-muted-foreground">
+                                      I represent a school looking for teachers
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   {/* Personal Information */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
@@ -139,9 +193,14 @@ export default function StudentRegistrationPage() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>{requestType === "school" ? "Contact Person Name" : "Student Name"}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your full name" {...field} />
+                            <Input
+                              placeholder={
+                                requestType === "school" ? "Enter contact person name" : "Enter student name"
+                              }
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -153,9 +212,12 @@ export default function StudentRegistrationPage() {
                       name="schoolName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>School Name</FormLabel>
+                          <FormLabel>{requestType === "school" ? "School/Institution Name" : "School Name"}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your school name" {...field} />
+                            <Input
+                              placeholder={requestType === "school" ? "Enter institution name" : "Enter school name"}
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -285,11 +347,19 @@ export default function StudentRegistrationPage() {
                   <div>
                     <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
                       <Upload className="h-5 w-5" />
-                      <span>Citizenship Document (Optional)</span>
+                      <span>
+                        {requestType === "school"
+                          ? "Institution Document (Optional)"
+                          : "Citizenship Document (Optional)"}
+                      </span>
                     </h3>
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
                       <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground mb-2">Upload parent's or student's citizenship</p>
+                      <p className="text-muted-foreground mb-2">
+                        {requestType === "school"
+                          ? "Upload institution registration or authorization document"
+                          : "Upload parent's or student's citizenship"}
+                      </p>
                       <p className="text-sm text-muted-foreground">PNG, JPG up to 5MB</p>
                       <Button variant="outline" className="mt-4 bg-transparent" type="button">
                         Choose File
@@ -306,7 +376,11 @@ export default function StudentRegistrationPage() {
                         <FormLabel>Additional Information (Optional)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Any specific requirements, learning goals, or additional information..."
+                            placeholder={
+                              requestType === "school"
+                                ? "Any specific requirements, number of students, teaching methodology preferences, or additional information..."
+                                : "Any specific requirements, learning goals, or additional information..."
+                            }
                             className="min-h-[100px]"
                             {...field}
                           />

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { prisma } from "@/lib/prisma"
-import { MapPin, Clock, BookOpen, Users } from "lucide-react"
+import { MapPin, Clock, BookOpen, Users, User, School } from "lucide-react"
 
 async function getTuitionRequests() {
   try {
@@ -36,7 +36,9 @@ export default async function CareersPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">Tutoring Opportunities</h1>
-          <p className="text-xl text-muted-foreground">Browse available tutoring requests from students in your area</p>
+          <p className="text-xl text-muted-foreground">
+            Browse available tutoring requests from students and schools in your area
+          </p>
         </div>
 
         {tuitionRequests.length === 0 ? (
@@ -51,7 +53,24 @@ export default async function CareersPage() {
               <Card key={request.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        {request.student.requestType === "school" ? (
+                          <School className="h-4 w-4 text-blue-600" />
+                        ) : (
+                          <User className="h-4 w-4 text-green-600" />
+                        )}
+                        <Badge
+                          variant={request.student.requestType === "school" ? "default" : "secondary"}
+                          className={
+                            request.student.requestType === "school"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-green-100 text-green-800"
+                          }
+                        >
+                          {request.student.requestType === "school" ? "School" : "Student"}
+                        </Badge>
+                      </div>
                       <CardTitle className="text-lg">{request.student.name}</CardTitle>
                       <CardDescription className="flex items-center space-x-1 mt-1">
                         <MapPin className="h-4 w-4" />
@@ -60,10 +79,17 @@ export default async function CareersPage() {
                         </span>
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary">{request.applications.length} Applied</Badge>
+                    <Badge variant="outline">{request.applications.length} Applied</Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm text-muted-foreground mb-2">
+                      {request.student.requestType === "school" ? "INSTITUTION" : "SCHOOL"}
+                    </h4>
+                    <p className="text-sm">{request.student.schoolName}</p>
+                  </div>
+
                   <div>
                     <h4 className="font-semibold text-sm text-muted-foreground mb-2">SUBJECTS</h4>
                     <div className="flex flex-wrap gap-1">
@@ -73,11 +99,6 @@ export default async function CareersPage() {
                         </Badge>
                       ))}
                     </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-2">SCHOOL</h4>
-                    <p className="text-sm">{request.student.schoolName}</p>
                   </div>
 
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground">
@@ -92,7 +113,7 @@ export default async function CareersPage() {
                   {request.student.extraInfo && (
                     <div>
                       <h4 className="font-semibold text-sm text-muted-foreground mb-2">ADDITIONAL INFO</h4>
-                      <p className="text-sm text-muted-foreground">{request.student.extraInfo}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-3">{request.student.extraInfo}</p>
                     </div>
                   )}
 

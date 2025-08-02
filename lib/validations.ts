@@ -1,6 +1,9 @@
 import { z } from "zod"
 
 export const studentRegistrationSchema = z.object({
+  requestType: z.enum(["student", "school"], {
+    required_error: "Please select request type",
+  }),
   name: z.string().min(2, "Name must be at least 2 characters"),
   schoolName: z.string().min(2, "School name must be at least 2 characters"),
   phoneOrWhatsapp: z.string().min(10, "Phone number must be at least 10 digits"),
