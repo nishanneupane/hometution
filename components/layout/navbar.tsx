@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { GraduationCap, Menu, Phone, Mail, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -56,12 +57,16 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3">
-              <div className="p-2 bg-primary rounded-xl">
-                <GraduationCap className="h-6 w-6 text-white" />
-              </div>
+              <Image
+                src="/images/hrlogo.png"
+                alt="HR Home Tuition Logo"
+                width={60}
+                height={60}
+                className="rounded-xl"
+              />
               <div>
                 <span className="text-xl font-bold text-foreground">HR Home Tuition</span>
-                <p className="text-xs text-muted-foreground">Quality Education at Home</p>
+                <p className="text-xs text-muted-foreground">हाम्रो पनि राम्रो पनि</p>
               </div>
             </Link>
 

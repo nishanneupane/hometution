@@ -66,8 +66,8 @@ export default function HomePage() {
                   <div className="text-sm text-muted-foreground">Happy Students</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">4.9</div>
-                  <div className="text-sm text-muted-foreground">Average Rating</div>
+                  <div className="text-2xl font-bold text-primary">10+</div>
+                  <div className="text-sm text-muted-foreground">Schools</div>
                 </div>
               </div>
             </div>
