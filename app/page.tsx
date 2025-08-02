@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Navbar } from "@/components/layout/navbar"
+import { MDWelcomeSection } from "@/components/md-welcome-section"
 import { Users, GraduationCap, Star, MapPin, Clock, BookOpen, Award, Shield, ArrowRight, Quote } from "lucide-react"
 import Image from "next/image"
 
@@ -90,71 +91,7 @@ export default function HomePage() {
       </section>
 
       {/* MD's Welcome Section */}
-      <section className="section-padding bg-gradient-to-br from-slate-50 to-blue-50/30">
-        <div className="container">
-          <Card className="relative overflow-hidden border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
-            <CardContent className="relative p-8 md:p-12">
-              <div className="grid lg:grid-cols-2 gap-8 items-center">
-                {/* MD's Photo */}
-                <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
-                  <div className="relative w-40 h-40 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl overflow-hidden border-4 border-white shadow-xl">
-                    <Image
-                      src="/images/md.jpeg"
-                      alt="Birendra Naral - MD, HR Home Tuition"
-                      fill
-                      className="object-cover"
-                    />
-
-                    {/* Soft glow effects */}
-                    <div className="absolute -top-3 -right-3 w-10 h-10 bg-primary/30 rounded-full blur-md z-0" />
-                    <div className="absolute -bottom-5 -left-5 w-14 h-14 bg-blue-400/20 rounded-full blur-lg z-0" />
-                  </div>
-                </div>
-
-
-                {/* Welcome Message */}
-                <div className="order-1 lg:order-2 space-y-6 text-center lg:text-left">
-                  <div className="space-y-3">
-                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                      Welcome Message
-                    </Badge>
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Welcome to HR Home Tuition!</h2>
-                  </div>
-
-                  <div className="space-y-4 text-lg leading-relaxed text-slate-700">
-                    <p>
-                      We are excited to be a part of your educational journey. Our goal is to provide quality education
-                      to students in the comfort of their own homes. We believe in nurturing students' potential through
-                      experienced teachers and personalized attention.
-                    </p>
-                    <p>
-                      Our vision is to equip each student with the knowledge and skills necessary for success. We are
-                      committed to your success.
-                    </p>
-                  </div>
-
-                  {/* Signature */}
-                  <div className="pt-4 border-t border-slate-200">
-                    <div className="space-y-1">
-                      <p className="text-base text-slate-600">Thank you,</p>
-                      <div className="space-y-1">
-                        <p className="text-xl font-semibold text-slate-900">Birendra Naral</p>
-                        <p className="text-sm text-primary font-medium">MD, HR Home Tuition</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-
-            {/* Quote decoration */}
-            <div className="absolute top-6 right-6 opacity-10">
-              <Quote className="h-16 w-16 text-primary" />
-            </div>
-          </Card>
-        </div>
-      </section>
+      <MDWelcomeSection />
 
       {/* Features Section */}
       <section className="section-padding bg-white">
