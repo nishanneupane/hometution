@@ -35,7 +35,8 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                  Connect with trusted tutors from all over Nepal. Get home tuition for any subject or grade — just the way you need it.
+                  Connect with qualified, verified tutors across Nepal. Get personalized home tutoring for all subjects
+                  and grades, tailored to your learning needs.
                 </p>
               </div>
 
@@ -57,16 +58,16 @@ export default function HomePage() {
 
               <div className="flex items-center gap-8 pt-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">3000+</div>
+                  <div className="text-2xl font-bold text-primary">500+</div>
                   <div className="text-sm text-muted-foreground">Verified Tutors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">500+</div>
-                  <div className="text-sm text-muted-foreground"> Happy Students</div>
+                  <div className="text-2xl font-bold text-primary">1000+</div>
+                  <div className="text-sm text-muted-foreground">Happy Students</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">10+</div>
-                  <div className="text-sm text-muted-foreground">Schools</div>
+                  <div className="text-2xl font-bold text-primary">4.9</div>
+                  <div className="text-sm text-muted-foreground">Average Rating</div>
                 </div>
               </div>
             </div>
@@ -85,6 +86,74 @@ export default function HomePage() {
               <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl"></div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* MD's Welcome Section */}
+      <section className="section-padding bg-gradient-to-br from-slate-50 to-blue-50/30">
+        <div className="container">
+          <Card className="relative overflow-hidden border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
+            <CardContent className="relative p-8 md:p-12">
+              <div className="grid lg:grid-cols-2 gap-8 items-center">
+                {/* MD's Photo */}
+                <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
+                  <div className="relative">
+                    <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                      <Image
+                        src="/images/md.png"
+                        alt="Birendra Naral - MD, HR Home Tuition"
+                        width={224}
+                        height={224}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Decorative elements */}
+                    <div className="absolute -top-2 -right-2 w-12 h-12 bg-primary/20 rounded-full blur-xl" />
+                    <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500/10 rounded-full blur-2xl" />
+                  </div>
+                </div>
+
+                {/* Welcome Message */}
+                <div className="order-1 lg:order-2 space-y-6 text-center lg:text-left">
+                  <div className="space-y-3">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                      Welcome Message
+                    </Badge>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Welcome to HR Home Tuition!</h2>
+                  </div>
+
+                  <div className="space-y-4 text-lg leading-relaxed text-slate-700">
+                    <p>
+                      We are excited to be a part of your educational journey. Our goal is to provide quality education
+                      to students in the comfort of their own homes. We believe in nurturing students' potential through
+                      experienced teachers and personalized attention.
+                    </p>
+                    <p>
+                      Our vision is to equip each student with the knowledge and skills necessary for success. We are
+                      committed to your success.
+                    </p>
+                  </div>
+
+                  {/* Signature */}
+                  <div className="pt-4 border-t border-slate-200">
+                    <div className="space-y-1">
+                      <p className="text-base text-slate-600">Thank you,</p>
+                      <div className="space-y-1">
+                        <p className="text-xl font-semibold text-slate-900">Birendra Naral</p>
+                        <p className="text-sm text-primary font-medium">MD, HR Home Tuition</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+
+            {/* Quote decoration */}
+            <div className="absolute top-6 right-6 opacity-10">
+              <Quote className="h-16 w-16 text-primary" />
+            </div>
+          </Card>
         </div>
       </section>
 
