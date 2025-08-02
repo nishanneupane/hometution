@@ -98,21 +98,20 @@ export default function HomePage() {
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 {/* MD's Photo */}
                 <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
-                  <div className="relative">
-                    <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                      <Image
-                        src="/images/md.png"
-                        alt="Birendra Naral - MD, HR Home Tuition"
-                        width={224}
-                        height={224}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Decorative elements */}
-                    <div className="absolute -top-2 -right-2 w-12 h-12 bg-primary/20 rounded-full blur-xl" />
-                    <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500/10 rounded-full blur-2xl" />
+                  <div className="relative w-40 h-40 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl overflow-hidden border-4 border-white shadow-xl">
+                    <Image
+                      src="/images/md.jpeg"
+                      alt="Birendra Naral - MD, HR Home Tuition"
+                      fill
+                      className="object-cover"
+                    />
+
+                    {/* Soft glow effects */}
+                    <div className="absolute -top-3 -right-3 w-10 h-10 bg-primary/30 rounded-full blur-md z-0" />
+                    <div className="absolute -bottom-5 -left-5 w-14 h-14 bg-blue-400/20 rounded-full blur-lg z-0" />
                   </div>
                 </div>
+
 
                 {/* Welcome Message */}
                 <div className="order-1 lg:order-2 space-y-6 text-center lg:text-left">
