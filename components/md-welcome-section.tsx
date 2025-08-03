@@ -38,7 +38,7 @@ export function MDWelcomeSection() {
             ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          <CardContent className="p-6 space-y-6 text-center flex items-center">
+          <CardContent className="p-6 space-y-6 text-center flex items-center flex-col md:flex-row">
             {/* Image */}
             <div className="w-32 h-32 mx-auto relative">
               <Image

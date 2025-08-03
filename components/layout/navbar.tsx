@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { GraduationCap, Menu, Phone, Mail, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -12,12 +12,9 @@ import Image from "next/image"
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
-  // { name: "For Students", href: "/student" },
-  // { name: "For Teachers", href: "/teacher" },
-  // { name: "Contact", href: "/contact" },
-  { name: "For Students", href: "#" },
-  { name: "For Teachers", href: "#" },
-  { name: "Contact", href: "#" },
+  { name: "For Students", href: "/student" },
+  { name: "For Teachers", href: "/teacher" },
+  { name: "Contact", href: "/contact" },
 ]
 
 export function Navbar() {
@@ -27,8 +24,8 @@ export function Navbar() {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground py-2 text-sm">
-        <div className="container flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div className="bg-primary text-primary-foreground py-0 md:py-2 text-sm">
+        <div className="container hidden md:flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
@@ -36,7 +33,7 @@ export function Navbar() {
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>+977 980-2060275</span>
+              <span>+977 9767482282</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
@@ -69,7 +66,7 @@ export function Navbar() {
               />
               <div>
                 <span className="text-xl font-bold text-foreground">HR Home Tuition</span>
-                <p className="text-xs text-muted-foreground">हाम्रो पनि राम्रो पनि</p>
+                <p className="text-xs text-muted-foreground">हाम्रो पनि, राम्रो पनि</p>
               </div>
             </Link>
 
@@ -112,6 +109,9 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
+                <SheetHeader>
+                  <SheetTitle></SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col space-y-6 mt-6">
                   {navigation.map((item) => (
                     <Link

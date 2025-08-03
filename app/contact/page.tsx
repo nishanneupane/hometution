@@ -63,7 +63,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-2">Mon-Fri 9AM-6PM</p>
-                <p className="font-semibold">+977 980-2060275</p>
+                <p className="font-semibold">+977 9767482282</p>
               </CardContent>
             </Card>
 
@@ -89,7 +89,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-2">Our main office</p>
-                <p className="font-semibold">Kathmandu, Nepal</p>
+                <p className="font-semibold">Dilli bazar,Kathmandu, Nepal</p>
               </CardContent>
             </Card>
 
@@ -140,7 +140,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className="text-sm font-medium mb-2 block">Phone Number</label>
-                  <Input type="tel" placeholder="+977 980-2060275" />
+                  <Input type="tel" placeholder="+977 9767482282" />
                 </div>
 
                 <div>
@@ -216,7 +216,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Support Hotline</p>
-                      <p className="text-sm text-muted-foreground">+977 980-2060275</p>
+                      <p className="text-sm text-muted-foreground">+977 9767482282</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -252,7 +252,7 @@ export default function ContactPage() {
               <div className="text-center">
                 <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
                 <p className="text-lg font-semibold">Interactive Map</p>
-                <p className="text-muted-foreground">Kathmandu, Nepal</p>
+                <p className="text-muted-foreground">Dilli bazar,Kathmandu, Nepal</p>
               </div>
             </div>
           </div>

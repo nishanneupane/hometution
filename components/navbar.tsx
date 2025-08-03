@@ -1,15 +1,25 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { GraduationCap, Users, Briefcase, Settings } from "lucide-react"
+import Image from "next/image"
 
 export function Navbar() {
   return (
     <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold text-foreground">HR Home Tuition</span>
+          <Link href="/" className="flex items-center space-x-3">
+            <Image
+              src="/images/hrlogo.png"
+              alt="HR Home Tuition Logo"
+              width={60}
+              height={60}
+              className="rounded-xl"
+            />
+            <div>
+              <span className="text-xl font-bold text-foreground">HR Home Tuition</span>
+              <p className="text-xs text-muted-foreground">हाम्रो पनि, राम्रो पनि</p>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">

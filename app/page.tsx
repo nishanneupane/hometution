@@ -127,7 +127,7 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">500+</div>
+                    <div className="text-2xl font-bold text-gray-900">1500+</div>
                     <div className="text-sm text-gray-600">Students</div>
                   </div>
                   <div className="text-center">
@@ -135,7 +135,7 @@ export default function HomePage() {
                     <div className="text-sm text-gray-600">Tutors</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">10+</div>
+                    <div className="text-2xl font-bold text-gray-900">200+</div>
                     <div className="text-sm text-gray-600">Schools</div>
                   </div>
                 </div>

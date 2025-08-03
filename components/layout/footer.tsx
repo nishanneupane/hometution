@@ -22,12 +22,11 @@ export function Footer() {
               />
               <div>
                 <span className="text-xl font-bold text-background">HR Home Tuition</span>
-                <p className="text-xs text-background">हाम्रो पनि राम्रो पनि</p>
+                <p className="text-xs text-background">हाम्रो पनि, राम्रो पनि</p>
               </div>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Nepal's most trusted home tutoring platform. Connecting students with qualified tutors across Kathmandu
-              Valley for personalized learning experiences.
+              Nepal's most trusted home tutoring platform. Connecting students with qualified tutors across Nepal for personalized learning experiences.
             </p>
             <div className="flex space-x-3">
               <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800">
@@ -105,11 +104,11 @@ export function Footer() {
             <div className="space-y-3 text-sm">
               <div className="flex items-start space-x-3">
                 <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-slate-400">Kathmandu, Nepal</span>
+                <span className="text-slate-400">Dilli bazar,Kathmandu, Nepal</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                <span className="text-slate-400">+977 980-2060275</span>
+                <span className="text-slate-400">+977 9767482282</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
