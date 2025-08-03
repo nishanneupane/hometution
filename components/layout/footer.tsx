@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { GraduationCap, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
+import Image from "next/image"
 
 export function Footer() {
   return (
@@ -11,15 +12,19 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-primary rounded-xl">
-                <GraduationCap className="h-6 w-6 text-white" />
-              </div>
+            <Link href="/" className="flex items-center space-x-3">
+              <Image
+                src="/images/hrlogo.png"
+                alt="HR Home Tuition Logo"
+                width={60}
+                height={60}
+                className="rounded-xl"
+              />
               <div>
-                <span className="text-xl font-bold">HR Home Tuition</span>
-                <p className="text-xs text-slate-400">Quality Education at Home</p>
+                <span className="text-xl font-bold text-background">HR Home Tuition</span>
+                <p className="text-xs text-background">हाम्रो पनि राम्रो पनि</p>
               </div>
-            </div>
+            </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
               Nepal's most trusted home tutoring platform. Connecting students with qualified tutors across Kathmandu
               Valley for personalized learning experiences.
@@ -104,7 +109,7 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                <span className="text-slate-400">+977 980-1234567</span>
+                <span className="text-slate-400">+977 980-2060275</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />

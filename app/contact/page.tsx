@@ -63,7 +63,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-2">Mon-Fri 9AM-6PM</p>
-                <p className="font-semibold">+977 980-1234567</p>
+                <p className="font-semibold">+977 980-2060275</p>
               </CardContent>
             </Card>
 
@@ -140,7 +140,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className="text-sm font-medium mb-2 block">Phone Number</label>
-                  <Input type="tel" placeholder="+977 980-1234567" />
+                  <Input type="tel" placeholder="+977 980-2060275" />
                 </div>
 
                 <div>
@@ -216,7 +216,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Support Hotline</p>
-                      <p className="text-sm text-muted-foreground">+977 980-1234567</p>
+                      <p className="text-sm text-muted-foreground">+977 980-2060275</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">

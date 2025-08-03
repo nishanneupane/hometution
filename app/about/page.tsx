@@ -16,15 +16,13 @@ export default function AboutPage() {
         <div className="container">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge variant="secondary" className="w-fit mx-auto">
-              About HR Home Tuition
+              About Us
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Transforming Education Through
-              <span className="text-primary"> Personalized Learning</span>
+              Bringing Education Home: <span className="text-primary">Learning with Love</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              We're on a mission to make quality education accessible to every student in Nepal through our network of
-              verified, experienced tutors who bring learning directly to your home.
+              We&apos;re a family of educators dedicated to making quality education reachable for every student in Nepal. Our trusted tutors bring learning to your doorstep with care and connection.
             </p>
           </div>
         </div>
@@ -40,24 +38,22 @@ export default function AboutPage() {
                   Our Story
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Founded on the Belief That Every Student Deserves Quality Education
+                  A Dream to Light Up Every Child&apos;s Future
                 </h2>
               </div>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                HR Home Tuition was founded in 2020 with a simple yet powerful vision: to bridge the gap between
-                students seeking quality education and experienced tutors looking to make a difference.
+                HR Home Tuition began in 2020 in a small room in Kathmandu with a big heart. Our dream was simple: every Nepali child deserves a chance to learn and grow with the best teachers. What started as a small effort has grown into a trusted community, connecting thousands of students and teachers across Nepal.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                What started as a small initiative in Kathmandu has now grown into Nepal's most trusted home tutoring
-                platform, connecting thousands of students with qualified tutors across the country.
+                We&apos;re here because of the trust and love of families like yours. For us, education isn&apos;t just about books—it&apos;s about building hope, confidence, and a brighter future, one student at a time.
               </p>
               <div className="grid grid-cols-2 gap-6 pt-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">500+</div>
-                  <div className="text-sm text-muted-foreground">Verified Tutors</div>
+                  <div className="text-3xl font-bold text-primary">3,000+</div>
+                  <div className="text-sm text-muted-foreground">Trusted Tutors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">1000+</div>
+                  <div className="text-3xl font-bold text-primary">5,000+</div>
                   <div className="text-sm text-muted-foreground">Happy Students</div>
                 </div>
               </div>
@@ -65,7 +61,7 @@ export default function AboutPage() {
             <div className="relative">
               <img
                 src="/images/hero2.jpg"
-                alt="Students learning"
+                alt="Nepali students learning"
                 className="w-full h-auto rounded-2xl shadow-xl"
               />
             </div>
@@ -80,9 +76,9 @@ export default function AboutPage() {
             <Badge variant="outline" className="mb-4">
               Our Foundation
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Mission, Vision & Values</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Mission, Vision & Values</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              These core principles guide everything we do and shape our commitment to educational excellence.
+              These are the heartbeats of our work, guiding us to create a better learning experience for every student.
             </p>
           </div>
 
@@ -96,8 +92,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-relaxed">
-                  To democratize quality education by connecting students with the best tutors, making personalized
-                  learning accessible, affordable, and effective for everyone.
+                  To make quality education a reality for every Nepali student by connecting them with caring, skilled tutors who teach from the heart.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -111,8 +106,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-relaxed">
-                  To become Nepal's leading educational platform where every student has access to world-class tutoring
-                  and every educator can reach their full potential.
+                  To create a Nepal where every child has access to personalized learning, and every teacher feels valued and empowered.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -126,8 +120,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-relaxed">
-                  Excellence, integrity, innovation, and inclusivity. We believe in creating meaningful connections that
-                  foster growth, learning, and success for all.
+                  Care, trust, growth, and togetherness. We believe in building a community where learning feels like family.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -142,9 +135,9 @@ export default function AboutPage() {
             <Badge variant="outline" className="mb-4">
               Why Choose Us
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Makes Us Different</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Makes Us Special</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We go beyond just connecting tutors and students. We create an ecosystem of learning excellence.
+              We&apos;re more than just a tutoring service—we&apos;re a family that cares about your child&apos;s dreams and success.
             </p>
           </div>
 
@@ -153,9 +146,9 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
                 <Shield className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Rigorous Verification</h3>
+              <h3 className="text-lg font-semibold">Trusted Tutors</h3>
               <p className="text-muted-foreground text-sm">
-                Every tutor undergoes thorough background checks and qualification verification.
+                Every tutor is carefully checked to ensure they&apos;re qualified and trustworthy, like a member of your own family.
               </p>
             </div>
 
@@ -163,9 +156,9 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
                 <Users className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Perfect Matching</h3>
+              <h3 className="text-lg font-semibold">Perfect Fit</h3>
               <p className="text-muted-foreground text-sm">
-                Our algorithm ensures the best tutor-student matches based on learning needs.
+                We match tutors and students based on what your child needs, making learning feel personal and meaningful.
               </p>
             </div>
 
@@ -173,9 +166,9 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
                 <BookOpen className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Continuous Support</h3>
+              <h3 className="text-lg font-semibold">Always There for You</h3>
               <p className="text-muted-foreground text-sm">
-                Ongoing support for both students and tutors throughout the learning journey.
+                We support students and tutors every step of the way, like a friend who&apos;s always by your side.
               </p>
             </div>
 
@@ -183,9 +176,9 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
                 <Star className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Quality Assurance</h3>
+              <h3 className="text-lg font-semibold">Excellence in Learning</h3>
               <p className="text-muted-foreground text-sm">
-                Regular feedback and quality monitoring to ensure the best learning outcomes.
+                We listen to feedback and ensure every lesson helps your child shine brighter.
               </p>
             </div>
           </div>
@@ -199,51 +192,51 @@ export default function AboutPage() {
             <div className="relative">
               <img
                 src="/images/hero3.jpg"
-                alt="Quality education commitment"
+                alt="Students and tutors together"
                 className="w-full h-auto rounded-2xl shadow-xl"
               />
             </div>
             <div className="space-y-6">
               <div>
                 <Badge variant="outline" className="mb-4">
-                  Our Commitment
+                  Our Promise
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">Committed to Educational Excellence</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">A Commitment to Your Child&apos;s Success</h2>
               </div>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold mb-1">Quality First</h4>
+                    <h4 className="font-semibold mb-1">Quality You Can Trust</h4>
                     <p className="text-muted-foreground">
-                      We never compromise on the quality of education and tutoring services we provide.
+                      We pour our hearts into ensuring every lesson is meaningful and effective.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold mb-1">Student Success</h4>
+                    <h4 className="font-semibold mb-1">Your Child First</h4>
                     <p className="text-muted-foreground">
-                      Every decision we make is centered around improving student learning outcomes.
+                      Every step we take is to help your child grow with confidence and joy.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold mb-1">Continuous Innovation</h4>
+                    <h4 className="font-semibold mb-1">Always Improving</h4>
                     <p className="text-muted-foreground">
-                      We constantly evolve our platform to meet the changing needs of modern education.
+                      We keep finding better ways to make learning exciting and relevant for today&apos;s world.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold mb-1">Community Impact</h4>
+                    <h4 className="font-semibold mb-1">Building Our Community</h4>
                     <p className="text-muted-foreground">
-                      We're building a stronger educational community across Nepal, one student at a time.
+                      Together, we&apos;re creating a stronger, more educated Nepal, one child at a time.
                     </p>
                   </div>
                 </div>
@@ -257,15 +250,14 @@ export default function AboutPage() {
       <section className="section-padding gradient-bg text-white">
         <div className="container text-center">
           <div className="max-w-3xl mx-auto space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold">Join Our Educational Community</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Join Our Learning Family</h2>
             <p className="text-xl opacity-90">
-              Whether you're a student seeking quality education or a tutor looking to make a difference, we're here to
-              support your journey.
+              Whether you&apos;re a student dreaming big or a teacher ready to inspire, we&apos;re here to walk this journey with you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/student">
                 <Button size="lg" variant="secondary" className="w-full sm:w-auto h-12 px-8">
-                  Find a Tutor
+                  Find Your Tutor
                 </Button>
               </Link>
               <Link href="/teacher">
