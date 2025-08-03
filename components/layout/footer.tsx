@@ -60,17 +60,17 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/student" className="text-slate-400 hover:text-white transition-colors">
+                <Link href="#" className="text-slate-400 hover:text-white transition-colors">
                   For Students
                 </Link>
               </li>
               <li>
-                <Link href="/teacher" className="text-slate-400 hover:text-white transition-colors">
+                <Link href="#" className="text-slate-400 hover:text-white transition-colors">
                   For Teachers
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-slate-400 hover:text-white transition-colors">
+                <Link href="#" className="text-slate-400 hover:text-white transition-colors">
                   Contact Us
                 </Link>
               </li>
