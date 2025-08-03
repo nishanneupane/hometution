@@ -73,9 +73,8 @@ async function TestimonialsSection() {
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-4 w-4 ${
-                          i < testimonial.rating ? "text-yellow-400 fill-current" : "text-gray-300"
-                        }`}
+                        className={`h-4 w-4 ${i < testimonial.rating ? "text-yellow-400 fill-current" : "text-gray-300"
+                          }`}
                       />
                     ))}
                   </div>
@@ -104,7 +103,7 @@ export default function HomePage() {
               <div className="space-y-8">
                 <div className="space-y-6">
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800 px-4 py-2">
-                    Quality Home Tuition
+                    #1 Quality Home Tuition Platform in Nepal
                   </Badge>
                   <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
                     Find the Perfect <span className="text-blue-600">Tutor</span> for Your Child
@@ -132,12 +131,12 @@ export default function HomePage() {
                     <div className="text-sm text-gray-600">Students</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">200+</div>
+                    <div className="text-2xl font-bold text-gray-900">3000+</div>
                     <div className="text-sm text-gray-600">Tutors</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">50+</div>
-                    <div className="text-sm text-gray-600">Locations</div>
+                    <div className="text-2xl font-bold text-gray-900">10+</div>
+                    <div className="text-sm text-gray-600">Schools</div>
                   </div>
                 </div>
               </div>
@@ -162,10 +161,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* MD Welcome Section */}
       <MDWelcomeSection />
 
-      {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
