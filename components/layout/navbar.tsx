@@ -12,9 +12,12 @@ import Image from "next/image"
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
-  { name: "For Students", href: "/student" },
-  { name: "For Teachers", href: "/teacher" },
-  { name: "Contact", href: "/contact" },
+  // { name: "For Students", href: "/student" },
+  // { name: "For Teachers", href: "/teacher" },
+  // { name: "Contact", href: "/contact" },
+  { name: "For Students", href: "#" },
+  { name: "For Teachers", href: "#" },
+  { name: "Contact", href: "#" },
 ]
 
 export function Navbar() {
@@ -88,12 +91,13 @@ export function Navbar() {
 
             {/* CTA Button */}
             <div className="hidden md:flex items-center space-x-4">
-              {/* <Link href="/admin">
-                <Button variant="outline" size="sm">
-                  Admin Panel
+
+              {/* <Link href="/student">
+                <Button size="sm" className="bg-primary hover:bg-primary/90">
+                  Get Started
                 </Button>
               </Link> */}
-              <Link href="/student">
+              <Link href="#">
                 <Button size="sm" className="bg-primary hover:bg-primary/90">
                   Get Started
                 </Button>
