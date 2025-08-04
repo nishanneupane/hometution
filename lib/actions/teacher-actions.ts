@@ -88,7 +88,18 @@ export async function createTeacher(formData: FormData) {
 
     const validatedData = teacherRegistrationSchema.parse(data);
 
-    // Generate unique teacher code
+    const duplicateTeacher = await prisma.teacher.findFirst({
+      where: {
+        phoneOrWhatsapp: data.phoneOrWhatsapp,
+      },
+    });
+
+    if (duplicateTeacher) {
+      return {
+        success: false,
+        message: "Teacher Already created with this number",
+      };
+    }
     let teacherCode = generateTeacherCode();
     let existingTeacher = await prisma.teacher.findUnique({
       where: { teacherCode },
