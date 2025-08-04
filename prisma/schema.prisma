@@ -11,26 +11,31 @@ datasource db {
 }
 
 model Student {
-  id                   String   @id @default(cuid())
-  requestType          String   @default("student") // "student" or "school"
-  name                 String
-  schoolName           String
-  phoneOrWhatsapp      String
-  province             String
-  district             String
-  municipality         String
-  city                 String
-  subject              String[] // Array of subjects
-  preferredTimeFrom    String
-  preferredTimeTo      String
+  id                    String   @id @default(cuid())
+  requestType           String   @default("student") // "student" or "school"
+  name                  String
+  schoolName            String
+  phoneOrWhatsapp       String
+  province              String
+  district              String
+  municipality          String
+  city                  String
+  ward                  String
+  class                 String
+  board                 String
+  gender                String
+  subject               String[] // Array of subjects
+  preferredTimeFrom     String
+  preferredTimeTo       String
   parentCtzOrStudentCtz String? // UploadThing URL
-  extraInfo            String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-  
+  extraInfo             String?
+  expectedFees          String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
   // Relations
-  tuitionRequests      TuitionRequest[]
-  
+  tuitionRequests TuitionRequest[]
+
   @@map("students")
 }
 
@@ -42,6 +47,7 @@ model Teacher {
   district        String
   municipality    String
   city            String
+  ward            String?
   gender          String
   citizenship     String? // UploadThing URL
   cv              String? // UploadThing URL
@@ -49,10 +55,10 @@ model Teacher {
   isApproved      Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  
+
   // Relations
-  applications    Application[]
-  
+  applications Application[]
+
   @@map("teachers")
 }
 
@@ -62,11 +68,11 @@ model TuitionRequest {
   status    String   @default("active") // active, filled, cancelled
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // Relations
   student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
   applications Application[]
-  
+
   @@map("tuition_requests")
 }
 
@@ -77,11 +83,11 @@ model Application {
   status           String   @default("pending") // pending, approved, rejected
   appliedAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  
+
   // Relations
-  teacher         Teacher        @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  tuitionRequest  TuitionRequest @relation(fields: [tuitionRequestId], references: [id], onDelete: Cascade)
-  
+  teacher        Teacher        @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  tuitionRequest TuitionRequest @relation(fields: [tuitionRequestId], references: [id], onDelete: Cascade)
+
   @@unique([teacherId, tuitionRequestId])
   @@map("applications")
 }
@@ -93,20 +99,20 @@ model Admin {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("admins")
 }
 
 model Testimonial {
   id        String   @id @default(cuid())
   name      String
-  role      String   // student, parent
+  role      String // student, parent
   message   String
   rating    Int      @default(5)
   location  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("testimonials")
 }
 
@@ -114,11 +120,11 @@ model Notification {
   id        String   @id @default(cuid())
   title     String
   message   String
-  type      String   // student_registration, teacher_application, tuition_request
+  type      String // student_registration, teacher_application, tuition_request
   relatedId String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("notifications")
 }

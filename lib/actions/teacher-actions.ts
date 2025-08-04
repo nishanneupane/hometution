@@ -1,15 +1,15 @@
-"use server"
+"use server";
 
-import { prisma } from "@/lib/prisma"
-import { teacherRegistrationSchema } from "@/lib/validations"
-import { revalidatePath } from "next/cache"
+import { prisma } from "@/lib/prisma";
+import { teacherRegistrationSchema } from "@/lib/validations";
+import { revalidatePath } from "next/cache";
 
 function generateTeacherCode(): string {
-  const prefix = "HRT"
+  const prefix = "HRT";
   const randomNum = Math.floor(Math.random() * 100000)
     .toString()
-    .padStart(5, "0")
-  return `${prefix}${randomNum}`
+    .padStart(5, "0");
+  return `${prefix}${randomNum}`;
 }
 
 export async function createTeacherRequest(formData: FormData) {
@@ -21,24 +21,25 @@ export async function createTeacherRequest(formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
       cv: formData.get("cv") as string,
-    }
+    };
 
-    const validatedData = teacherRegistrationSchema.parse(data)
+    const validatedData = teacherRegistrationSchema.parse(data);
 
     // Generate unique teacher code
-    let teacherCode = generateTeacherCode()
+    let teacherCode = generateTeacherCode();
     let existingTeacher = await prisma.teacher.findUnique({
       where: { teacherCode },
-    })
+    });
 
     while (existingTeacher) {
-      teacherCode = generateTeacherCode()
+      teacherCode = generateTeacherCode();
       existingTeacher = await prisma.teacher.findUnique({
         where: { teacherCode },
-      })
+      });
     }
 
     const teacher = await prisma.teacher.create({
@@ -47,7 +48,7 @@ export async function createTeacherRequest(formData: FormData) {
         teacherCode,
         isApproved: false,
       },
-    })
+    });
 
     // Create notification
     await prisma.notification.create({
@@ -56,17 +57,17 @@ export async function createTeacherRequest(formData: FormData) {
         message: `${validatedData.name} has applied to become a teacher`,
         type: "teacher_registration",
       },
-    })
+    });
 
-    revalidatePath("/admin")
+    revalidatePath("/admin");
     return {
       success: true,
       message: "Registration successful",
       teacherCode: teacher.teacherCode,
-    }
+    };
   } catch (error) {
-    console.error("Error creating teacher request:", error)
-    return { success: false, message: "Registration failed" }
+    console.error("Error creating teacher request:", error);
+    return { success: false, message: "Registration failed" };
   }
 }
 
@@ -79,24 +80,25 @@ export async function createTeacher(formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
       cv: formData.get("cv") as string,
-    }
+    };
 
-    const validatedData = teacherRegistrationSchema.parse(data)
+    const validatedData = teacherRegistrationSchema.parse(data);
 
     // Generate unique teacher code
-    let teacherCode = generateTeacherCode()
+    let teacherCode = generateTeacherCode();
     let existingTeacher = await prisma.teacher.findUnique({
       where: { teacherCode },
-    })
+    });
 
     while (existingTeacher) {
-      teacherCode = generateTeacherCode()
+      teacherCode = generateTeacherCode();
       existingTeacher = await prisma.teacher.findUnique({
         where: { teacherCode },
-      })
+      });
     }
 
     await prisma.teacher.create({
@@ -105,13 +107,13 @@ export async function createTeacher(formData: FormData) {
         teacherCode,
         isApproved: false,
       },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Teacher created successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Teacher created successfully" };
   } catch (error) {
-    console.error("Error creating teacher:", error)
-    return { success: false, message: "Failed to create teacher" }
+    console.error("Error creating teacher:", error);
+    return { success: false, message: "Failed to create teacher" };
   }
 }
 
@@ -124,23 +126,24 @@ export async function updateTeacher(id: string, formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
       cv: formData.get("cv") as string,
-    }
+    };
 
-    const validatedData = teacherRegistrationSchema.parse(data)
+    const validatedData = teacherRegistrationSchema.parse(data);
 
     await prisma.teacher.update({
       where: { id },
       data: validatedData,
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Teacher updated successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Teacher updated successfully" };
   } catch (error) {
-    console.error("Error updating teacher:", error)
-    return { success: false, message: "Failed to update teacher" }
+    console.error("Error updating teacher:", error);
+    return { success: false, message: "Failed to update teacher" };
   }
 }
 
@@ -149,13 +152,13 @@ export async function approveTeacher(id: string) {
     await prisma.teacher.update({
       where: { id },
       data: { isApproved: true },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Teacher approved successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Teacher approved successfully" };
   } catch (error) {
-    console.error("Error approving teacher:", error)
-    return { success: false, message: "Failed to approve teacher" }
+    console.error("Error approving teacher:", error);
+    return { success: false, message: "Failed to approve teacher" };
   }
 }
 
@@ -164,13 +167,13 @@ export async function rejectTeacher(id: string) {
     await prisma.teacher.update({
       where: { id },
       data: { isApproved: false },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Teacher rejected successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Teacher rejected successfully" };
   } catch (error) {
-    console.error("Error rejecting teacher:", error)
-    return { success: false, message: "Failed to reject teacher" }
+    console.error("Error rejecting teacher:", error);
+    return { success: false, message: "Failed to reject teacher" };
   }
 }
 
@@ -179,17 +182,17 @@ export async function deleteTeacher(id: string) {
     // Delete related applications first
     await prisma.application.deleteMany({
       where: { teacherId: id },
-    })
+    });
 
     await prisma.teacher.delete({
       where: { id },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Teacher deleted successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Teacher deleted successfully" };
   } catch (error) {
-    console.error("Error deleting teacher:", error)
-    return { success: false, message: "Failed to delete teacher" }
+    console.error("Error deleting teacher:", error);
+    return { success: false, message: "Failed to delete teacher" };
   }
 }
 
@@ -200,7 +203,9 @@ export async function getTeachers(searchTerm?: string) {
         ? {
             OR: [
               { name: { contains: searchTerm, mode: "insensitive" } },
-              { phoneOrWhatsapp: { contains: searchTerm, mode: "insensitive" } },
+              {
+                phoneOrWhatsapp: { contains: searchTerm, mode: "insensitive" },
+              },
               { teacherCode: { contains: searchTerm, mode: "insensitive" } },
             ],
           }
@@ -217,11 +222,11 @@ export async function getTeachers(searchTerm?: string) {
         },
       },
       orderBy: { createdAt: "desc" },
-    })
+    });
 
-    return teachers
+    return teachers;
   } catch (error) {
-    console.error("Error fetching teachers:", error)
-    return []
+    console.error("Error fetching teachers:", error);
+    return [];
   }
 }

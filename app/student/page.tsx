@@ -74,6 +74,11 @@ export default function StudentRegistrationPage() {
       preferredTimeTo: "",
       parentCtzOrStudentCtz: "",
       extraInfo: "",
+      ward: "",
+      board: "",
+      class: "",
+      expectedFees: "",
+      gender: undefined
     },
   })
 
@@ -91,7 +96,6 @@ export default function StudentRegistrationPage() {
         }
       })
 
-      // Add selected subjects to form data
       selectedSubjects.forEach((subject) => formData.append("subject", subject))
 
       const result = await createStudentRequest(formData)
@@ -254,19 +258,99 @@ export default function StudentRegistrationPage() {
                     <LocationSelector control={form.control} name="location" />
                   </div>
 
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City/Area</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your city or specific area" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <FormField
+                      control={form.control}
+                      name="ward"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Ward</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="Enter your Ward" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City/Area</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your city or specific area" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="board"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Board</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Eg : NEB , ALevels etc" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <FormField
+                      control={form.control}
+                      name="class"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Class</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your class" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="expectedFees"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Expected Fees</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your Expected Fees per Month" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gender</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select gender" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="male">Male</SelectItem>
+                              <SelectItem value="female">Female</SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   {/* Subjects */}
                   <div>

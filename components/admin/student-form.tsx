@@ -14,19 +14,26 @@ import { studentRegistrationSchema, type StudentRegistrationData } from "@/lib/v
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { createStudent, updateStudent } from "@/lib/actions/student-actions"
 import { toast } from "sonner"
+import { School, User } from "lucide-react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+
 
 const subjects = [
   "Mathematics",
-  "Science",
   "English",
   "Nepali",
+  "Science",
   "Social Studies",
-  "Computer Science",
   "Physics",
   "Chemistry",
   "Biology",
-  "Accountancy",
+  "Computer Science",
   "Economics",
+  "Accountancy",
+  "Business Studies",
+  "History",
+  "Geography",
 ]
 
 interface StudentFormProps {
@@ -54,8 +61,18 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
       preferredTimeTo: student?.preferredTimeTo || "",
       parentCtzOrStudentCtz: student?.parentCtzOrStudentCtz || "",
       extraInfo: student?.extraInfo || "",
+      board: student?.board || "",
+      class: student?.class || "",
+      ward: student?.ward || "",
+      expectedFees: student?.expectedFees || "",
+      requestType: student?.requestType || "student",
+      gender: student?.gender || undefined,
     },
   })
+
+
+  const requestType = form.watch("requestType")
+
 
   const onSubmit = async (data: StudentRegistrationData) => {
     setIsSubmitting(true)
@@ -95,15 +112,70 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">I'm requesting tuition as:</h3>
+              <FormField
+                control={form.control}
+                name="requestType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-3"
+                      >
+                        <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                          <RadioGroupItem value="student" id="student" />
+                          <div className="flex items-center space-x-3">
+                            <User className="h-5 w-5 text-primary" />
+                            <div>
+                              <label htmlFor="student" className="text-sm font-medium cursor-pointer">
+                                Individual Student
+                              </label>
+                              <p className="text-xs text-muted-foreground">
+                                I'm a student or parent looking for a tutor
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                          <RadioGroupItem value="school" id="school" />
+                          <div className="flex items-center space-x-3">
+                            <School className="h-5 w-5 text-primary" />
+                            <div>
+                              <label htmlFor="school" className="text-sm font-medium cursor-pointer">
+                                School/Institution
+                              </label>
+                              <p className="text-xs text-muted-foreground">
+                                I represent a school looking for teachers
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>{requestType === "school" ? "Contact Person Name" : "Student Name"}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter full name" {...field} />
+                      <Input
+                        placeholder={
+                          requestType === "school" ? "Enter contact person name" : "Enter student name"
+                        }
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,9 +187,12 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 name="schoolName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>School Name</FormLabel>
+                    <FormLabel>{requestType === "school" ? "School/Institution Name" : "School Name"}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter school name" {...field} />
+                      <Input
+                        placeholder={requestType === "school" ? "Enter institution name" : "Enter school name"}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,19 +216,98 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
 
             <LocationSelector control={form.control} name="location" />
 
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter city" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+              <FormField
+                control={form.control}
+                name="ward"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ward</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="Enter your Ward" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City/Area</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your city or specific area" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="board"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Board</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Eg : NEB , ALevels etc" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <FormField
+                control={form.control}
+                name="class"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Class</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your class" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="expectedFees"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Expected Fees</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your Expected Fees per Month" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gender</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}

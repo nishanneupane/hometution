@@ -20,15 +20,16 @@ import {
   MessageSquare,
   Bell,
 } from "lucide-react"
+import Image from "next/image"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Students", href: "/admin/students", icon: Users, badge: "12" },
-  { name: "Teachers", href: "/admin/teachers", icon: GraduationCap, badge: "5" },
+  { name: "Students", href: "/admin/students", icon: Users },
+  { name: "Teachers", href: "/admin/teachers", icon: GraduationCap },
   { name: "Tuition Requests", href: "/admin/requests", icon: FileText },
   { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Notifications", href: "/admin/notifications", icon: Bell, badge: "3" },
+  { name: "Notifications", href: "/admin/notifications", icon: Bell },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
@@ -65,13 +66,19 @@ export function AdminSidebar() {
         {/* Logo */}
         <div className="flex h-16 items-center justify-center border-b border-slate-200 px-6">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-slate-900 rounded-xl">
-              <Shield className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-slate-900">HR Tuition</h1>
-              <p className="text-xs text-slate-500">Admin Panel</p>
-            </div>
+            <Link href="/" className="flex items-center space-x-3">
+              <Image
+                src="/images/hrlogo.png"
+                alt="HR Home Tuition Logo"
+                width={60}
+                height={60}
+                className="rounded-xl"
+              />
+              <div>
+                <span className="text-xl font-bold text-foreground">HR Home Tuition</span>
+                <p className="text-xs text-foreground">Admin Panel</p>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -96,14 +103,7 @@ export function AdminSidebar() {
                     <item.icon className="h-5 w-5" />
                     <span>{item.name}</span>
                   </div>
-                  {item.badge && (
-                    <Badge
-                      variant={isActive ? "secondary" : "outline"}
-                      className={cn("text-xs px-2 py-0.5", isActive ? "bg-white/20 text-white border-white/20" : "")}
-                    >
-                      {item.badge}
-                    </Badge>
-                  )}
+
                 </Link>
               )
             })}

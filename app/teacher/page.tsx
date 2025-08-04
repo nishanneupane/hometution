@@ -30,6 +30,7 @@ export default function TeacherRegistrationPage() {
       gender: undefined,
       citizenship: "",
       cv: "",
+      ward: "",
     },
   })
 
@@ -149,19 +150,34 @@ export default function TeacherRegistrationPage() {
                     <LocationSelector control={form.control} name="location" />
                   </div>
 
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City/Area</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your city or specific area" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City/Area</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your city or specific area" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="ward"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Ward No.</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="Enter your ward" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   {/* Document Uploads */}
                   <div>

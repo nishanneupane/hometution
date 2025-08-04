@@ -13,11 +13,18 @@ export const studentRegistrationSchema = z.object({
   district: z.string().min(1, "Please select a district"),
   municipality: z.string().min(1, "Please select a municipality"),
   city: z.string().min(1, "City is required"),
+  ward: z.string().min(1, "Ward is required"),
+  gender: z.enum(["male", "female", "other"], {
+    required_error: "Please select a gender",
+  }),
   subject: z.array(z.string()).min(1, "Please select at least one subject"),
+  class: z.string().min(1, "Class is required"),
+  board: z.string().min(1, "Board is required"),
   preferredTimeFrom: z.string().min(1, "Please select start time"),
   preferredTimeTo: z.string().min(1, "Please select end time"),
   parentCtzOrStudentCtz: z.string().optional(),
   extraInfo: z.string().optional(),
+  expectedFees: z.string().optional(),
 });
 
 export const teacherRegistrationSchema = z.object({
@@ -29,6 +36,7 @@ export const teacherRegistrationSchema = z.object({
   district: z.string().min(1, "Please select a district"),
   municipality: z.string().min(1, "Please select a municipality"),
   city: z.string().min(1, "City is required"),
+  ward: z.string().min(1, "Ward is required"),
   gender: z.enum(["male", "female", "other"], {
     required_error: "Please select a gender",
   }),

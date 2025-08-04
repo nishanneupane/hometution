@@ -28,7 +28,7 @@ export function Navbar() {
               className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors"
             >
               <Users className="h-4 w-4" />
-              <span>For Students</span>
+              <span>For Students/Schools</span>
             </Link>
             <Link
               href="/teacher"

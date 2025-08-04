@@ -32,7 +32,9 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
   }
 
   const handleConfirmDelete = async () => {
-    if (!selectedStudent) return
+    if (!selectedStudent) {
+      return { success: false, message: "No student selected." }
+    }
     return await deleteStudent(selectedStudent.id)
   }
 

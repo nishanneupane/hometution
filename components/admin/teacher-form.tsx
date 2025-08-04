@@ -35,6 +35,7 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
       gender: teacher?.gender || undefined,
       citizenship: teacher?.citizenship || "",
       cv: teacher?.cv || "",
+      ward: teacher?.ward || "",
     },
   })
 
@@ -104,19 +105,34 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
 
             <LocationSelector control={form.control} name="location" />
 
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter city" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City/Area</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your city or specific area" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="ward"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ward No.</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="Enter your ward" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
