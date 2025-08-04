@@ -16,7 +16,8 @@ import { LocationSelector } from "@/components/location-selector"
 import { studentRegistrationSchema, type StudentRegistrationData } from "@/lib/validations"
 import { createStudentRequest } from "@/lib/actions/student-actions"
 import { toast } from "sonner"
-import { Upload, Clock, BookOpen, User, School } from "lucide-react"
+import { Upload, Clock, BookOpen, User, School, X } from "lucide-react"
+import { UploadButton } from "@/lib/uploadthing"
 
 const subjects = [
   "Mathematics",
@@ -115,13 +116,16 @@ export default function StudentRegistrationPage() {
   }
 
   const handleSubjectChange = (subject: string, checked: boolean) => {
+    let updatedSubjects: string[]
     if (checked) {
-      setSelectedSubjects([...selectedSubjects, subject])
+      updatedSubjects = [...selectedSubjects, subject]
     } else {
-      setSelectedSubjects(selectedSubjects.filter((s) => s !== subject))
+      updatedSubjects = selectedSubjects.filter((s) => s !== subject)
     }
-    form.setValue("subject", selectedSubjects)
+    setSelectedSubjects(updatedSubjects)
+    form.setValue("subject", updatedSubjects)
   }
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -437,28 +441,68 @@ export default function StudentRegistrationPage() {
                   </div>
 
                   {/* File Upload */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                      <Upload className="h-5 w-5" />
-                      <span>
-                        {requestType === "school"
-                          ? "Institution Document (Optional)"
-                          : "Citizenship Document (Optional)"}
-                      </span>
-                    </h3>
-                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-                      <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground mb-2">
-                        {requestType === "school"
-                          ? "Upload institution registration or authorization document"
-                          : "Upload parent's or student's citizenship"}
-                      </p>
-                      <p className="text-sm text-muted-foreground">PNG, JPG up to 5MB</p>
-                      <Button variant="outline" className="mt-4 bg-transparent" type="button">
-                        Choose File
-                      </Button>
-                    </div>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="parentCtzOrStudentCtz"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-lg font-semibold mb-4 flex items-center space-x-2">
+                          <Upload className="h-5 w-5" />
+                          <span>
+                            {requestType === "school"
+                              ? "Institution Document (Optional)"
+                              : "Citizenship Document (Optional)"}
+                          </span>
+                        </FormLabel>
+
+                        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center relative">
+                          <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                          <p className="text-muted-foreground mb-2">
+                            {requestType === "school"
+                              ? "Upload institution registration or authorization document"
+                              : "Upload parent's or student's citizenship"}
+                          </p>
+                          <p className="text-sm text-muted-foreground mb-4">PNG, JPG up to 5MB</p>
+
+                          {!field.value ? (
+                            <UploadButton
+                              endpoint="images"
+                              onClientUploadComplete={(res) => {
+                                if (res && res[0]) {
+                                  field.onChange(res[0].url)
+                                }
+                              }}
+                              onUploadError={(err) => {
+                                console.error(err)
+                              }}
+                              appearance={{
+                                button:
+                                  "bg-blue-600 border border-input text-background hover:bg-blue-700",
+                              }}
+                            />
+                          ) : (
+                            <div className="relative inline-block">
+                              <img
+                                src={field.value}
+                                alt="Uploaded file"
+                                className="mt-4 mx-auto max-h-40 rounded-md"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => field.onChange("")}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                                title="Remove image"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   {/* Extra Information */}
                   <FormField

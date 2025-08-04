@@ -62,7 +62,7 @@ export default function ContactPage() {
                 <CardTitle className="text-lg">Call Us</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-2">Mon-Fri 9AM-6PM</p>
+                <p className="text-muted-foreground mb-2">Sun-Fri 9AM-6PM</p>
                 <p className="font-semibold">+977 9767482282</p>
               </CardContent>
             </Card>
@@ -101,159 +101,69 @@ export default function ContactPage() {
                 <CardTitle className="text-lg">Office Hours</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-2">Monday - Friday</p>
+                <p className="text-muted-foreground mb-2">Sunday - Friday</p>
                 <p className="font-semibold">9:00 AM - 6:00 PM</p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Contact Form and Info */}
-          <div className="grid lg:grid-cols-2 gap-16">
-            {/* Contact Form */}
+
+          {/* Additional Info */}
+          <div className="space-y-8">
             <div>
-              <div className="mb-8">
-                <Badge variant="outline" className="mb-4">
-                  Send Message
-                </Badge>
-                <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
-                <p className="text-muted-foreground">
-                  Fill out the form below and we'll get back to you as soon as possible.
-                </p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">First Name</label>
-                    <Input placeholder="Your first name" required />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Last Name</label>
-                    <Input placeholder="Your last name" required />
-                  </div>
+              <Badge variant="outline" className="mb-4">
+                Quick Help
+              </Badge>
+              <h3 className="text-2xl font-bold mb-4">Frequently Asked Questions</h3>
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">How do I find a tutor?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Simply fill out our student registration form with your requirements, and we'll match you with
+                    qualified tutors in your area.
+                  </p>
                 </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Email</label>
-                  <Input type="email" placeholder="your.email@example.com" required />
+                <div className="p-4 bg-slate-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">How much do tutoring sessions cost?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Rates vary based on subject, grade level, and tutor experience. Most sessions range from Rs.
+                    500-2000 per hour.
+                  </p>
                 </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Phone Number</label>
-                  <Input type="tel" placeholder="+977 9767482282" />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Subject</label>
-                  <Input placeholder="What is this regarding?" required />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Message</label>
-                  <Textarea placeholder="Tell us more about how we can help you..." rows={5} required />
-                </div>
-
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
-              </form>
-            </div>
-
-            {/* Additional Info */}
-            <div className="space-y-8">
-              <div>
-                <Badge variant="outline" className="mb-4">
-                  Quick Help
-                </Badge>
-                <h3 className="text-2xl font-bold mb-4">Frequently Asked Questions</h3>
-                <div className="space-y-4">
-                  <div className="p-4 bg-slate-50 rounded-lg">
-                    <h4 className="font-semibold mb-2">How do I find a tutor?</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Simply fill out our student registration form with your requirements, and we'll match you with
-                      qualified tutors in your area.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-lg">
-                    <h4 className="font-semibold mb-2">How much do tutoring sessions cost?</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Rates vary based on subject, grade level, and tutor experience. Most sessions range from Rs.
-                      500-2000 per hour.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-lg">
-                    <h4 className="font-semibold mb-2">Can I change tutors if needed?</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Yes, we understand that finding the right fit is important. You can request a different tutor at
-                      any time.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold mb-4">Other Ways to Reach Us</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <MessageCircle className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Live Chat</p>
-                      <p className="text-sm text-muted-foreground">Available on our website</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <HeadphonesIcon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Support Hotline</p>
-                      <p className="text-sm text-muted-foreground">+977 9767482282</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Users className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Community Forum</p>
-                      <p className="text-sm text-muted-foreground">Join our online community</p>
-                    </div>
-                  </div>
+                <div className="p-4 bg-slate-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">Can I change tutors if needed?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Yes, we understand that finding the right fit is important. You can request a different tutor at
+                    any time.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </section>
 
       {/* Map Section */}
       <section className="section-padding bg-slate-50">
         <div className="container">
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4">
-              Find Us
-            </Badge>
+            <Badge variant="outline" className="mb-4">Find Us</Badge>
             <h2 className="text-3xl font-bold mb-4">Our Location</h2>
             <p className="text-muted-foreground">
               Visit our office in Kathmandu for in-person consultations and support.
             </p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="aspect-video bg-slate-200 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-                <p className="text-lg font-semibold">Interactive Map</p>
-                <p className="text-muted-foreground">Dilli bazar,Kathmandu, Nepal</p>
-              </div>
+            <div className="aspect-video">
+              <iframe
+                title="Dillibazaar Location"
+                className="w-full h-full border-0"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.990436053059!2d85.32106027608926!3d27.705540476188985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a801e1f493%3A0x3f1f68e37840b9c2!2sDilibazaar%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1691147642110!5m2!1sen!2snp"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>

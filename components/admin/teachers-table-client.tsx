@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { TeacherForm } from "@/components/admin/teacher-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteTeacher, approveTeacher, rejectTeacher } from "@/lib/actions/teacher-actions"
@@ -33,7 +33,9 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   }
 
   const handleConfirmDelete = async () => {
-    if (!selectedTeacher) return
+    if (!selectedTeacher) {
+      return { success: false, message: "No teacher selected." }
+    }
     return await deleteTeacher(selectedTeacher.id)
   }
 
@@ -78,7 +80,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={teacher.profileImage || "/placeholder.svg"} />
                     <AvatarFallback className="bg-primary text-white">
                       {teacher.name.charAt(0).toUpperCase()}
                     </AvatarFallback>

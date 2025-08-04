@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -38,6 +38,23 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
       ward: teacher?.ward || "",
     },
   })
+
+  useEffect(() => {
+    if (teacher && mode === "edit") {
+      form.reset({
+        name: teacher?.name || "",
+        phoneOrWhatsapp: teacher?.phoneOrWhatsapp || "",
+        province: teacher?.province || "",
+        district: teacher?.district || "",
+        municipality: teacher?.municipality || "",
+        city: teacher?.city || "",
+        gender: teacher?.gender || undefined,
+        citizenship: teacher?.citizenship || "",
+        cv: teacher?.cv || "",
+        ward: teacher?.ward || "",
+      })
+    }
+  }, [teacher, mode, form])
 
   const onSubmit = async (data: TeacherRegistrationData) => {
     setIsSubmitting(true)

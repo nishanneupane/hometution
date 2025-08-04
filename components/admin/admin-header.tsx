@@ -184,7 +184,7 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
 
       {/* Notifications Dialog */}
       <Dialog open={notificationDialogOpen} onOpenChange={setNotificationDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] max-h-[80vh]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>Notifications</span>
@@ -195,7 +195,7 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
             <DialogDescription>Stay updated with the latest platform activities</DialogDescription>
           </DialogHeader>
 
-          <ScrollArea className="max-h-96">
+          <ScrollArea className="max-h-80">
             {loading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, i) => (
@@ -214,11 +214,10 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
                   notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className={`p-4 rounded-lg border cursor-pointer transition-colors group ${
-                        !notification.isRead
-                          ? "bg-blue-50 border-blue-200 hover:bg-blue-100"
-                          : "bg-gray-50 border-gray-200 hover:bg-gray-100"
-                      }`}
+                      className={`p-4 rounded-lg border cursor-pointer transition-colors group ${!notification.isRead
+                        ? "bg-blue-50 border-blue-200 hover:bg-blue-100"
+                        : "bg-gray-50 border-gray-200 hover:bg-gray-100"
+                        }`}
                       onClick={() => handleNotificationClick(notification)}
                     >
                       <div className="flex items-start space-x-3">

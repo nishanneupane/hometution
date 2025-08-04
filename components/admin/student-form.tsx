@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -73,6 +73,31 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
 
   const requestType = form.watch("requestType")
 
+
+  useEffect(() => {
+    if (student && mode === "edit") {
+      form.reset({
+        name: student?.name || "",
+        schoolName: student?.schoolName || "",
+        phoneOrWhatsapp: student?.phoneOrWhatsapp || "",
+        province: student?.province || "",
+        district: student?.district || "",
+        municipality: student?.municipality || "",
+        city: student?.city || "",
+        subject: student?.subject || [],
+        preferredTimeFrom: student?.preferredTimeFrom || "",
+        preferredTimeTo: student?.preferredTimeTo || "",
+        parentCtzOrStudentCtz: student?.parentCtzOrStudentCtz || "",
+        extraInfo: student?.extraInfo || "",
+        board: student?.board || "",
+        class: student?.class || "",
+        ward: student?.ward || "",
+        expectedFees: student?.expectedFees || "",
+        requestType: student?.requestType || "student",
+        gender: student?.gender || undefined,
+      })
+    }
+  }, [student, mode, form])
 
   const onSubmit = async (data: StudentRegistrationData) => {
     setIsSubmitting(true)

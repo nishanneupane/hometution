@@ -205,6 +205,15 @@ async function CareersContent() {
             <div className="mt-6 pt-4 border-t border-gray-100">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">Posted {new Date(student.createdAt).toLocaleDateString()}</span>
+
+                <Badge
+                  variant={student.requestType === "school" ? "default" : "secondary"}
+                  className={
+                    student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                  }
+                >
+                  {student.requestType === "school" ? "School" : "Student"}
+                </Badge>
                 <Button size="sm" asChild>
                   <Link href="/teacher">Apply Now</Link>
                 </Button>

@@ -203,7 +203,7 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Monthly Growth */}
-      <Card className="border-0 shadow-sm">
+      {/* <Card className="border-0 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Calendar className="h-5 w-5 mr-2" />
@@ -230,7 +230,7 @@ export default async function AnalyticsPage() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   )
 }

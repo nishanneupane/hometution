@@ -61,7 +61,6 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={student.profileImage || "/placeholder.svg"} />
                     <AvatarFallback className="bg-primary text-white">
                       {student.name.charAt(0).toUpperCase()}
                     </AvatarFallback>
