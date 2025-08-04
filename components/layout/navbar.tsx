@@ -94,7 +94,7 @@ export function Navbar() {
                   Get Started
                 </Button>
               </Link> */}
-              <Link href="#">
+              <Link href="/student">
                 <Button size="sm" className="bg-primary hover:bg-primary/90">
                   Get Started
                 </Button>
