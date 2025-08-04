@@ -28,7 +28,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Story */}
       <section className="section-padding bg-white">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
