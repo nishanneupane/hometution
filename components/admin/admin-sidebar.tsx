@@ -13,12 +13,11 @@ import {
   GraduationCap,
   FileText,
   BarChart3,
-  Settings,
   Menu,
   X,
-  Shield,
   MessageSquare,
   Bell,
+  BookOpen,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -26,11 +25,11 @@ const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Students", href: "/admin/students", icon: Users },
   { name: "Teachers", href: "/admin/teachers", icon: GraduationCap },
+  { name: "Vacancies", href: "/admin/vacancies", icon: BookOpen },
   { name: "Tuition Requests", href: "/admin/requests", icon: FileText },
-  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Notifications", href: "/admin/notifications", icon: Bell },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export function AdminSidebar() {

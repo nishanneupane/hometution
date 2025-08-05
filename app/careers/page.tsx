@@ -137,94 +137,75 @@ async function CareersContent() {
         //   </CardContent>
         // </Card>
 
-        <Card key={student.id} className="w-full max-w-[400px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-lg p-2 mx-auto font-sans">
-          <CardContent className="flex flex-col h-full justify-between">
+        <Card key={student.id} className="w-full max-w-[400px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-md p-3 mx-auto font-sans">
+          <CardContent className="flex flex-col justify-between h-full space-y-2">
 
-            {/* Top: Logo + Slogan + Code */}
-            <div className="flex items-center justify-between gap-1 mb-4">
-              <img src="/images/hrhometuition.jpeg" alt="HR Home Tuition" className="h-16 w-auto rounded-md shadow-none" />
-              <p className="hidden md:flex flex-1 text-center text-xs font-semibold text-white bg-blue-600 rounded-full px-2 py-1 leading-tight tracking-wide shadow-md">
-                “Teacher who love teaching, teach children to love learning”
-              </p>
-              {/* <p className="text-sm font-bold text-blue-700 uppercase tracking-wider whitespace-nowrap select-none">
-                Code: {student.id}
-              </p> */}
+            <div className="flex items-center justify-between gap-2">
+              <img src="/images/hrhometuition.jpeg" alt="HR Home Tuition" className="h-12 w-auto rounded" />
+              <Badge
+                variant={student.requestType === "school" ? "default" : "secondary"}
+                className={student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
+              >
+                {student.requestType === "school" ? "School" : "Student"}
+              </Badge>
             </div>
 
-            {/* Headings */}
-            <div className="text-center mb-5">
-              <p className="text-red-600 font-extrabold text-lg tracking-wide">Urgent! Urgent !! Urgent !!!!</p>
-              <h2 className="text-2xl font-black text-red-800 leading-tight mt-1">Home Tuition Teacher Needed</h2>
+            <div className="text-center">
+              <p className="text-red-600 font-extrabold text-sm tracking-wide uppercase">Urgent!</p>
+              <h2 className="text-lg font-bold text-red-800">
+                {student.requestType === "school" ? "School Teacher Needed" : "Home Tuition Teacher Needed"}
+              </h2>
             </div>
 
-            {/* Images */}
-            <div className="grid grid-cols-2 gap-3 mb-6 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-              <img src="/images/hero2.jpg" alt="Tuition 1" className="object-cover w-full h-28" />
-              <img src="/images/hero3.jpg" alt="Tuition 2" className="object-cover w-full h-28" />
+            <div className="grid grid-cols-2 gap-2">
+              <img src="/images/hero2.jpg" alt="Tuition 1" className="object-cover w-full h-24 rounded" />
+              <img src="/images/hero3.jpg" alt="Tuition 2" className="object-cover w-full h-24 rounded" />
             </div>
 
-            {/* Details with custom bullets */}
-            <div className="text-gray-800 space-y-4 text-sm font-medium">
-
+            <div className="text-sm text-gray-800 space-y-2">
               <div className="flex gap-2 items-center">
-                <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
-                <span><strong>Location:</strong> {student.city}, {student.district}</span>
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                <span><strong>Location:</strong> {student.province}, {student.municipality}, {student.city}, Ward {student.ward}</span>
               </div>
 
-              {/* Grade & Time side-by-side */}
-              <div className="flex gap-6 flex-wrap">
+              <div className="flex flex-wrap gap-4">
                 <div className="flex gap-2 items-center">
-                  <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                   <span>Grade: {student.class}</span>
                 </div>
                 <div className="flex gap-2 items-center">
-                  <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                   <span>Time: {student.preferredTimeFrom}–{student.preferredTimeTo}</span>
                 </div>
               </div>
 
-              {/* Salary & Gender side-by-side */}
-              <div className="flex gap-6 flex-wrap">
+              <div className="flex flex-wrap gap-4">
                 <div className="flex gap-2 items-center">
-                  <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                   <span>Salary: {student.expectedFees}</span>
                 </div>
                 <div className="flex gap-2 items-center">
-                  <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                   <span>Gender: {student.gender}</span>
                 </div>
               </div>
 
-              {/* Subject */}
               <div className="flex gap-2 items-center">
-                <span className="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                 <span>Subject: {student.subject.join(', ')}</span>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-100">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Posted {new Date(student.createdAt).toLocaleDateString()}</span>
-
-                <Badge
-                  variant={student.requestType === "school" ? "default" : "secondary"}
-                  className={
-                    student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
-                  }
-                >
-                  {student.requestType === "school" ? "School" : "Student"}
-                </Badge>
-                <Button size="sm" asChild>
-                  <Link href="/teacher">Apply Now</Link>
-                </Button>
-              </div>
+            <div className="flex justify-end">
+              <Button size="sm" asChild>
+                <Link href="/teacher">Apply Now</Link>
+              </Button>
             </div>
 
           </CardContent>
         </Card>
+
       ))}
-
-
     </div>
   )
 }

@@ -32,6 +32,7 @@ export default function TeacherRegistrationPage() {
       citizenship: "",
       cv: "",
       ward: "",
+      email: "",
     },
   })
 
@@ -117,9 +118,10 @@ export default function TeacherRegistrationPage() {
                           </FormItem>
                         )}
                       />
+
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={form.control}
                         name="gender"
@@ -138,6 +140,20 @@ export default function TeacherRegistrationPage() {
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email Address</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Enter your email" {...field} />
+                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}

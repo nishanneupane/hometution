@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function createStudentRequest(formData: FormData) {
   try {
+    const rawSubjects = formData.getAll("subject") as string[];
     const data = {
       requestType: formData.get("requestType") as string,
       name: formData.get("name") as string,
@@ -20,7 +21,7 @@ export async function createStudentRequest(formData: FormData) {
       ward: formData.get("ward") as string,
       expectedFees: formData.get("expectedFees") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
-      subject: formData.getAll("subject") as string[],
+      subject: [...new Set(rawSubjects.map((s) => s.trim()))],
       preferredTimeFrom: formData.get("preferredTimeFrom") as string,
       preferredTimeTo: formData.get("preferredTimeTo") as string,
       parentCtzOrStudentCtz: formData.get("parentCtzOrStudentCtz") as string,
@@ -227,6 +228,52 @@ export async function getActiveStudentRequests() {
 
     // Filter students who have active tuition requests
     return students.filter((student) => student.tuitionRequests.length > 0);
+  } catch (error) {
+    console.error("Error fetching active student requests:", error);
+    return [];
+  }
+}
+
+export async function getVacancies() {
+  try {
+    const vacancies = await prisma.tuitionRequest.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        student: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return vacancies;
+  } catch (error) {
+    console.error("Error fetching active student requests:", error);
+    return [];
+  }
+}
+export async function updateVacancy({
+  id,
+  isApproved,
+  status,
+}: {
+  id: string;
+  isApproved: boolean;
+  status: string;
+}) {
+  try {
+    const vacancies = await prisma.tuitionRequest.update({
+      where: {
+        id,
+      },
+      data: {
+        isApproved,
+        status,
+      },
+    });
+
+    return vacancies;
   } catch (error) {
     console.error("Error fetching active student requests:", error);
     return [];

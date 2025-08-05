@@ -14,6 +14,7 @@ const navigation = [
   { name: "About Us", href: "/about" },
   { name: "Students/Schools", href: "/student" },
   { name: "For Teachers", href: "/teacher" },
+  { name: "Vacancies", href: "/careers" },
   { name: "Contact", href: "/contact" },
 ]
 

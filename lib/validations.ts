@@ -24,11 +24,13 @@ export const studentRegistrationSchema = z.object({
   preferredTimeTo: z.string().min(1, "Please select end time"),
   parentCtzOrStudentCtz: z.string().optional(),
   extraInfo: z.string().optional(),
+  jobType: z.string().optional(),
   expectedFees: z.string().optional(),
 });
 
 export const teacherRegistrationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().min(2, "Email must be at least 2 characters"),
   phoneOrWhatsapp: z
     .string()
     .min(10, "Phone number must be at least 10 digits"),

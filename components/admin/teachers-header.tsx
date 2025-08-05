@@ -24,23 +24,6 @@ export function TeachersHeader() {
         </Button>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search teachers by name, code, or contact..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-
-        <Button variant="outline" className="shrink-0 bg-transparent">
-          <Filter className="h-4 w-4 mr-2" />
-          Filters
-        </Button>
-      </div>
-
       <TeacherForm open={teacherFormOpen} onOpenChange={setTeacherFormOpen} mode="create" />
     </>
   )

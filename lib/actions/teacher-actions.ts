@@ -16,6 +16,7 @@ export async function createTeacherRequest(formData: FormData) {
   try {
     const data = {
       name: formData.get("name") as string,
+      email: formData.get("email") as string,
       phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
       province: formData.get("province") as string,
       district: formData.get("district") as string,
@@ -28,6 +29,19 @@ export async function createTeacherRequest(formData: FormData) {
     };
 
     const validatedData = teacherRegistrationSchema.parse(data);
+
+    const duplicateTeacher = await prisma.teacher.findFirst({
+      where: {
+        OR: [{ phoneOrWhatsapp: data.phoneOrWhatsapp }, { email: data.email }],
+      },
+    });
+
+    if (duplicateTeacher) {
+      return {
+        success: false,
+        message: "Teacher Already created with this number & email",
+      };
+    }
 
     // Generate unique teacher code
     let teacherCode = generateTeacherCode();
@@ -75,6 +89,7 @@ export async function createTeacher(formData: FormData) {
   try {
     const data = {
       name: formData.get("name") as string,
+      email: formData.get("email") as string,
       phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
       province: formData.get("province") as string,
       district: formData.get("district") as string,
@@ -90,14 +105,14 @@ export async function createTeacher(formData: FormData) {
 
     const duplicateTeacher = await prisma.teacher.findFirst({
       where: {
-        phoneOrWhatsapp: data.phoneOrWhatsapp,
+        OR: [{ phoneOrWhatsapp: data.phoneOrWhatsapp }, { email: data.email }],
       },
     });
 
     if (duplicateTeacher) {
       return {
         success: false,
-        message: "Teacher Already created with this number",
+        message: "Teacher Already created with this number & email",
       };
     }
     let teacherCode = generateTeacherCode();
@@ -132,6 +147,7 @@ export async function updateTeacher(id: string, formData: FormData) {
   try {
     const data = {
       name: formData.get("name") as string,
+      email: formData.get("email") as string,
       phoneOrWhatsapp: formData.get("phoneOrWhatsapp") as string,
       province: formData.get("province") as string,
       district: formData.get("district") as string,
@@ -144,6 +160,19 @@ export async function updateTeacher(id: string, formData: FormData) {
     };
 
     const validatedData = teacherRegistrationSchema.parse(data);
+
+    const duplicateTeacher = await prisma.teacher.findFirst({
+      where: {
+        OR: [{ phoneOrWhatsapp: data.phoneOrWhatsapp }, { email: data.email }],
+      },
+    });
+
+    if (duplicateTeacher) {
+      return {
+        success: false,
+        message: "Teacher Already created with this number & email",
+      };
+    }
 
     await prisma.teacher.update({
       where: { id },

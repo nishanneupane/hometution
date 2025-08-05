@@ -36,6 +36,7 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
       citizenship: teacher?.citizenship || "",
       cv: teacher?.cv || "",
       ward: teacher?.ward || "",
+      email: teacher?.email || "",
     },
   })
 
@@ -52,6 +53,7 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
         citizenship: teacher?.citizenship || "",
         cv: teacher?.cv || "",
         ward: teacher?.ward || "",
+        email: teacher?.email || "",
       })
     }
   }, [teacher, mode, form])
@@ -90,7 +92,7 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -113,6 +115,20 @@ export function TeacherForm({ open, onOpenChange, teacher, mode }: TeacherFormPr
                     <FormLabel>Phone/WhatsApp</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter phone number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="Enter your email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

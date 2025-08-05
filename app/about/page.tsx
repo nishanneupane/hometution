@@ -52,7 +52,7 @@ export default function AboutPage() {
                   <div className="text-sm text-muted-foreground">Trusted Tutors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">500+</div>
+                  <div className="text-3xl font-bold text-primary">1500+</div>
                   <div className="text-sm text-muted-foreground">Happy Students</div>
                 </div>
               </div>

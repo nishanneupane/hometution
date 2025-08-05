@@ -9,7 +9,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Navbar } from "@/components/navbar"
 import { LocationSelector } from "@/components/location-selector"
@@ -18,23 +17,6 @@ import { createStudentRequest } from "@/lib/actions/student-actions"
 import { toast } from "sonner"
 import { Upload, Clock, BookOpen, User, School, X } from "lucide-react"
 import { UploadButton } from "@/lib/uploadthing"
-
-const subjects = [
-  "Mathematics",
-  "English",
-  "Nepali",
-  "Science",
-  "Social Studies",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Computer Science",
-  "Economics",
-  "Accountancy",
-  "Business Studies",
-  "History",
-  "Geography",
-]
 
 const timeSlots = [
   "06:00",
@@ -58,6 +40,7 @@ const timeSlots = [
 export default function StudentRegistrationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([])
+  const [newSubject, setNewSubject] = useState<string>("")
 
   const form = useForm<StudentRegistrationData>({
     resolver: zodResolver(studentRegistrationSchema),
@@ -79,7 +62,8 @@ export default function StudentRegistrationPage() {
       board: "",
       class: "",
       expectedFees: "",
-      gender: undefined
+      gender: undefined,
+      jobType: ""
     },
   })
 
@@ -115,22 +99,24 @@ export default function StudentRegistrationPage() {
     }
   }
 
-  const handleSubjectChange = (subject: string, checked: boolean) => {
-    let updatedSubjects: string[]
-    if (checked) {
-      updatedSubjects = [...selectedSubjects, subject]
-    } else {
-      updatedSubjects = selectedSubjects.filter((s) => s !== subject)
+  const handleAddSubject = () => {
+    if (newSubject.trim() && !selectedSubjects.includes(newSubject.trim())) {
+      const updatedSubjects = [...selectedSubjects, newSubject.trim()]
+      setSelectedSubjects(updatedSubjects)
+      form.setValue("subject", updatedSubjects)
+      setNewSubject("")
     }
+  }
+
+  const handleRemoveSubject = (subject: string) => {
+    const updatedSubjects = selectedSubjects.filter((s) => s !== subject)
     setSelectedSubjects(updatedSubjects)
     form.setValue("subject", updatedSubjects)
   }
 
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -139,7 +125,6 @@ export default function StudentRegistrationPage() {
               Fill out this form and qualified tutors in your area will apply to teach you
             </p>
           </div>
-
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
@@ -310,9 +295,9 @@ export default function StudentRegistrationPage() {
                       name="class"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Class</FormLabel>
+                          <FormLabel>Level</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your class" {...field} />
+                            <Input placeholder="Enter your Level" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -323,14 +308,48 @@ export default function StudentRegistrationPage() {
                       name="expectedFees"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Expected Fees</FormLabel>
+                          <FormLabel>{requestType === "student" ? "Expected Fees" : "Salary"}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your Expected Fees per Month" {...field} />
+                            <Input placeholder={`Enter your ${requestType === "student" ? "Expected Fees" : "Salary"} per Month`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+                    {
+                      requestType === "school" && (
+                        <FormField
+                          control={form.control}
+                          name="jobType"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Job Type</FormLabel>
+                              <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                  className="flex gap-6"
+                                >
+                                  <FormItem className="flex items-center space-x-2">
+                                    <FormControl>
+                                      <RadioGroupItem value="part-time" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">Part Time</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-2">
+                                    <FormControl>
+                                      <RadioGroupItem value="full-time" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">Full Time</FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )
+                    }
 
                     <FormField
                       control={form.control}
@@ -356,37 +375,57 @@ export default function StudentRegistrationPage() {
                     />
                   </div>
 
-                  {/* Subjects */}
+                  {/* Subjects Section */}
                   <div>
                     <h3 className="text-lg font-semibold mb-4">Subjects Needed</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {subjects.map((subject) => (
-                        <div key={subject} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={subject}
-                            checked={selectedSubjects.includes(subject)}
-                            onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
-                          />
-                          <label
-                            htmlFor={subject}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            {subject}
-                          </label>
-                        </div>
-                      ))}
+                    <div className="flex gap-2 mb-4">
+                      <Input
+                        value={newSubject}
+                        onChange={(e) => setNewSubject(e.target.value)}
+                        placeholder="Enter a subject (e.g., Mathematics)"
+                        className="max-w-md"
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleAddSubject}
+                        disabled={!newSubject.trim()}
+                      >
+                        Add Subject
+                      </Button>
                     </div>
+                    {selectedSubjects.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-medium mb-2">Selected Subjects:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedSubjects.map((subject) => (
+                            <div
+                              key={subject}
+                              className="flex items-center space-x-2 bg-muted px-3 py-1 rounded-full"
+                            >
+                              <span className="text-sm">{subject}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveSubject(subject)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     {selectedSubjects.length === 0 && (
-                      <p className="text-sm text-destructive mt-2">Please select at least one subject</p>
+                      <p className="text-sm text-destructive mt-2">Please add at least one subject</p>
                     )}
                   </div>
 
-                  {/* Preferred Time */}
                   <div>
                     <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
                       <Clock className="h-5 w-5" />
                       <span>Preferred Time</span>
                     </h3>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={form.control}
@@ -394,20 +433,9 @@ export default function StudentRegistrationPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>From</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select start time" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {timeSlots.map((time) => (
-                                  <SelectItem key={time} value={time}>
-                                    {time}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                            <FormControl>
+                              <Input type="time" {...field} />
+                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -419,26 +447,16 @@ export default function StudentRegistrationPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>To</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select end time" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {timeSlots.map((time) => (
-                                  <SelectItem key={time} value={time}>
-                                    {time}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                            <FormControl>
+                              <Input type="time" {...field} />
+                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </div>
                   </div>
+
 
                   {/* File Upload */}
                   <FormField
@@ -454,7 +472,6 @@ export default function StudentRegistrationPage() {
                               : "Citizenship Document (Optional)"}
                           </span>
                         </FormLabel>
-
                         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center relative">
                           <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                           <p className="text-muted-foreground mb-2">
@@ -463,7 +480,6 @@ export default function StudentRegistrationPage() {
                               : "Upload parent's or student's citizenship"}
                           </p>
                           <p className="text-sm text-muted-foreground mb-4">PNG, JPG up to 5MB</p>
-
                           {!field.value ? (
                             <UploadButton
                               endpoint="images"
@@ -498,7 +514,6 @@ export default function StudentRegistrationPage() {
                             </div>
                           )}
                         </div>
-
                         <FormMessage />
                       </FormItem>
                     )}

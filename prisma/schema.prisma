@@ -24,7 +24,8 @@ model Student {
   class                 String
   board                 String
   gender                String
-  subject               String[] // Array of subjects
+  jobType               String?
+  subject               String[]
   preferredTimeFrom     String
   preferredTimeTo       String
   parentCtzOrStudentCtz String? // UploadThing URL
@@ -42,6 +43,7 @@ model Student {
 model Teacher {
   id              String   @id @default(cuid())
   name            String
+  email           String   @unique
   phoneOrWhatsapp String
   province        String
   district        String
@@ -63,11 +65,12 @@ model Teacher {
 }
 
 model TuitionRequest {
-  id        String   @id @default(cuid())
-  studentId String
-  status    String   @default("active") // active, filled, cancelled
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  studentId  String
+  status     String   @default("active") // active, filled, cancelled
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   // Relations
   student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)

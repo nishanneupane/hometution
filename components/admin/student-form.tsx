@@ -14,7 +14,7 @@ import { studentRegistrationSchema, type StudentRegistrationData } from "@/lib/v
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { createStudent, updateStudent } from "@/lib/actions/student-actions"
 import { toast } from "sonner"
-import { School, User } from "lucide-react"
+import { School, User, X } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
@@ -45,6 +45,7 @@ interface StudentFormProps {
 
 export function StudentForm({ open, onOpenChange, student, mode }: StudentFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [newSubject, setNewSubject] = useState<string>("")
 
   const form = useForm<StudentRegistrationData>({
     resolver: zodResolver(studentRegistrationSchema),
@@ -289,9 +290,9 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 name="class"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Class</FormLabel>
+                    <FormLabel>Level</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your class" {...field} />
+                      <Input placeholder="Enter your Level" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -302,14 +303,49 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 name="expectedFees"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Expected Fees</FormLabel>
+                    <FormLabel>{requestType === "student" ? "Expected Fees" : "Salary"}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your Expected Fees per Month" {...field} />
+                      <Input placeholder={`Enter your ${requestType === "student" ? "Expected Fees" : "Salary"} per Month`} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {
+                requestType === "school" && (
+                  <FormField
+                    control={form.control}
+                    name="jobType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Job Type</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            className="flex gap-6"
+                          >
+                            <FormItem className="flex items-center space-x-2">
+                              <FormControl>
+                                <RadioGroupItem value="part-time" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Part Time</FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-2">
+                              <FormControl>
+                                <RadioGroupItem value="full-time" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Full Time</FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )
+              }
               <FormField
                 control={form.control}
                 name="gender"
@@ -334,36 +370,54 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subjects</FormLabel>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {subjects.map((subject) => (
-                      <div key={subject} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={subject}
-                          checked={field.value?.includes(subject)}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              field.onChange([...field.value, subject])
-                            } else {
-                              field.onChange(field.value?.filter((s) => s !== subject))
-                            }
-                          }}
-                        />
-                        <Label htmlFor={subject} className="text-sm">
-                          {subject}
-                        </Label>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Subjects Needed</h3>
+              <div className="flex gap-2 mb-4">
+                <Input
+                  value={newSubject}
+                  onChange={(e) => setNewSubject(e.target.value)}
+                  placeholder="Enter a subject (e.g., Mathematics)"
+                  className="max-w-md"
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (newSubject.trim() && !form.getValues("subject").includes(newSubject.trim())) {
+                      form.setValue("subject", [...form.getValues("subject"), newSubject.trim()])
+                      setNewSubject("")
+                    }
+                  }}
+                  disabled={!newSubject.trim()}
+                >
+                  Add Subject
+                </Button>
+              </div>
+              {form.getValues("subject").length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Selected Subjects:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {form.getValues("subject").map((subject) => (
+                      <div
+                        key={subject}
+                        className="flex items-center space-x-2 bg-muted px-3 py-1 rounded-full"
+                      >
+                        <span className="text-sm">{subject}</span>
+                        <button
+                          type="button"
+                          onClick={() => form.setValue("subject", form.getValues("subject").filter((s) => s !== subject))}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
                       </div>
                     ))}
                   </div>
-                  <FormMessage />
-                </FormItem>
+                </div>
               )}
-            />
+              {form.getValues("subject").length === 0 && (
+                <p className="text-sm text-destructive mt-2">Please add at least one subject</p>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
