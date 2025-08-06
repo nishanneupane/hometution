@@ -290,9 +290,9 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 name="class"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Level</FormLabel>
+                    <FormLabel>{requestType === "school" ? "Level" : "Grade"}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your Level" {...field} />
+                      <Input placeholder={`Enter your ${requestType === "school" ? "Level" : "Class"}`} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

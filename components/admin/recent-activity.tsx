@@ -145,7 +145,7 @@ export function RecentActivity({ recentStudents, recentTeachers, allStudents, al
               </TabsList>
 
               <TabsContent value="students" className="mt-4">
-                <ScrollArea className="h-[400px] pr-4">
+                <ScrollArea className="h-[350px] pr-4">
                   <div className="space-y-3">
                     {allStudents.length > 0 ? (
                       allStudents.map((student: any) => <ActivityItem key={student.id} item={student} type="student" />)
@@ -160,8 +160,8 @@ export function RecentActivity({ recentStudents, recentTeachers, allStudents, al
                 </ScrollArea>
               </TabsContent>
 
-              <TabsContent value="teachers" className="mt-4">
-                <ScrollArea className="h-[400px] pr-4">
+              <TabsContent value="teachers" className="mt-4 ">
+                <ScrollArea className="h-[350px] pr-4">
                   <div className="space-y-3">
                     {allTeachers.length > 0 ? (
                       allTeachers.map((teacher: any) => <ActivityItem key={teacher.id} item={teacher} type="teacher" />)

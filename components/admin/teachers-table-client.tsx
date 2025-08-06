@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { TeacherForm } from "@/components/admin/teacher-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteTeacher, approveTeacher, rejectTeacher } from "@/lib/actions/teacher-actions"
-import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter } from "lucide-react"
+import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -22,6 +22,8 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
+import Link from "next/link"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 interface TeachersTableClientProps {
   teachers: any[]
@@ -234,19 +236,32 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
             <Card key={teacher.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="bg-primary text-white">
-                        {teacher.name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{teacher.name}</h3>
-                      <Badge variant="outline" className="text-xs">
-                        {teacher.teacherCode}
-                      </Badge>
-                    </div>
-                  </div>
+                  <Link href={`/admin/teachers/${teacher.id}`}>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group flex items-center space-x-3 p-2 rounded-md transition-all hover:backdrop-blur-sm hover:bg-blue-50 hover:shadow-sm cursor-pointer">
+                            <Avatar className="h-12 w-12">
+                              <AvatarFallback className="bg-primary text-white">
+                                {teacher.name.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-gray-900">{teacher.name}</h3>
+                              <Badge variant="outline" className="text-xs">
+                                {teacher.teacherCode}
+                              </Badge>
+                            </div>
+                            {/* Right Arrow Icon */}
+                            <ArrowRight className="h-4 w-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          View profile
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Link>
 
                   <div className="flex space-x-1">
                     <Button variant="ghost" size="sm" onClick={() => handleEdit(teacher)}>

@@ -23,6 +23,7 @@ export async function createTeacherRequest(formData: FormData) {
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
       ward: formData.get("ward") as string,
+      profilePicture: formData.get("profilePicture") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
       cv: formData.get("cv") as string,
@@ -95,6 +96,7 @@ export async function createTeacher(formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      profilePicture: formData.get("profilePicture") as string,
       ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
@@ -153,6 +155,7 @@ export async function updateTeacher(id: string, formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      profilePicture: formData.get("profilePicture") as string,
       ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
       citizenship: formData.get("citizenship") as string,
@@ -268,5 +271,82 @@ export async function getTeachers(searchTerm?: string) {
   } catch (error) {
     console.error("Error fetching teachers:", error);
     return [];
+  }
+}
+
+export async function getTeacherById(id: string) {
+  try {
+    const teachers = await prisma.teacher.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return teachers;
+  } catch (error) {
+    console.error("Error fetching teacher:", error);
+    return [];
+  }
+}
+
+export async function applyRequest({
+  studentId,
+  phone,
+  teacherCode,
+}: {
+  studentId: string;
+  phone: string;
+  teacherCode: string;
+}) {
+  try {
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        teacherCode,
+        phoneOrWhatsapp: phone,
+      },
+    });
+
+    if (!teacher) {
+      return { success: false, message: "Teacher not found" };
+    }
+
+    const tuitionRequest = await prisma.tuitionRequest.findFirst({
+      where: {
+        studentId,
+        status: "active",
+      },
+    });
+
+    if (!tuitionRequest) {
+      return { success: false, message: "Active tuition request not found" };
+    }
+
+    // Check if application already exists
+    const existingApplication = await prisma.application.findUnique({
+      where: {
+        teacherId_tuitionRequestId: {
+          teacherId: teacher.id,
+          tuitionRequestId: tuitionRequest.id,
+        },
+      },
+    });
+
+    if (existingApplication) {
+      return { success: false, message: "Application already submitted" };
+    }
+
+    await prisma.application.create({
+      data: {
+        teacherId: teacher.id,
+        tuitionRequestId: tuitionRequest.id,
+        status: "pending",
+      },
+    });
+
+    revalidatePath("/admin");
+    return { success: true, message: "Application submitted successfully" };
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    return { success: false, message: "Failed to submit application" };
   }
 }

@@ -14,7 +14,7 @@ export const studentRegistrationSchema = z.object({
   municipality: z.string().min(1, "Please select a municipality"),
   city: z.string().min(1, "City is required"),
   ward: z.string().min(1, "Ward is required"),
-  gender: z.enum(["male", "female", "other"], {
+  gender: z.enum(["male", "female", "any"], {
     required_error: "Please select a gender",
   }),
   subject: z.array(z.string()).min(1, "Please select at least one subject"),
@@ -44,6 +44,7 @@ export const teacherRegistrationSchema = z.object({
   }),
   citizenship: z.string().optional(),
   cv: z.string().optional(),
+  profilePicture: z.string().optional(),
 });
 
 export const testimonialSchema = z.object({

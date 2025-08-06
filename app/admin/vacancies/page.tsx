@@ -7,8 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Search, CheckCircle, XCircle } from "lucide-react";
+import { BookOpen, Search, CheckCircle, XCircle, ArrowUpRight } from "lucide-react";
 import { getVacancies, updateVacancy } from "@/lib/actions/student-actions";
+import Link from 'next/link';
 
 // Define TypeScript interfaces based on TuitionRequest schema
 interface TuitionRequest {
@@ -57,7 +58,8 @@ export default function VacanciesPage() {
     if (searchTerm) {
       filtered = filtered.filter((vacancy: TuitionRequest) =>
         vacancy.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vacancy.status.toLowerCase().includes(searchTerm.toLowerCase())
+        vacancy.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vacancy.student.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -147,7 +149,29 @@ export default function VacanciesPage() {
               <TableBody>
                 {filteredVacancies.map((vacancy: TuitionRequest) => (
                   <TableRow key={vacancy.id}>
-                    <TableCell>{vacancy.student.name}</TableCell>
+                    <TableCell>
+                      <Link
+                        href={`/admin/vacancies/${vacancy.id}`}
+                        className="group relative inline-flex items-center gap-2 px-3 py-2 transition-all duration-200"
+                      >
+                        <span
+                          className="text-blue-600 group-hover:blur-[0.5px] group-hover:brightness-110 transition-all"
+                        >
+                          {vacancy.student.name}
+                        </span>
+
+                        {/* Link Icon */}
+                        <ArrowUpRight
+                          className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-blue-600"
+                          size={16}
+                        />
+
+                        {/* Tooltip */}
+                        <span className="absolute top-full mt-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 text-xs text-gray-600 bg-white border px-2 py-1 rounded shadow transition-all">
+                          View Details
+                        </span>
+                      </Link>
+                    </TableCell>
                     <TableCell>
                       <Badge variant={vacancy.status === 'active' ? 'default' : vacancy.status === 'filled' ? 'secondary' : 'destructive'}>
                         {vacancy.status}

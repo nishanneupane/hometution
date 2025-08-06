@@ -220,6 +220,7 @@ export async function getActiveStudentRequests() {
         tuitionRequests: {
           where: {
             status: "active",
+            isApproved: true,
           },
         },
       },

@@ -295,9 +295,9 @@ export default function StudentRegistrationPage() {
                       name="class"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Level</FormLabel>
+                          <FormLabel>{requestType === "school" ? "Level" : "Grade"}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your Level" {...field} />
+                            <Input placeholder={`Enter your ${requestType === "school" ? "Level" : "Class"}`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -366,7 +366,7 @@ export default function StudentRegistrationPage() {
                             <SelectContent>
                               <SelectItem value="male">Male</SelectItem>
                               <SelectItem value="female">Female</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                              <SelectItem value="any">Any</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />

@@ -52,7 +52,7 @@ export function AdminSidebar() {
 
       {/* Mobile backdrop */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setIsMobileMenuOpen(false)} />
+        <div className="lg:hidden fixed inset-0 z-40 bg-primary" onClick={() => setIsMobileMenuOpen(false)} />
       )}
 
       {/* Sidebar */}
@@ -94,8 +94,8 @@ export function AdminSidebar() {
                   className={cn(
                     "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 group",
                     isActive
-                      ? "bg-slate-900 text-white shadow-lg"
-                      : "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+                      ? "bg-blue-700 text-white shadow-lg"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-blue-700",
                   )}
                 >
                   <div className="flex items-center space-x-3">

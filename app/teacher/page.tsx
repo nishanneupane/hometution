@@ -33,6 +33,7 @@ export default function TeacherRegistrationPage() {
       cv: "",
       ward: "",
       email: "",
+      profilePicture: "",
     },
   })
 
@@ -226,7 +227,7 @@ export default function TeacherRegistrationPage() {
                               <>
                                 <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                                 <p className="text-sm text-muted-foreground mb-2">Upload your citizenship</p>
-                                <p className="text-xs text-muted-foreground mb-4">PNG, JPG up to 5MB</p>
+                                <p className="text-xs text-muted-foreground mb-4">PNG, JPG up to 8MB</p>
                                 <UploadButton
                                   endpoint="image"
                                   onClientUploadComplete={(res) => {
@@ -272,9 +273,59 @@ export default function TeacherRegistrationPage() {
                               <>
                                 <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                                 <p className="text-sm text-muted-foreground mb-2">Upload your CV</p>
-                                <p className="text-xs text-muted-foreground mb-4">PDF, DOC up to 10MB</p>
+                                <p className="text-xs text-muted-foreground mb-4">PDF, DOC up to 8MB</p>
                                 <UploadButton
                                   endpoint="attachment"
+                                  onClientUploadComplete={(res) => {
+                                    if (res && res[0]) {
+                                      field.onChange(res[0].url)
+                                    }
+                                  }}
+                                  onUploadError={(err) => console.error(err)}
+                                  appearance={{
+                                    button: "bg-blue-600 border border-input text-background hover:bg-blue-700",
+                                  }}
+                                />
+                              </>
+                            )}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="profilePicture"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Profile Picture</FormLabel>
+                          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center relative">
+                            {field.value ? (
+                              <>
+                                <>
+                                  <img
+                                    src={field.value}
+                                    alt="Uploaded citizenship"
+                                    className="w-full max-h-48 object-contain mx-auto rounded"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => field.onChange("")}
+                                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-red-100"
+                                  >
+                                    <X className="h-4 w-4 text-red-500" />
+                                  </Button>
+                                </>
+                              </>
+                            ) : (
+                              <>
+                                <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                                <p className="text-sm text-muted-foreground mb-2">Upload your Profile Picture</p>
+                                <UploadButton
+                                  endpoint="image"
                                   onClientUploadComplete={(res) => {
                                     if (res && res[0]) {
                                       field.onChange(res[0].url)

@@ -1,20 +1,20 @@
-"use server"
+"use server";
 
-import { prisma } from "@/lib/prisma"
-import { revalidatePath } from "next/cache"
+import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function approveApplication(id: string) {
   try {
     await prisma.application.update({
       where: { id },
       data: { status: "approved" },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Application approved successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Application approved successfully" };
   } catch (error) {
-    console.error("Error approving application:", error)
-    return { success: false, message: "Failed to approve application" }
+    console.error("Error approving application:", error);
+    return { success: false, message: "Failed to approve application" };
   }
 }
 
@@ -23,19 +23,23 @@ export async function rejectApplication(id: string) {
     await prisma.application.update({
       where: { id },
       data: { status: "rejected" },
-    })
+    });
 
-    revalidatePath("/admin")
-    return { success: true, message: "Application rejected successfully" }
+    revalidatePath("/admin");
+    return { success: true, message: "Application rejected successfully" };
   } catch (error) {
-    console.error("Error rejecting application:", error)
-    return { success: false, message: "Failed to reject application" }
+    console.error("Error rejecting application:", error);
+    return { success: false, message: "Failed to reject application" };
   }
 }
 
 export async function getTuitionRequests() {
   try {
     const requests = await prisma.tuitionRequest.findMany({
+      where: {
+        isApproved: true,
+        status: "active",
+      },
       include: {
         student: true,
         applications: {
@@ -45,11 +49,29 @@ export async function getTuitionRequests() {
         },
       },
       orderBy: { createdAt: "desc" },
-    })
+    });
 
-    return requests
+    return requests;
   } catch (error) {
-    console.error("Error fetching tuition requests:", error)
-    return []
+    console.error("Error fetching tuition requests:", error);
+    return [];
+  }
+}
+
+export async function getTuitionRequestById(id: string) {
+  try {
+    const request = await prisma.tuitionRequest.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        student: true,
+      },
+    });
+
+    return request;
+  } catch (error) {
+    console.error("Error fetching tuition request:", error);
+    return [];
   }
 }
