@@ -219,7 +219,7 @@ export async function getActiveStudentRequests() {
       include: {
         tuitionRequests: {
           where: {
-            status: "active",
+            // status: "active",
             isApproved: true,
           },
         },
