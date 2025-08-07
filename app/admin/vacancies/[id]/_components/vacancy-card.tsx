@@ -25,7 +25,17 @@ interface VacancyCardProps {
 
 const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => {
     return (
-        <div id="vacancy-card" className="w-full max-w-[380px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-sm px-1 pt-3 mx-auto font-sans">
+        <div
+            id="vacancy-card"
+            className="w-full max-w-[400px] max-h-[500px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-md px-3 pt-4 mx-auto font-sans overflow-hidden"
+            style={{
+                transform: "scale(1)",
+                transformOrigin: "top left",
+                WebkitFontSmoothing: "antialiased",
+                MozOsxFontSmoothing: "grayscale",
+            }}
+        >
+
             <CardContent className="flex flex-col gap-2 h-full">
                 {/* Header Section */}
                 <div className="flex items-center justify-center gap-3">
@@ -52,17 +62,14 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                 {/* Details Section */}
                 <div className="space-y-3 text-sm text-gray-800">
                     <div className="flex items-start gap-2">
-                        <MapPin className="h-4 w-4 text-blue-600 mt-0.5" />
-                        <span>
+                        <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-0.5">
+                            <MapPin className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <span className="leading-snug">
                             <strong>Location:</strong> {student.province}, {student.municipality}-{student.ward}, {student.city}
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Tag className="h-4 w-4 text-blue-600" />
-                        <span>
-                            <strong>Vacancy Code:</strong> {student.id}
-                        </span>
-                    </div>
+
                     <div className="grid grid-cols-2 gap-y-2">
                         <div className="flex items-center gap-2">
                             <BadgeInfo className="h-4 w-4 text-blue-600" />
@@ -93,6 +100,13 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                         <BookOpenCheck className="h-4 w-4 text-blue-600 mt-0.5" />
                         <span>
                             <strong>Subject:</strong> {student.subject.join(', ')}
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-blue-600" />
+                        <span>
+                            <strong>Vacancy Code:</strong> {student.id}
                         </span>
                     </div>
                 </div>

@@ -105,11 +105,11 @@ function StatCard({
         <div className="text-3xl font-bold mb-1">{value}</div>
         <div className="flex items-center justify-between">
           <p className="text-xs opacity-70">{description}</p>
-          {trend && (
+          {/* {trend && (
             <div className="flex items-center text-xs font-medium">
               <ArrowUpRight className="h-3 w-3 mr-1" />+{trend}%
             </div>
-          )}
+          )} */}
         </div>
       </CardContent>
     </Card>
@@ -127,7 +127,7 @@ export default async function AdminDashboard() {
           <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
           <p className="text-slate-600 mt-1">Welcome back! Here's what's happening with your platform.</p>
         </div>
-        <div className="flex items-center space-x-3">
+        {/* <div className="flex items-center space-x-3">
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
             <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
             All Systems Operational
@@ -136,7 +136,7 @@ export default async function AdminDashboard() {
             <Calendar className="h-4 w-4 mr-2" />
             View Reports
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Stats Grid */}

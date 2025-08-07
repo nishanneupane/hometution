@@ -34,7 +34,7 @@ const convertToAmPm = (time: string): string => {
 };
 
 const VacancyIdPage = async ({ params }: VacancyIdPageProps) => {
-    const vacancy = await getTuitionRequestById(params.id);
+    const vacancy = await getTuitionRequestById((await params).id);
     // @ts-ignore
     const student: Student = vacancy && vacancy.student;
 

@@ -99,7 +99,7 @@ export function QuickActions() {
               </div>
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               className="h-auto p-4 flex flex-col items-start space-y-2 bg-transparent hover:bg-teal-50 hover:border-teal-200 transition-all"
               onClick={handleAddVacancy}
@@ -121,7 +121,7 @@ export function QuickActions() {
                 <div className="font-medium">Settings</div>
                 <div className="text-xs text-muted-foreground">Manage platform</div>
               </div>
-            </Button>
+            </Button> */}
           </div>
         </CardContent>
       </Card>

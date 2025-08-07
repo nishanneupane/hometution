@@ -9,33 +9,33 @@ interface DownloadButtonProps {
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({ vacancyId }) => {
-    useEffect(() => {
-        // Ensure all fonts and images are loaded before allowing download
-        document.fonts.ready.then(() => {
-            console.log('Fonts loaded');
-        });
-    }, []);
 
     const handleDownload = async () => {
-        const element = document.getElementById('vacancy-card');
+        const element = document.getElementById("vacancy-card");
+
         if (element) {
             try {
+                element.style.transform = "scale(1)";
+                void element.offsetHeight;
+
                 const canvas = await html2canvas(element, {
-                    scale: 2,
-                    useCORS: true, // Allow cross-origin images
+                    scale: 3,
+                    useCORS: true,
                     logging: false,
-                    backgroundColor: '#ffffff', // Ensure white background
-                    allowTaint: true, // Allow tainted canvas for cross-origin
+                    backgroundColor: "#ffffff",
+                    allowTaint: true,
                 });
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = `vacancy-${vacancyId}.png`;
+
+                const link = document.createElement("a");
+                link.href = canvas.toDataURL("image/jpeg", 1.0); // JPG output
+                link.download = `vacancy-${vacancyId}.jpg`;
                 link.click();
             } catch (error) {
-                console.error('Error generating canvas:', error);
+                console.error("Error generating canvas:", error);
             }
         }
     };
+
 
     return (
         <Button

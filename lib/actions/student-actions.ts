@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { studentRegistrationSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+import { ZodNull } from "zod";
 
 export async function createStudentRequest(formData: FormData) {
   try {
@@ -287,6 +288,21 @@ export async function updateVacancy({
     return vacancy;
   } catch (error) {
     console.error("Error fetching active student requests:", error);
+    return null;
+  }
+}
+
+export async function getStudentById(id: string) {
+  try {
+    const student = await prisma.student.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return student;
+  } catch (error) {
+    console.error("Error Student fetching:", error);
     return null;
   }
 }

@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { StudentForm } from "@/components/admin/student-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteStudent } from "@/lib/actions/student-actions"
-import { Edit, Trash2, Phone, MapPin, Clock, Users, Search, Filter } from "lucide-react"
+import { Edit, Trash2, Phone, MapPin, Clock, Users, Search, Filter, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -21,6 +21,8 @@ import {
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Link from "next/link"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 interface StudentsTableClientProps {
   students: any[]
@@ -210,7 +212,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
             <Card key={student.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
+                  {/* <div className="flex items-center space-x-3">
                     <Avatar className="h-12 w-12">
                       <AvatarFallback className="bg-primary text-white">
                         {student.name.charAt(0).toUpperCase()}
@@ -220,16 +222,35 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
                       <h3 className="font-semibold text-gray-900">{student.name}</h3>
                       <p className="text-sm text-gray-600">{student.schoolName}</p>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm" onClick={() => handleEdit(student)}>
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(student)}>
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
-                  </div>
+                  <Link href={`/admin/students/${student.id}`}>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group flex items-center space-x-3 p-2 rounded-md transition-all hover:backdrop-blur-sm hover:bg-blue-50 hover:shadow-sm cursor-pointer">
+                            <Avatar className="h-12 w-12">
+                              <AvatarFallback className="bg-primary text-white">
+                                {student.name.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="w-full">
+                              <h3 className="font-semibold text-gray-900">{student.name}</h3>
+                              <p className="text-sm text-gray-600 font-normal">{student.schoolName}</p>
+
+                            </div>
+                            {/* Right Arrow Icon */}
+                            <ArrowRight className="h-4 w-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          View profile
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Link>
+
+
                 </div>
 
                 <div className="space-y-3">
@@ -266,9 +287,19 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
                 </div>
 
                 <div className="mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Applications</span>
-                    <Badge variant="secondary">{student.tuitionRequests[0]?.applications.length || 0}</Badge>
+                  <div className="flex gap-2 items-center justify-between">
+                    <div className="flex text-sm gap-2">
+                      <span className="text-gray-600">Applications</span>
+                      <Badge variant="secondary">{student.tuitionRequests[0]?.applications.length || 0}</Badge>
+                    </div>
+                    <div className="flex space-x-1">
+                      <Button variant="ghost" size="sm" onClick={() => handleEdit(student)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(student)}>
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

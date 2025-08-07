@@ -1,8 +1,11 @@
 "use server";
 
+import { EmailTemplate } from "@/components/email-template";
 import { prisma } from "@/lib/prisma";
 import { teacherRegistrationSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
+import { sendApprovalEmail } from "../send-approval-email";
 
 function generateTeacherCode(): string {
   const prefix = "HRT";
@@ -198,11 +201,49 @@ export async function updateTeacher(id: string, formData: FormData) {
 }
 
 export async function approveTeacher(id: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
+    const teacher = await prisma.teacher.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        teacherCode: true,
+      },
+    });
+
+    if (!teacher) {
+      return { success: false, message: "Teacher not found" };
+    }
+
     await prisma.teacher.update({
       where: { id },
       data: { isApproved: true },
     });
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-approval-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: teacher.email,
+          name: teacher.name,
+          teacherCode: teacher.teacherCode,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("API error:", data.error);
+      return {
+        success: true,
+        message: "Teacher approved but email failed",
+      };
+    }
 
     revalidatePath("/admin");
     return { success: true, message: "Teacher approved successfully" };
