@@ -16,7 +16,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MapPin, BookOpen, Tag, BadgeInfo, CalendarClock, Users, BookOpenCheck, Search, Filter, Info } from "lucide-react"
-import { convertToAmPm } from "@/lib/utils"
+import { convertToAmPm, getTimeAgo } from "@/lib/utils"
 import { ApplyModal } from "@/app/careers/_components/apply-modal"
 
 interface CareersTableClientProps {
@@ -223,12 +223,15 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                         <h2 className="text-base font-semibold text-red-800 leading-tight">
                                             {student.requestType === "school" ? "School Teacher Needed" : "Home Tuition Teacher Needed"}
                                         </h2>
-                                        <Badge
-                                            variant={student.requestType === "school" ? "default" : "secondary"}
-                                            className={student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
-                                        >
-                                            {student.requestType === "school" ? "School" : "Student"}
-                                        </Badge>
+                                        <div className="flex gap-2">
+                                            <Badge
+                                                variant={student.requestType === "school" ? "default" : "secondary"}
+                                                className={student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
+                                            >
+                                                {student.requestType === "school" ? "School" : "Student"}
+                                            </Badge>
+                                            <p className="text-xs font-semibold">Posted {getTimeAgo(student.createdAt)}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-1">
