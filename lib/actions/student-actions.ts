@@ -272,7 +272,7 @@ export async function updateVacancy({
   status: string;
 }) {
   try {
-    const vacancies = await prisma.tuitionRequest.update({
+    const vacancy = await prisma.tuitionRequest.update({
       where: {
         id,
       },
@@ -282,9 +282,11 @@ export async function updateVacancy({
       },
     });
 
-    return vacancies;
+    revalidatePath("/careers");
+    revalidatePath("/admin");
+    return vacancy;
   } catch (error) {
     console.error("Error fetching active student requests:", error);
-    return [];
+    return null;
   }
 }
