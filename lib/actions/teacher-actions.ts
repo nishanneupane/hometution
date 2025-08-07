@@ -29,6 +29,13 @@ export async function createTeacherRequest(formData: FormData) {
       cv: formData.get("cv") as string,
     };
 
+    if (!data.citizenship || !data.cv || !data.profilePicture) {
+      return {
+        success: false,
+        message: "Please fill all the information",
+      };
+    }
+
     const validatedData = teacherRegistrationSchema.parse(data);
 
     const duplicateTeacher = await prisma.teacher.findFirst({

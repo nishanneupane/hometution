@@ -242,12 +242,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <strong>Location:</strong> {student.province}, {student.municipality}-{student.ward}, {student.city}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Tag className="h-4 w-4 text-blue-600" />
-                                        <span>
-                                            <strong>Vacancy Code:</strong> {student.id || "N/A"}
-                                        </span>
-                                    </div>
+
                                     <div className="grid grid-cols-2 gap-y-2">
                                         <div className="flex items-center gap-2">
                                             <BadgeInfo className="h-4 w-4 text-blue-600" />
@@ -281,7 +276,14 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex justify-end">
+
+                                <div className="flex justify-between items-center">
+                                    <div className="flex items-center gap-2">
+                                        <Tag className="h-4 w-4 text-blue-600" />
+                                        <span className="text-xs">
+                                            <strong>Vacancy Code:</strong> {student.id || "N/A"}
+                                        </span>
+                                    </div>
                                     <ApplyModal studentId={student.id} />
                                 </div>
                             </CardContent>
