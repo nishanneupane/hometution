@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getActiveStudentRequests } from "@/lib/actions/student-actions"
-import { BookOpen } from "lucide-react"
 import Link from "next/link"
 import { CareersTableClient } from "@/components/admin/careers-table-client"
 

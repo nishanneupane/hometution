@@ -216,10 +216,18 @@ export async function getStudents(searchTerm?: string) {
 export async function getActiveStudentRequests() {
   try {
     const students = await prisma.student.findMany({
+      where: {
+        tuitionRequests: {
+          some: {
+            status: "active",
+            isApproved: true,
+          },
+        },
+      },
       include: {
         tuitionRequests: {
           where: {
-            // status: "active",
+            status: "active",
             isApproved: true,
           },
         },
