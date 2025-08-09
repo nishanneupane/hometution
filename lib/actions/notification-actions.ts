@@ -24,7 +24,7 @@ export async function markNotificationAsRead(id: string) {
       data: { isRead: true },
     });
     revalidatePath("/admin");
-    return { success: true };
+    return { success: true, message: "Marked as read" };
   } catch (error) {
     console.error("Error marking notification as read:", error);
     throw new Error("Failed to mark notification as read");
@@ -37,7 +37,7 @@ export async function deleteNotification(id: string) {
       where: { id },
     });
     revalidatePath("/admin");
-    return { success: true };
+    return { success: true, message: "Deletion Successful" };
   } catch (error) {
     console.error("Error deleting notification:", error);
     throw new Error("Failed to delete notification");

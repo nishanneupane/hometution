@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import DownloadButton from '@/components/download-button';
 import VacancyCard from './_components/vacancy-card';
+import CopyCaption from './_components/copy-caption';
 
 interface VacancyIdPageProps {
     params: {
@@ -44,6 +45,7 @@ const VacancyIdPage = async ({ params }: VacancyIdPageProps) => {
             <div className="flex justify-between items-center mt-4 w-full max-w-[380px]">
                 <DownloadButton vacancyId={student.id} />
             </div>
+            <CopyCaption student={student} />
         </div>
     );
 };

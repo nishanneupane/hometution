@@ -184,9 +184,9 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>Notifications</span>
-              <Button variant="ghost" size="sm" onClick={() => setNotificationDialogOpen(false)}>
+              {/* <Button variant="ghost" size="sm" onClick={() => setNotificationDialogOpen(false)}>
                 <X className="h-4 w-4" />
-              </Button>
+              </Button> */}
             </DialogTitle>
             <DialogDescription>Stay updated with the latest platform activities</DialogDescription>
           </DialogHeader>

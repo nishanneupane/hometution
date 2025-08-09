@@ -112,9 +112,9 @@ export function RecentActivity({ recentStudents, recentTeachers, allStudents, al
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>All Activity</span>
-              <Button variant="ghost" size="sm" onClick={() => setShowAllDialog(false)}>
+              {/* <Button variant="ghost" size="sm" onClick={() => setShowAllDialog(false)}>
                 <X className="h-4 w-4" />
-              </Button>
+              </Button> */}
             </DialogTitle>
             <DialogDescription>Complete list of all platform activities</DialogDescription>
           </DialogHeader>
@@ -145,7 +145,7 @@ export function RecentActivity({ recentStudents, recentTeachers, allStudents, al
               </TabsList>
 
               <TabsContent value="students" className="mt-4">
-                <ScrollArea className="h-[280px] md:h-[300px] lg:h-[320px] 2xl:h-[350px] pr-4">
+                <ScrollArea className="h-[280px] md:h-[300px] lg:h-[320px] 2xl:h-[350px] pr-1 md:pr-4">
                   <div className="space-y-3">
                     {allStudents.length > 0 ? (
                       allStudents.map((student: any) => <ActivityItem key={student.id} item={student} type="student" />)
@@ -161,7 +161,7 @@ export function RecentActivity({ recentStudents, recentTeachers, allStudents, al
               </TabsContent>
 
               <TabsContent value="teachers" className="mt-4 ">
-                <ScrollArea className="h-[280px] md:h-[300px] lg:h-[320px] 2xl:h-[350px] pr-4">
+                <ScrollArea className="h-[280px] md:h-[300px] lg:h-[320px] 2xl:h-[350px] pr-1 md:pr-4">
                   <div className="space-y-3">
                     {allTeachers.length > 0 ? (
                       allTeachers.map((teacher: any) => <ActivityItem key={teacher.id} item={teacher} type="teacher" />)
