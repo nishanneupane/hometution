@@ -56,10 +56,12 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-4">Teaching Opportunities</h1>
-            <p className="text-lg text-muted-foreground">
-              Find tutoring opportunities in your area and start earning from home
-            </p>
+
+            <div className="inline-block bg-yellow-300 text-yellow-900 font-semibold px-4 py-2 rounded-md shadow-md animate-pulse">
+              🎉 Free 2-Day Demo Class on All Opportunities! Don&apos;t Miss Out! 🎉
+            </div>
           </div>
+
           <Suspense fallback={<CareersSkeleton />}>
             <CareersContent />
           </Suspense>

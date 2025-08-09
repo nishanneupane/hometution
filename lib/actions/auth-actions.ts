@@ -116,6 +116,28 @@ export async function resetAdminPassword(formData: FormData) {
       data: { password: hashedPassword },
     });
 
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/reset-password-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: admin.email,
+          name: admin.name,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("API error:", data.error);
+      return {
+        success: true,
+        message: "Password changed but failed to send email",
+      };
+    }
+
     return { success: true, message: "Password updated successfully" };
   } catch (error) {
     console.error("Password reset error:", error);

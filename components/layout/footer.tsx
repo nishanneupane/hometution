@@ -29,19 +29,63 @@ export function Footer() {
               Nepal's most trusted home tutoring platform. Connecting students with qualified tutors across Nepal for personalized learning experiences.
             </p>
             <div className="flex space-x-3">
-              <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800">
-                <Facebook className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800">
-                <Instagram className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white hover:bg-slate-800">
-                <Linkedin className="h-4 w-4" />
-              </Button>
+              <a
+                href="https://www.facebook.com/profile.php?id=61566018680593"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <Facebook className="h-4 w-4" />
+                </Button>
+              </a>
+
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <Twitter className="h-4 w-4" />
+                </Button>
+              </a>
+
+              <a
+                href="https://www.instagram.com/hrhometuition/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <Instagram className="h-4 w-4" />
+                </Button>
+              </a>
+
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </Button>
+              </a>
             </div>
+
           </div>
 
           {/* Quick Links */}
@@ -95,6 +139,9 @@ export function Footer() {
               <li>
                 <span className="text-slate-400">Assignment Help</span>
               </li>
+              <li>
+                <span className="text-slate-400">Physical Class</span>
+              </li>
             </ul>
           </div>
 
@@ -112,8 +159,14 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                <span className="text-slate-400">info@hrhometuition.com</span>
+                <a
+                  href="mailto:info@hrhometuition.com"
+                  className="text-slate-400 hover:underline"
+                >
+                  info@hrhometuition.com
+                </a>
               </div>
+
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import { getStudents } from "@/lib/actions/student-actions"
 import { getTeachers } from "@/lib/actions/teacher-actions"
 import { getTuitionRequests } from "@/lib/actions/application-actions"
 import { Users, GraduationCap, FileText, Clock, ArrowUpRight, Calendar } from "lucide-react"
+import { getDashboardChartData } from "@/lib/actions/admin-actions"
 
 async function getAdminStats() {
   try {
@@ -118,6 +119,7 @@ function StatCard({
 
 export default async function AdminDashboard() {
   const stats = await getAdminStats()
+  const { monthlyData, subjectData, growthPercent } = await getDashboardChartData();
 
   return (
     <div className="space-y-8">
@@ -178,7 +180,11 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Suspense fallback={<div className="h-96 bg-white rounded-xl animate-pulse" />}>
-            <DashboardChart />
+            <DashboardChart
+              monthlyData={monthlyData}
+              subjectData={subjectData}
+              growthPercent={growthPercent}
+            />
           </Suspense>
         </div>
         <div>

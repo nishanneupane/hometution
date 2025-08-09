@@ -328,6 +328,9 @@ export async function getTeacherById(id: string) {
       where: {
         id,
       },
+      include: {
+        applications: true,
+      },
     });
 
     return teachers;

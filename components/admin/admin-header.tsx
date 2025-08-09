@@ -254,7 +254,10 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
 
           {notifications.length > 0 && (
             <div className="flex justify-between items-center pt-4 border-t">
-              <Button variant="outline" size="sm" onClick={() => router.push("/admin/notifications")}>
+              <Button variant="outline" size="sm" onClick={() => {
+                router.push("/admin/notifications")
+                setNotificationDialogOpen(false)
+              }}>
                 View All
               </Button>
               <p className="text-xs text-gray-500">

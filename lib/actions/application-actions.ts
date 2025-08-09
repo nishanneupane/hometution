@@ -5,10 +5,47 @@ import { revalidatePath } from "next/cache";
 
 export async function approveApplication(id: string) {
   try {
-    await prisma.application.update({
+    const application = await prisma.application.update({
       where: { id },
       data: { status: "approved" },
+      include: {
+        teacher: { select: { email: true, name: true } },
+        tuitionRequest: {
+          include: {
+            student: true,
+          },
+        },
+      },
     });
+
+    await prisma.tuitionRequest.update({
+      where: { id: application.tuitionRequestId },
+      data: { isApproved: false },
+    });
+
+    const student = application.tuitionRequest.student;
+    const vacancyDetails = {
+      name: student.name,
+      phone: student.phoneOrWhatsapp,
+      location: `${student.city}, ${student.municipality}, ${student.district}, ${student.province}`,
+      subjects: student.subject.join(", "),
+      preferredTime: `${student.preferredTimeFrom} - ${student.preferredTimeTo}`,
+      expectedFees: student.expectedFees || "Not specified",
+      vacancyId: student.id,
+    };
+
+    await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-request-approval`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacherEmail: application.teacher.email,
+          teacherName: application.teacher.name,
+          vacancyDetails,
+        }),
+      }
+    );
 
     revalidatePath("/admin");
     return { success: true, message: "Application approved successfully" };

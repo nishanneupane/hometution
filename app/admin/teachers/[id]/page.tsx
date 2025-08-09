@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Mail, Phone, User, FileText, List } from 'lucide-react';
 import Link from 'next/link';
 import CopyTeacherCodeButton from './copy-teacher-code';
+import { getTimeAgo } from '@/lib/utils';
 
 interface TeacherIdPageProps {
     params: {
@@ -17,7 +18,7 @@ interface Application {
     id: string;
     vacancyId: string;
     status: string;
-    createdAt: string;
+    appliedAt: string;
 }
 
 interface Teacher {
@@ -39,13 +40,6 @@ interface Teacher {
     applications: Application[];
 }
 
-const formatDate = (date: string): string => {
-    return new Date(date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-};
 
 const TeacherIdPage = async ({ params }: TeacherIdPageProps) => {
     // @ts-ignore
@@ -207,7 +201,7 @@ const TeacherIdPage = async ({ params }: TeacherIdPageProps) => {
                                                             </Badge>
                                                         </div>
                                                         <span className="text-sm text-gray-600">
-                                                            Applied on: {formatDate(application.createdAt)}
+                                                            Applied : {getTimeAgo(application.appliedAt)}
                                                         </span>
                                                     </li>
                                                 ))}

@@ -119,14 +119,7 @@ export default function AdminLoginPage() {
               </Button>
             </form>
 
-            <div className="bg-slate-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-sm mb-2">Demo Credentials:</h4>
-              <p className="text-xs text-muted-foreground">
-                Email: admin@hrhometuition.com
-                <br />
-                Password: admin123
-              </p>
-            </div>
+
           </CardContent>
         </Card>
       </div>

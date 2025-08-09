@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, BookOpen, Tag, BadgeInfo, CalendarClock, Users, BookOpenCheck, Search, Filter, Info } from "lucide-react"
+import { MapPin, BookOpen, Tag, BadgeInfo, CalendarClock, Users, BookOpenCheck, Search, Filter, Info, Coins, CreditCard } from "lucide-react"
 import { convertToAmPm, getTimeAgo } from "@/lib/utils"
 import { ApplyModal } from "@/app/careers/_components/apply-modal"
 
@@ -259,12 +259,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                                 <strong>Time:</strong> {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
                                             </span>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Info className="h-4 w-4 text-blue-600" />
-                                            <span>
-                                                <strong>Salary:</strong> {student.expectedFees}
-                                            </span>
-                                        </div>
+
                                         <div className="flex items-center gap-2">
                                             <Users className="h-4 w-4 text-blue-600" />
                                             <span>
@@ -281,14 +276,22 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                 </div>
 
                                 <div className="flex justify-between items-center">
-                                    <div className="flex items-center gap-2">
-                                        <Tag className="h-4 w-4 text-blue-600" />
-                                        <span className="text-xs">
-                                            <strong>Vacancy Code:</strong> {student.id || "N/A"}
+                                    {/* <div className="flex items-center gap-2">
+      <Tag className="h-4 w-4 text-blue-600" />
+      <span className="text-xs">
+          <strong>Vacancy Code:</strong> {student.id || "N/A"}
+      </span>
+  </div> */}
+
+                                    <div className="flex items-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
+                                        <CreditCard className="h-6 w-6 text-green-700" />
+                                        <span className="text-green-900 font-extrabold text-xl flex items-center gap-1">
+                                            Salary : {student.expectedFees}
                                         </span>
                                     </div>
                                     <ApplyModal studentId={student.id} />
                                 </div>
+
                             </CardContent>
                         </Card>
                     ))}

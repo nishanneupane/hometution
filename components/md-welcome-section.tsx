@@ -72,7 +72,13 @@ export function MDWelcomeSection() {
               <div className="pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-700">Thank you,</p>
                 <p className="text-base font-medium text-gray-900">Birendra Naral</p>
-                <p className="text-sm text-gray-500">CEO, HR Home Tuition</p>
+                <div>
+                  <p className="text-sm text-gray-500">CEO, HR Home Tuition</p>
+                  <a href="mailto:ceo@hrhometuition.com" className="text-sm text-blue-500 underline">
+                    birendra@hrhometuition.com
+                  </a>
+                </div>
+
               </div>
             </div>
 

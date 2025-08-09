@@ -384,7 +384,19 @@ export default function StudentRegistrationPage() {
                         onChange={(e) => setNewSubject(e.target.value)}
                         placeholder="Enter a subject (e.g., Mathematics)"
                         className="max-w-md"
+                        onBlur={() => {
+                          if (newSubject.trim()) {
+                            handleAddSubject();
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && newSubject.trim()) {
+                            e.preventDefault();
+                            handleAddSubject();
+                          }
+                        }}
                       />
+
                       <Button
                         type="button"
                         onClick={handleAddSubject}

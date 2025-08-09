@@ -85,7 +85,6 @@ export default async function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-blue-900">{data.totalStudents}</div>
-            <p className="text-xs text-blue-700 mt-1">+12% from last month</p>
           </CardContent>
         </Card>
 
@@ -96,7 +95,6 @@ export default async function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-900">{data.approvedTeachers}</div>
-            <p className="text-xs text-green-700 mt-1">+8% from last month</p>
           </CardContent>
         </Card>
 
@@ -181,7 +179,7 @@ export default async function AnalyticsPage() {
                     <div className="flex items-center space-x-2">
                       <div className="w-24 bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-secondary h-2 rounded-full"
+                          className="bg-primary h-2 rounded-full"
                           style={{
                             width: `${(count / Math.max(...topLocations.map(([, c]) => c))) * 100}%`,
                           }}
