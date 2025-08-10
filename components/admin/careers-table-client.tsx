@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, BookOpen, Tag, BadgeInfo, CalendarClock, Users, BookOpenCheck, Search, Filter, Info, Coins, CreditCard } from "lucide-react"
 import { convertToAmPm, getTimeAgo } from "@/lib/utils"
 import { ApplyModal } from "@/app/careers/_components/apply-modal"
+import { useSearchParams } from "next/navigation"
 
 interface CareersTableClientProps {
     students: any[]
@@ -31,6 +32,8 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
     const [filterGender, setFilterGender] = useState<string | null>(null)
     const [filterRequestType, setFilterRequestType] = useState<string | null>(null)
     const [filterSubject, setFilterSubject] = useState<string | null>(null)
+    const searchParams = useSearchParams()
+    const vacancyId = searchParams.get("id")
 
     // Extract unique values for filter options
     const uniqueCities = [...new Set(students.map((student) => student.city))].sort()
@@ -73,6 +76,14 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
     // Check if any search or filter is applied
     const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterRequestType || filterSubject
 
+    useEffect(() => {
+        if (vacancyId) {
+            const element = document.getElementById(`vacancy-${vacancyId}`)
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "center" })
+            }
+        }
+    }, [vacancyId])
     return (
         <>
             <div className="mb-6 space-y-4">
@@ -208,6 +219,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredStudents.map((student) => (
                         <Card
+                            id={`vacancy-${student.id}`}
                             key={student.id}
                             className="w-full max-w-[380px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-sm px-1 pt-3 mx-auto font-sans"
                         >

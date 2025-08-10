@@ -142,19 +142,6 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" required />
-                <Label htmlFor="terms" className="text-sm">
-                  I agree to the{" "}
-                  <Link href="/terms" className="text-primary hover:underline">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="/privacy" className="text-primary hover:underline">
-                    Privacy Policy
-                  </Link>
-                </Label>
-              </div>
 
               <Button type="submit" className="w-full h-11 text-base" disabled={isLoading}>
                 {isLoading ? "Creating Account..." : "Create Account"}
@@ -211,6 +198,6 @@ export default function RegisterPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </div >
   )
 }

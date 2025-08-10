@@ -187,7 +187,7 @@ export function generateTuitionRequestApproval(
           </p>
 
           <div style="text-align: center;">
-            <a href="https://hrhometuition.com/careers"
+            <a href="https://hrhometuition.com/careers?id=${vacancyDetails.vacancyId}"
               style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">
               Apply Now
             </a>

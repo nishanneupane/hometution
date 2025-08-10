@@ -48,6 +48,7 @@ export async function approveApplication(id: string) {
     );
 
     revalidatePath("/admin");
+    revalidatePath("/careers");
     return { success: true, message: "Application approved successfully" };
   } catch (error) {
     console.error("Error approving application:", error);

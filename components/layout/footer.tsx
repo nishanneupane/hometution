@@ -177,17 +177,7 @@ export function Footer() {
         <div className="container py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-400 text-sm">© 2024 HR Home Tuition. All rights reserved.</p>
-            <div className="flex space-x-6 text-sm">
-              <Link href="/privacy" className="text-slate-400 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-slate-400 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/cookies" className="text-slate-400 hover:text-white transition-colors">
-                Cookie Policy
-              </Link>
-            </div>
+
           </div>
         </div>
       </div>
