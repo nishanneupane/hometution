@@ -40,13 +40,16 @@ const VacancyIdPage = async ({ params }: VacancyIdPageProps) => {
     const student: Student = vacancy && vacancy.student;
 
     return (
-        <div className="flex flex-col items-center p-4 bg-gray-100 min-h-screen">
-            <VacancyCard student={student} convertToAmPm={convertToAmPm} />
-            <div className="flex justify-between items-center mt-4 w-full max-w-[380px]">
-                <DownloadButton vacancyId={student.id} />
+        <div className="p-4 bg-gray-100">
+            <div className="mx-auto w-full max-w-[400px]">
+                <VacancyCard student={student} convertToAmPm={convertToAmPm} />
+                <div className="flex justify-between items-center mt-4">
+                    <DownloadButton vacancyId={student.id} />
+                </div>
+                <CopyCaption student={student} />
             </div>
-            <CopyCaption student={student} />
         </div>
+
     );
 };
 

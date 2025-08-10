@@ -5,12 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function convertToAmPm(hour: number | string): string {
-  const h = typeof hour === "string" ? parseInt(hour) : hour;
-  const suffix = h >= 12 ? "PM" : "AM";
-  const formattedHour = h % 12 === 0 ? 12 : h % 12;
-  return `${formattedHour} ${suffix}`;
-}
+export const convertToAmPm = (time: string): string => {
+  const [hours, minutes] = time.split(":").map(Number);
+  const period = hours >= 12 ? "PM" : "AM";
+  const adjustedHours = hours % 12 || 12;
+  return `${adjustedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+};
 
 export function getTimeAgo(date: Date | string): string {
   const now = new Date();
@@ -33,6 +33,12 @@ export function getTimeAgo(date: Date | string): string {
   if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
 
   return `${years} year${years === 1 ? "" : "s"} ago`;
+}
+
+export function formatSalary(amount: number | string): string {
+  if (!amount) return "Rs 0";
+  const num = Number(amount);
+  return `Rs ${num.toLocaleString("en-IN")}`;
 }
 
 export function generateApprovalEmailHTML(

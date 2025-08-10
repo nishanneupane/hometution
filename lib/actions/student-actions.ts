@@ -100,7 +100,7 @@ export async function createStudent(formData: FormData) {
     await prisma.tuitionRequest.create({
       data: {
         studentId: student.id,
-        status: "active",
+        status: "pending",
       },
     });
 

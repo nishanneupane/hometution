@@ -1,7 +1,8 @@
 import React from 'react';
 import { CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Tag, BadgeInfo, CalendarClock, Info, Users, BookOpenCheck } from 'lucide-react';
+import { MapPin, Tag, BadgeInfo, CalendarClock, Info, Users, BookOpenCheck, CreditCard } from 'lucide-react';
+import { formatSalary } from '@/lib/utils';
 
 interface Student {
     id: string;
@@ -27,24 +28,21 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
     return (
         <div
             id="vacancy-card"
-            className="w-[400px] h-[400px] bg-white text-gray-900 border border-gray-300 rounded-xl shadow-md px-5 py-2 mx-auto font-sans"
-            style={{
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-                backgroundColor: "#fff",
-            }}
+            className="max-w-sm bg-white text-gray-900 border border-gray-200 rounded-xl shadow-lg overflow-hidden font-sans mx-auto"
         >
-            <CardContent className="flex flex-col gap-2 h-full">
-                {/* Header Section */}
-                <div className="flex items-center justify-center gap-3">
+            <CardContent className="flex flex-col gap-4 p-5">
+                {/* Header */}
+                <div className="flex items-center gap-3">
                     <img
                         src="/images/hrhometuition.jpeg"
                         alt="HR Home Tuition"
-                        className="h-20 w-20 rounded object-cover shrink-0"
+                        className="h-16 w-16 rounded-lg object-cover border border-gray-300"
                     />
-                    <div className="flex flex-col items-start gap-1">
-                        <p className="text-red-600 font-bold text-sm uppercase">Urgent! Urgent !! Urgent !!!</p>
-                        <h2 className="text-base font-semibold text-red-800 leading-tight">
+                    <div className='flex items-center flex-col'>
+                        <p className="text-red-500 font-bold uppercase tracking-wider">
+                            Urgent! Urgent !! Urgent !!!
+                        </p>
+                        <h2 className="text-lg font-semibold text-gray-800">
                             {student.requestType === "school"
                                 ? "School Teacher Needed"
                                 : "Home Tuition Teacher Needed"}
@@ -52,78 +50,77 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                     </div>
                 </div>
 
-                {/* Images Section */}
-                <div className="grid grid-cols-2 gap-1">
+                {/* Images */}
+                <div className="grid grid-cols-2 gap-2">
                     <img
                         src="/images/hero2.jpg"
                         alt="Tuition 1"
-                        className="object-cover h-20 w-full rounded"
+                        className="object-cover h-24 w-full rounded-lg"
                     />
                     <img
                         src="/images/hero3.jpg"
                         alt="Tuition 2"
-                        className="object-cover h-20 w-full rounded"
+                        className="object-cover h-24 w-full rounded-lg"
                     />
                 </div>
 
-
-
-                {/* Details Section */}
-                <div className="space-y-4 text-sm text-gray-800">
-
+                {/* Details */}
+                <div className="space-y-3 text-sm text-gray-700">
                     {/* Location */}
-                    <div className="grid grid-cols-[24px_auto] items-start gap-2">
-                        <MapPin className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0" />
                         <span>
-                            <strong>Location:</strong> {student.province}, {student.municipality}-{student.ward}, {student.city}
+                            <strong>Location:</strong> {student.province}, {student.municipality}-
+                            {student.ward}, {student.city}
                         </span>
                     </div>
 
-                    {/* Other info */}
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-
-                        <div className="grid grid-cols-[24px_auto] items-center gap-2">
-                            <BadgeInfo className="w-6 h-6 text-blue-600" />
+                    {/* Level & Time */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="flex items-center gap-2">
+                            <BadgeInfo className="w-5 h-5 text-blue-500 flex-shrink-0" />
                             <span>
-                                <strong>{student.requestType === "school" ? "Level" : "Grade"}:</strong> {student.class}
+                                <strong>
+                                    {student.requestType === "school" ? "Level" : "Grade"}:
+                                </strong>{" "}
+                                {student.class}
                             </span>
                         </div>
-
-                        <div className="grid grid-cols-[24px_auto] items-center gap-2">
-                            <CalendarClock className="w-6 h-6 text-blue-600" />
+                        <div className="flex items-center gap-2">
+                            <CalendarClock className="w-5 h-5 text-blue-500 flex-shrink-0" />
                             <span>
-                                <strong>Time:</strong> {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
-                            </span>
-                        </div>
-
-                        <div className="grid grid-cols-[24px_auto] items-center gap-2">
-                            <Info className="w-6 h-6 text-blue-600" />
-                            <span>
-                                <strong>Salary:</strong> {student.expectedFees}
-                            </span>
-                        </div>
-
-                        <div className="grid grid-cols-[24px_auto] items-center gap-2">
-                            <Users className="w-6 h-6 text-blue-600" />
-                            <span>
-                                <strong>Gender:</strong> {student.gender}
+                                <strong>Time:</strong>{" "}
+                                {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
                             </span>
                         </div>
                     </div>
 
                     {/* Subject */}
-                    <div className="grid grid-cols-[24px_auto] items-start gap-2">
-                        <BookOpenCheck className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center gap-2">
+                        <BookOpenCheck className="w-5 h-5 text-blue-500 flex-shrink-0" />
                         <span>
                             <strong>Subject:</strong> {student.subject.join(", ")}
                         </span>
                     </div>
 
+                    {/* Salary & Gender */}
+                    <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-3 py-2 flex-shrink-0">
+                        <div className="flex items-center gap-2">
+                            <CreditCard className="w-5 h-5 text-green-600 flex-shrink-0" />
+                            <span className="text-green-700 font-bold text-base">
+                                Salary: {formatSalary(student.expectedFees)}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-gray-600">
+                            <Users className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                            <span className="text-sm">
+                                <strong>Gender:</strong> {student.gender.charAt(0).toUpperCase() + student.gender.slice(1)}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-
             </CardContent>
         </div>
-
     );
 };
 

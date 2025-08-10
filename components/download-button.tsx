@@ -2,37 +2,59 @@
 
 import { Button } from '@/components/ui/button';
 import html2canvas from 'html2canvas';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface DownloadButtonProps {
     vacancyId: string;
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({ vacancyId }) => {
-
     const handleDownload = async () => {
         const element = document.getElementById("vacancy-card");
+        if (!element) return;
 
-        if (element) {
-            try {
-                element.style.transform = "scale(1)";
-                void element.offsetHeight;
+        try {
+            await document.fonts.ready;
 
-                const canvas = await html2canvas(element, {
-                    scale: 3,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: "#ffffff",
-                    allowTaint: true,
-                });
+            const images = Array.from(element.querySelectorAll("img"));
+            await Promise.all(
+                images.map((img) => {
+                    if (img.complete) return Promise.resolve();
+                    return new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                    });
+                })
+            );
 
-                const link = document.createElement("a");
-                link.href = canvas.toDataURL("image/jpeg", 1.0); // JPG output
-                link.download = `vacancy-${vacancyId}.jpg`;
-                link.click();
-            } catch (error) {
-                console.error("Error generating canvas:", error);
-            }
+            // Clone to a neutral container
+            const clone = element.cloneNode(true) as HTMLElement;
+            clone.style.position = "absolute";
+            clone.style.top = "-9999px";
+            clone.style.left = "-9999px";
+            clone.style.width = "400px";
+            clone.style.height = "420px";
+            clone.style.boxShadow = "none";
+            clone.style.margin = "0";
+
+            document.body.appendChild(clone);
+
+            const canvas = await html2canvas(clone, {
+                scale: 3,
+                useCORS: true,
+                logging: false,
+                backgroundColor: "#ffffff",
+            });
+
+            document.body.removeChild(clone);
+
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.download = `vacancy-${vacancyId}.png`;
+            link.click();
+
+        } catch (error) {
+            console.error("Error generating canvas:", error);
         }
     };
 

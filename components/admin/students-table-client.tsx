@@ -37,6 +37,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
   const [filterOpen, setFilterOpen] = useState(false)
   const [filterSubjects, setFilterSubjects] = useState<string[]>([])
   const [filterCity, setFilterCity] = useState<string | null>(null)
+  const [filterClass, setFilterClass] = useState<string | null>(null)
   const [filterTime, setFilterTime] = useState<string | null>(null)
 
   const handleEdit = (student: any) => {
@@ -60,6 +61,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
   // Extract unique values for filter options
   const uniqueSubjects = [...new Set(students.flatMap((student) => student.subject))].sort()
   const uniqueCities = [...new Set(students.map((student) => student.city))].sort()
+  const uniqueClasses = [...new Set(students.map((student) => student.class))].sort()
   const uniqueTimes = [...new Set(students.map((student) => `${student.preferredTimeFrom} - ${student.preferredTimeTo}`))].sort()
 
   // Filter students based on search term and filters
@@ -72,6 +74,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
         student.name.toLowerCase().includes(searchLower) ||
         student.schoolName.toLowerCase().includes(searchLower) ||
         student.city.toLowerCase().includes(searchLower) ||
+        student.class.toLowerCase().includes(searchLower) ||
         student.district.toLowerCase().includes(searchLower) ||
         student.phoneOrWhatsapp.toLowerCase().includes(searchLower) ||
         student.subject.some((subject: string) => subject.toLowerCase().includes(searchLower))
@@ -80,10 +83,11 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
         ? filterSubjects.every((subject) => student.subject.includes(subject))
         : true
       const cityMatch = filterCity ? student.city === filterCity : true
+      const classMatch = filterClass ? student.class === filterClass : true
       const timeMatch = filterTime ? `${student.preferredTimeFrom} - ${student.preferredTimeTo}` === filterTime : true
-      return textMatch && subjectMatch && cityMatch && timeMatch
+      return textMatch && subjectMatch && cityMatch && timeMatch && classMatch
     })
-  }, [students, searchTerm, filterSubjects, filterCity, filterTime])
+  }, [students, searchTerm, filterSubjects, filterCity, filterTime, filterClass])
 
   // Handle subject filter checkbox changes
   const handleSubjectChange = (subject: string, checked: boolean) => {
@@ -97,10 +101,11 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
     setFilterSubjects([])
     setFilterCity(null)
     setFilterTime(null)
+    setFilterClass(null)
   }
 
   // Check if any search or filter is applied
-  const isSearchOrFilterApplied = searchTerm || filterSubjects.length > 0 || filterCity || filterTime
+  const isSearchOrFilterApplied = searchTerm || filterSubjects.length > 0 || filterCity || filterTime || filterClass
 
   return (
     <>
@@ -159,6 +164,22 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
                       {uniqueCities.map((city) => (
                         <SelectItem key={city} value={city}>
                           {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Class</Label>
+                  <Select value={filterClass || ""} onValueChange={(value) => setFilterClass(value || null)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Class" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Classes</SelectItem>
+                      {uniqueClasses.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
                         </SelectItem>
                       ))}
                     </SelectContent>
