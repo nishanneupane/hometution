@@ -28,25 +28,28 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
     return (
         <div
             id="vacancy-card"
-            className="max-w-sm bg-white text-gray-900 border border-gray-200 rounded-xl shadow-lg overflow-hidden font-sans mx-auto"
+            className="max-w-md bg-white text-gray-900 border border-gray-200 rounded-xl shadow-lg overflow-hidden font-sans mx-auto"
         >
             <CardContent className="flex flex-col gap-4 p-5">
-                {/* Header */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                     <img
                         src="/images/hrhometuition.jpeg"
                         alt="HR Home Tuition"
-                        className="h-16 w-16 rounded-lg object-cover border border-gray-300"
+                        className="h-20 w-20 rounded object-cover shrink-0 float-start"
                     />
-                    <div className='flex items-center flex-col'>
-                        <p className="text-red-500 font-bold uppercase tracking-wider">
-                            Urgent! Urgent !! Urgent !!!
-                        </p>
-                        <h2 className="text-lg font-semibold text-gray-800">
-                            {student.requestType === "school"
-                                ? "School Teacher Needed"
-                                : "Home Tuition Teacher Needed"}
+                    <div className="flex flex-col items-start gap-1">
+                        <p className="text-red-600 font-bold text-sm uppercase">Urgent! Urgent !! Urgent !!!</p>
+                        <h2 className="text-base font-semibold text-red-800 leading-tight">
+                            {student.requestType === "school" ? "School Teacher Needed" : "Home Tuition Teacher Needed"}
                         </h2>
+                        <div className="flex gap-2">
+                            <Badge
+                                variant={student.requestType === "school" ? "default" : "secondary"}
+                                className={student.requestType === "school" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
+                            >
+                                {student.requestType === "school" ? "School" : "Student"}
+                            </Badge>
+                        </div>
                     </div>
                 </div>
 
@@ -76,7 +79,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                     </div>
 
                     {/* Level & Time */}
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="flex items-center gap-2">
                             <BadgeInfo className="w-5 h-5 text-blue-500 flex-shrink-0" />
                             <span>
@@ -86,13 +89,19 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                                 {student.class}
                             </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <CalendarClock className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                            <span>
-                                <strong>Time:</strong>{" "}
-                                {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
+                        <div className="flex items-center gap-1 text-gray-600">
+                            <Users className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                            <span className="text-sm">
+                                <strong>Gender:</strong> {student.gender.charAt(0).toUpperCase() + student.gender.slice(1)}
                             </span>
                         </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <CalendarClock className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                        <span>
+                            <strong>Time:</strong>{" "}
+                            {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
+                        </span>
                     </div>
 
                     {/* Subject */}
@@ -104,19 +113,12 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                     </div>
 
                     {/* Salary & Gender */}
-                    <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-3 py-2 flex-shrink-0">
-                        <div className="flex items-center gap-2">
-                            <CreditCard className="w-5 h-5 text-green-600 flex-shrink-0" />
-                            <span className="text-green-700 font-bold text-base">
-                                Salary: {formatSalary(student.expectedFees)}
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-1 text-gray-600">
-                            <Users className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                            <span className="text-sm">
-                                <strong>Gender:</strong> {student.gender.charAt(0).toUpperCase() + student.gender.slice(1)}
-                            </span>
-                        </div>
+
+                    <div className="flex items-center justify-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <CreditCard className="h-6 w-6 text-green-700" />
+                        <span className="text-green-900 font-extrabold text-xl flex items-center gap-1">
+                            Salary : {formatSalary(student.expectedFees)}
+                        </span>
                     </div>
                 </div>
             </CardContent>
