@@ -258,19 +258,20 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-y-2">
-                                        <div className="flex items-center gap-2">
-                                            <BadgeInfo className="h-4 w-4 text-blue-600" />
-                                            <span>
-                                                <strong>{student.requestType === "school" ? "Level" : "Grade"}:</strong> {student.class}
-                                            </span>
-                                        </div>
+                                    <div className="flex items-center gap-2 ">
+                                        <BadgeInfo className="h-4 w-4 text-blue-600" />
+                                        <span>
+                                            <strong>{student.requestType === "school" ? "Level" : "Grade"}:</strong> {student.class}
+                                        </span>
+                                    </div>
+                                    <div className="flex gap-2 justify-between w-full">
                                         <div className="flex items-center gap-2">
                                             <CalendarClock className="h-4 w-4 text-blue-600" />
                                             <span>
                                                 <strong>Time:</strong> {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
                                             </span>
                                         </div>
+
 
                                         <div className="flex items-center gap-2">
                                             <Users className="h-4 w-4 text-blue-600" />
