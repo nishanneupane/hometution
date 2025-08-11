@@ -159,11 +159,12 @@ export default function ContactPage() {
               <iframe
                 title="Dillibazaar Location"
                 className="w-full h-full border-0"
-                src="https://www.google.com/maps/@/data=!4m3!11m2!2se37vtDZ1GlFM_aSXizRcOBm9NYQTyg!3e3?utm_source=mstt_0&g_ep=CAESBzI1LjMyLjAYACDf3wEqmQEsOTQyNjc3MjcsOTQyODIzMzYsOTQyODQ0OTYsOTQyMjMyOTksOTQyMTY0MTMsOTQyODA1NzYsOTQyMTI0OTYsOTQyMDczOTQsOTQyMDc1MDYsOTQyMDg1MDYsOTQyMTc1MjMsOTQyMTg2NTMsOTQyMjk4MzksOTQyNzUxNjgsNDcwODQzOTMsOTQyMTMyMDAsOTQyNTgzMjVCAk5Q&skid=b40f4417-5700-488c-a6c3-221adc19f2aa"
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d7064.769989853968!2d85.31716725390625!3d27.705397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDQyJzE5LjQiTiA4NcKwMTknMzEuNSJF!5e0!3m2!1sen!2snp!4v1754931547457!5m2!1sen!2snp"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
+
             </div>
           </div>
         </div>
