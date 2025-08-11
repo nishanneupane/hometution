@@ -250,66 +250,70 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                     <img src="/images/hero2.jpg" alt="Tuition 1" className="object-cover h-20 w-full rounded" />
                                     <img src="/images/hero3.jpg" alt="Tuition 2" className="object-cover h-20 w-full rounded" />
                                 </div>
-                                <div className="space-y-3 text-sm text-gray-800">
-                                    <div className="flex items-start gap-2">
-                                        <MapPin className="h-4 w-4 text-blue-600 mt-0.5" />
+                                <div className="space-y-3 text-sm text-gray-700">
+                                    {/* Location */}
+                                    <div className="flex items-center gap-2">
+                                        <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0" />
                                         <span>
-                                            <strong>Location:</strong> {student.province}, {student.municipality}-{student.ward}, {student.city}
+                                            <strong>Location:</strong> {student.province}, {student.municipality}-
+                                            {student.ward}, {student.city}
                                         </span>
                                     </div>
 
-                                    <div className="flex items-center gap-2 ">
-                                        <BadgeInfo className="h-4 w-4 text-blue-600" />
+                                    {/* Level & Time */}
+                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                        <div className="flex items-center gap-2">
+                                            <BadgeInfo className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                                            <span>
+                                                <strong>
+                                                    {student.requestType === "school" ? "Level" : "Grade"}:
+                                                </strong>{" "}
+                                                {student.class}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-gray-600">
+                                            <Users className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                                            <span className="text-sm">
+                                                <strong>Gender:</strong> {student.gender.charAt(0).toUpperCase() + student.gender.slice(1)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CalendarClock className="w-5 h-5 text-blue-500 flex-shrink-0" />
                                         <span>
-                                            <strong>{student.requestType === "school" ? "Level" : "Grade"}:</strong> {student.class}
+                                            <strong>Time:</strong>{" "}
+                                            {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
                                         </span>
                                     </div>
-                                    <div className="flex gap-2 justify-between w-full">
-                                        <div className="flex items-center gap-2">
-                                            <CalendarClock className="h-4 w-4 text-blue-600" />
-                                            <span>
-                                                <strong>Time:</strong> {convertToAmPm(student.preferredTimeFrom)}–{convertToAmPm(student.preferredTimeTo)}
-                                            </span>
-                                        </div>
 
-
-                                        <div className="flex items-center gap-2">
-                                            <Users className="h-4 w-4 text-blue-600" />
-                                            <span>
-                                                <strong>Gender:</strong> {student.gender}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <BookOpenCheck className="h-4 w-4 text-blue-600 mt-0.5" />
+                                    {/* Subject */}
+                                    <div className="flex items-center gap-2">
+                                        <BookOpenCheck className="w-5 h-5 text-blue-500 flex-shrink-0" />
                                         <span>
                                             <strong>Subject:</strong> {student.subject.join(", ")}
                                         </span>
                                     </div>
-                                </div>
 
-                                <div className="flex justify-between items-center">
-                                    {/* <div className="flex items-center gap-2">
-      <Tag className="h-4 w-4 text-blue-600" />
-      <span className="text-xs">
-          <strong>Vacancy Code:</strong> {student.id || "N/A"}
-      </span>
-  </div> */}
+                                    {/* Salary & Gender */}
 
-                                    <div className="flex items-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                        <CreditCard className="h-6 w-6 text-green-700" />
-                                        <span className="text-green-900 font-extrabold text-lg flex items-center gap-1">
-                                            Salary : {formatSalary(student.expectedFees)}
-                                        </span>
+                                    <div className="flex justify-between items-center gap-2">
+                                        <div className="flex items-center justify-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
+                                            <CreditCard className="h-6 w-6 text-green-700" />
+                                            <span className="text-green-900 font-extrabold text-lg flex items-center gap-1">
+                                                Salary :{formatSalary(student.expectedFees)}
+                                            </span>
+                                        </div>
+
+                                        <ApplyModal studentId={student.id} />
                                     </div>
-                                    <ApplyModal studentId={student.id} />
                                 </div>
 
                             </CardContent>
                         </Card>
                     ))}
-                </div>
-            )}
+                </div >
+            )
+            }
         </>
     )
 }

@@ -40,6 +40,9 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const [filterDistrict, setFilterDistrict] = useState<string | null>(null)
   const [filterGender, setFilterGender] = useState<string | null>(null)
   const [filterApproved, setFilterApproved] = useState<boolean | null>(null)
+  const [filterWard, setFilterWard] = useState<string | null>(null)
+  const [filterMunicipality, setFilterMunicipality] = useState<string | null>(null)
+  const [filterProvince, setFilterProvince] = useState<string | null>(null)
 
   const handleEdit = (teacher: any) => {
     setSelectedTeacher(teacher)
@@ -81,6 +84,9 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const uniqueCities = [...new Set(teachers.map((teacher) => teacher.city))].sort()
   const uniqueDistricts = [...new Set(teachers.map((teacher) => teacher.district))].sort()
   const uniqueGenders = [...new Set(teachers.map((teacher) => teacher.gender))].sort()
+  const uniqueWards = [...new Set(teachers.map((teacher) => teacher.ward))].sort()
+  const uniqueMunicipalities = [...new Set(teachers.map((teacher) => teacher.municipality))].sort()
+  const uniqueProvinces = [...new Set(teachers.map((teacher) => teacher.province))].sort()
 
   // Filter teachers based on search term and filters
   const filteredTeachers = useMemo(() => {
@@ -94,15 +100,21 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         teacher.phoneOrWhatsapp.toLowerCase().includes(searchLower) ||
         teacher.city.toLowerCase().includes(searchLower) ||
         teacher.district.toLowerCase().includes(searchLower) ||
-        teacher.teacherCode.toLowerCase().includes(searchLower)
+        teacher.teacherCode.toLowerCase().includes(searchLower) ||
+        (teacher.ward && teacher.ward.toLowerCase().includes(searchLower)) ||
+        (teacher.municipality && teacher.municipality.toLowerCase().includes(searchLower)) ||
+        (teacher.province && teacher.province.toLowerCase().includes(searchLower))
         : true
       const cityMatch = filterCity ? teacher.city === filterCity : true
       const districtMatch = filterDistrict ? teacher.district === filterDistrict : true
       const genderMatch = filterGender ? teacher.gender === filterGender : true
       const approvedMatch = filterApproved !== null ? teacher.isApproved === filterApproved : true
-      return textMatch && cityMatch && districtMatch && genderMatch && approvedMatch
+      const wardMatch = filterWard ? teacher.ward === filterWard : true
+      const municipalityMatch = filterMunicipality ? teacher.municipality === filterMunicipality : true
+      const provinceMatch = filterProvince ? teacher.province === filterProvince : true
+      return textMatch && cityMatch && districtMatch && genderMatch && approvedMatch && wardMatch && municipalityMatch && provinceMatch
     })
-  }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved])
+  }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved, filterWard, filterMunicipality, filterProvince])
 
   // Reset filters
   const handleResetFilters = () => {
@@ -110,10 +122,13 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     setFilterDistrict(null)
     setFilterGender(null)
     setFilterApproved(null)
+    setFilterWard(null)
+    setFilterMunicipality(null)
+    setFilterProvince(null)
   }
 
   // Check if any search or filter is applied
-  const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null
+  const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null || filterWard || filterMunicipality || filterProvince
 
   return (
     <>
@@ -122,7 +137,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
-              placeholder="Search by teacher ID, name, email, code, or contact..."
+              placeholder="Search by teacher ID, name, email, code, contact, ward, municipality, or province..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -135,11 +150,11 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                 Filters
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] ">
               <DialogHeader>
                 <DialogTitle>Filter Teachers</DialogTitle>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
+              <div className="grid gap-4 py-4 sm:max-h-[350px] overflow-scroll px-2">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">City</Label>
                   <Select value={filterCity || ""} onValueChange={(value) => setFilterCity(value || null)}>
@@ -147,7 +162,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       <SelectValue placeholder="Select city" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Cities</SelectItem>
                       {uniqueCities.map((city) => (
                         <SelectItem key={city} value={city}>
                           {city}
@@ -163,10 +177,54 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       <SelectValue placeholder="Select district" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Districts</SelectItem>
                       {uniqueDistricts.map((district) => (
                         <SelectItem key={district} value={district}>
                           {district}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Ward</Label>
+                  <Select value={filterWard || ""} onValueChange={(value) => setFilterWard(value || null)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select ward" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueWards.map((ward) => (
+                        <SelectItem key={ward} value={ward}>
+                          {ward}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Municipality</Label>
+                  <Select value={filterMunicipality || ""} onValueChange={(value) => setFilterMunicipality(value || null)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select municipality" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueMunicipalities.map((municipality) => (
+                        <SelectItem key={municipality} value={municipality}>
+                          {municipality}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Province</Label>
+                  <Select value={filterProvince || ""} onValueChange={(value) => setFilterProvince(value || null)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select province" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueProvinces.map((province) => (
+                        <SelectItem key={province} value={province}>
+                          {province}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -179,7 +237,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Genders</SelectItem>
                       {uniqueGenders.map((gender) => (
                         <SelectItem key={gender} value={gender}>
                           {gender}
@@ -198,7 +255,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       <SelectValue placeholder="Select approval status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="true">Approved</SelectItem>
                       <SelectItem value="false">Pending</SelectItem>
                     </SelectContent>
@@ -281,7 +337,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
 
                   <div className="flex items-center text-sm text-gray-600">
                     <MapPin className="h-4 w-4 mr-2" />
-                    {teacher.city}, {teacher.district}
+                    {teacher.city}, {teacher.district}, {teacher.municipality}, Ward {teacher.ward}, {teacher.province}
                   </div>
 
                   <div className="flex items-center justify-between">

@@ -80,7 +80,7 @@ export function generateApprovalEmailHTML(
           <div style="text-align: center; margin-top: 25px;">
             <a href="https://hrhometuition.com" 
               style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">
-              Visit Dashboard
+              Visit Website
             </a>
           </div>
         </div>
@@ -153,12 +153,14 @@ export function generatePasswordResetEmailHTML(name: string): string {
 export function generateTuitionRequestApproval(
   teacherName: string,
   vacancyDetails: {
+    requestType: "student" | "school";
     name: string;
     phone: string;
     location: string;
     subjects: string;
     preferredTime: string;
-    expectedFees: string;
+    expectedFees?: string;
+    salary?: string;
     vacancyId: string;
   }
 ): string {
@@ -168,7 +170,7 @@ export function generateTuitionRequestApproval(
         
         <!-- Header -->
         <div style="background: linear-gradient(90deg, #2563eb, #1e40af); padding: 30px; text-align: center; color: white;">
-          <img src="https://hrhometuition.com/images/hrlogo.png" alt="HR Home Tuition" style="max-width: 80px; margin-bottom: 15px;" />
+          <img src="https://hrhometuition.com/images/hrlogo.png" alt="HR Home Tuition" style="max-width: 80px; margin-bottom: 15px; border-radius: 50%;" />
           <h1 style="margin: 0; font-size: 26px; font-weight: 600;">Application Approved!</h1>
         </div>
 
@@ -180,24 +182,76 @@ export function generateTuitionRequestApproval(
           </p>
 
           <ul style="color: #4b5563; font-size: 15px; line-height: 1.6; padding-left: 20px; margin-bottom: 20px;">
-            <li><strong>Student Name:</strong> ${vacancyDetails.name}</li>
+            <li><strong>${
+              vacancyDetails.requestType === "school" ? "School" : "Student"
+            } Name:</strong> ${vacancyDetails.name}</li>
             <li><strong>Phone/WhatsApp:</strong> ${vacancyDetails.phone}</li>
             <li><strong>Location:</strong> ${vacancyDetails.location}</li>
             <li><strong>Subjects:</strong> ${vacancyDetails.subjects}</li>
-            <li><strong>Preferred Time:</strong> ${vacancyDetails.preferredTime}</li>
-            <li><strong>Expected Fees:</strong> ${vacancyDetails.expectedFees}</li>
+            <li><strong>Preferred Time:</strong> ${
+              vacancyDetails.preferredTime
+            }</li>
+            ${
+              vacancyDetails.requestType === "school"
+                ? vacancyDetails.salary
+                  ? `<li><strong>Salary:</strong> ${vacancyDetails.salary}</li>`
+                  : ""
+                : vacancyDetails.expectedFees
+                ? `<li><strong>Expected Fees:</strong> ${vacancyDetails.expectedFees}</li>`
+                : ""
+            }
           </ul>
 
           <p style="color: #6b7280; font-size: 13px; font-style: italic; margin-bottom: 25px;">
-            If you can’t find this listing easily, visit the career page and search by location or vacancy ID: <strong>${vacancyDetails.vacancyId}</strong>.
+            If you can’t find this listing easily, visit the career page and search by location or vacancy ID: <strong>${
+              vacancyDetails.vacancyId
+            }</strong>.
           </p>
 
           <div style="text-align: center;">
-            <a href="https://hrhometuition.com/careers?id=${vacancyDetails.vacancyId}"
+            <a href="https://hrhometuition.com/careers?id=${
+              vacancyDetails.vacancyId
+            }"
               style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">
-              Apply Now
+              View Details
             </a>
           </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 14px; color: #6b7280;">
+          <p style="margin: 0;">📍 Dilli Bazar, Kathmandu, Nepal</p>
+          <p style="margin: 0;">📞 +977 9767482282</p>
+          <p style="margin-top: 8px;">
+            <a href="https://hrhometuition.com" style="color: #2563eb; text-decoration: none;">hrhometuition.com</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+export function generateOfficeInvitationSimple(teacherName: string): string {
+  return `
+    <div style="font-family: 'Segoe UI', sans-serif; background-color: #f5f7fa; padding: 0; margin: 0;">
+      <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        
+        <!-- Header -->
+        <div style="background: linear-gradient(90deg, #2563eb, #1e40af); padding: 30px; text-align: center; color: white;">
+          <img src="https://hrhometuition.com/images/hrlogo.png" alt="HR Home Tuition" style="max-width: 80px; margin-bottom: 15px; border-radius: 50%;" />
+          <h1 style="margin: 0; font-size: 26px; font-weight: 600;">Office Visit Invitation</h1>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 30px;">
+          <h2 style="color: #111827; font-size: 22px; font-weight: 600; margin-top: 0;">Hi ${teacherName},</h2>
+          <p style="color: #4b5563; font-size: 16px; line-height: 1.6;">
+            Please come to our office located at Dilli Bazar, Kathmandu, Nepal. We’d like to discuss your application in person.
+          </p>
+          <p style="color: #4b5563; font-size: 16px; line-height: 1.6;">
+            Call us at +977 9767482282 to schedule your visit or if you have any questions.
+          </p>
         </div>
 
         <!-- Footer -->

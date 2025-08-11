@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { approveApplication, rejectApplication } from "@/lib/actions/application-actions"
-import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone, User, School } from "lucide-react"
+import { approveApplication, inviteToOffice, rejectApplication } from "@/lib/actions/application-actions"
+import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone, User, School, Building } from "lucide-react"
 import { toast } from "sonner"
 
 interface RequestsTableClientProps {
@@ -24,6 +24,15 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
 
   const handleRejectApplication = async (applicationId: string) => {
     const result = await rejectApplication(applicationId)
+    if (result.success) {
+      toast.success(result.message)
+    } else {
+      toast.error(result.message)
+    }
+  }
+
+  const handleInviteToOffice = async (applicationId: string) => {
+    const result = await inviteToOffice(applicationId)
     if (result.success) {
       toast.success(result.message)
     } else {
@@ -151,7 +160,9 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                               ? "default"
                               : application.status === "rejected"
                                 ? "destructive"
-                                : "secondary"
+                                : application.status === "invited"
+                                  ? "outline"
+                                  : "secondary"
                           }
                         >
                           {application.status}
@@ -159,6 +170,36 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
 
                         {application.status === "pending" && (
                           <div className="flex space-x-2">
+                            <Button
+                              size="sm"
+                              onClick={() => handleInviteToOffice(application.id)}
+                              className="bg-blue-600 hover:bg-blue-700"
+                            >
+                              <Building className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Invite to Office</p>
+                            </Button>
+                            {/* <Button
+                              size="sm"
+                              onClick={() => handleApproveApplication(application.id)}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Approve</p>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRejectApplication(application.id)}
+                              className="text-red-600 border-red-600 hover:bg-red-50"
+                            >
+                              <XCircle className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Reject</p>
+                            </Button> */}
+                          </div>
+                        )}
+                        {application.status === "invited" && (
+                          <div className="flex space-x-2">
+
                             <Button
                               size="sm"
                               onClick={() => handleApproveApplication(application.id)}
