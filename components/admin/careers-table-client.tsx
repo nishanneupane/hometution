@@ -116,7 +116,6 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <SelectValue placeholder="Select city" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Cities</SelectItem>
                                             {uniqueCities.map((city) => (
                                                 <SelectItem key={city} value={city}>
                                                     {city}
@@ -132,7 +131,6 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <SelectValue placeholder="Select district" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Districts</SelectItem>
                                             {uniqueDistricts.map((district) => (
                                                 <SelectItem key={district} value={district}>
                                                     {district}
@@ -148,7 +146,6 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <SelectValue placeholder="Select gender" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Genders</SelectItem>
                                             {uniqueGenders.map((gender) => (
                                                 <SelectItem key={gender} value={gender}>
                                                     {gender}
@@ -164,7 +161,6 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <SelectValue placeholder="Select request type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Types</SelectItem>
                                             {uniqueRequestTypes.map((type) => (
                                                 <SelectItem key={type} value={type}>
                                                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -180,7 +176,6 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             <SelectValue placeholder="Select subject" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Subjects</SelectItem>
                                             {uniqueSubjects.map((subject) => (
                                                 <SelectItem key={subject} value={subject}>
                                                     {subject}

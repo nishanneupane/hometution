@@ -133,7 +133,7 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{mode === "create" ? "Add New Student" : "Edit Student"}</DialogTitle>
+          <DialogTitle>{mode === "create" ? "Add New Student/School" : "Edit Student/School"}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -468,7 +468,7 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : mode === "create" ? "Create Student" : "Update Student"}
+                {isSubmitting ? "Saving..." : mode === "create" ? "Create" : "Update"}
               </Button>
             </div>
           </form>

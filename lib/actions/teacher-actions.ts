@@ -366,6 +366,15 @@ export async function applyRequest({
         studentId,
         status: "active",
       },
+      include: {
+        student: {
+          select: {
+            name: true,
+            requestType: true,
+            schoolName: true,
+          },
+        },
+      },
     });
 
     if (!tuitionRequest) {
@@ -391,6 +400,20 @@ export async function applyRequest({
         teacherId: teacher.id,
         tuitionRequestId: tuitionRequest.id,
         status: "pending",
+      },
+    });
+
+    await prisma.notification.create({
+      data: {
+        title: "New Teacher Application",
+        message: `${teacher.name} has applied for the tuition request of ${
+          tuitionRequest.student.requestType === "school" ? "School" : "Student"
+        } ${
+          tuitionRequest.student.requestType === "school"
+            ? tuitionRequest.student.schoolName
+            : tuitionRequest.student.name
+        }.`,
+        type: "teacher_application",
       },
     });
 

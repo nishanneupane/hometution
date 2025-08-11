@@ -58,8 +58,8 @@ export function QuickActions() {
             >
               <Users className="h-5 w-5 text-blue-600" />
               <div className="text-left">
-                <div className="font-medium">Add Student</div>
-                <div className="text-xs text-muted-foreground">Register new student</div>
+                <div className="font-medium">Add</div>
+                <div className="text-xs text-muted-foreground">Register new student/school</div>
               </div>
             </Button>
 

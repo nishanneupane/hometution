@@ -23,7 +23,7 @@ import Image from "next/image"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Students", href: "/admin/students", icon: Users },
+  { name: "Students/Schools", href: "/admin/students", icon: Users },
   { name: "Teachers", href: "/admin/teachers", icon: GraduationCap },
   { name: "Vacancies", href: "/admin/vacancies", icon: BookOpen },
   { name: "Tuition Requests", href: "/admin/requests", icon: FileText },
