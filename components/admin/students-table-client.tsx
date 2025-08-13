@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { StudentForm } from "@/components/admin/student-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteStudent } from "@/lib/actions/student-actions"
-import { Edit, Trash2, Phone, MapPin, Clock, Users, Search, Filter, ArrowRight } from "lucide-react"
+import { Edit, Trash2, Phone, MapPin, Clock, Users, Search, Filter, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -23,11 +23,79 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { convertToAmPm } from "@/lib/utils"
 
 interface StudentsTableClientProps {
   students: any[]
 }
+interface PaginationProps {
+  totalItems: number
+  itemsPerPage: number
+  currentPage: number
+  onPageChange: (page: number) => void
+}
+function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }: PaginationProps) {
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
 
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1)
+    }
+  }
+
+  const getPageNumbers = () => {
+    const pageNumbers = []
+    const maxVisiblePages = 5
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i)
+    }
+    return pageNumbers
+  }
+
+  return (
+    <div className="flex items-center justify-center space-x-2 mt-6">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </Button>
+      {getPageNumbers().map((page) => (
+        <Button
+          key={page}
+          variant={currentPage === page ? "default" : "outline"}
+          size="sm"
+          onClick={() => onPageChange(page)}
+        >
+          {page}
+        </Button>
+      ))}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleNext}
+        disabled={currentPage === totalPages}
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
+    </div>
+  )
+}
 export function StudentsTableClient({ students }: StudentsTableClientProps) {
   const [selectedStudent, setSelectedStudent] = useState<any>(null)
   const [studentFormOpen, setStudentFormOpen] = useState(false)
@@ -39,6 +107,11 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
   const [filterCity, setFilterCity] = useState<string | null>(null)
   const [filterClass, setFilterClass] = useState<string | null>(null)
   const [filterTime, setFilterTime] = useState<string | null>(null)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 9
+
+
 
   const handleEdit = (student: any) => {
     setSelectedStudent(student)
@@ -106,6 +179,11 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
 
   // Check if any search or filter is applied
   const isSearchOrFilterApplied = searchTerm || filterSubjects.length > 0 || filterCity || filterTime || filterClass
+
+  const paginatedStudents = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage
+    return filteredStudents.slice(startIndex, startIndex + itemsPerPage)
+  }, [filteredStudents, currentPage])
 
   return (
     <>
@@ -213,7 +291,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
         </div>
       </div>
 
-      {filteredStudents.length === 0 ? (
+      {paginatedStudents.length === 0 ? (
         <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Users className="h-16 w-16 text-gray-300 mb-4" />
@@ -229,7 +307,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStudents.map((student) => (
+          {paginatedStudents.map((student) => (
             <Card key={student.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -287,7 +365,7 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
 
                   <div className="flex items-center text-sm text-gray-600">
                     <Clock className="h-4 w-4 mr-2" />
-                    {student.preferredTimeFrom} - {student.preferredTimeTo}
+                    {convertToAmPm(student.preferredTimeFrom)} - {convertToAmPm(student.preferredTimeTo)}
                   </div>
                 </div>
 
@@ -328,6 +406,12 @@ export function StudentsTableClient({ students }: StudentsTableClientProps) {
           ))}
         </div>
       )}
+      <Pagination
+        totalItems={filteredStudents.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
 
       <StudentForm open={studentFormOpen} onOpenChange={setStudentFormOpen} student={selectedStudent} mode={formMode} />
 

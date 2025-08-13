@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { markNotificationAsRead, deleteNotification } from "@/lib/actions/notification-actions"
 import { Bell, Users, GraduationCap, FileText, Check, X, Clock } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 interface NotificationsTableClientProps {
   notifications: any[]
@@ -94,59 +95,60 @@ export function NotificationsTableClient({ notifications }: NotificationsTableCl
       {notifications.map((notification) => (
         <Card
           key={notification.id}
-          className={`border-0 shadow-sm hover:shadow-md transition-shadow ${
-            !notification.isRead ? "bg-blue-50/50 border-l-4 border-l-blue-500" : ""
-          }`}
+          className={`border-0 shadow-sm hover:shadow-md transition-shadow ${!notification.isRead ? "bg-blue-50/50 border-l-4 border-l-blue-500" : ""
+            }`}
         >
           <CardContent className="p-6">
-            <div className="flex items-start space-x-4">
-              <div className={`p-3 rounded-full ${getNotificationColor(notification.type)}`}>
-                {getNotificationIcon(notification.type)}
-              </div>
+            <Link href={`${notification.type === "student_registration" ? "/admin/students" : notification.type === "teacher_application" ? "/admin/teachers" : "/admin/requests"}`}>
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-full ${getNotificationColor(notification.type)}`}>
+                  {getNotificationIcon(notification.type)}
+                </div>
 
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      {notification.title}
-                      {!notification.isRead && (
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          New
-                        </Badge>
-                      )}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {new Date(notification.createdAt).toLocaleString()}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        {notification.title}
+                        {!notification.isRead && (
+                          <Badge variant="secondary" className="ml-2 text-xs">
+                            New
+                          </Badge>
+                        )}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {new Date(notification.createdAt).toLocaleString()}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center space-x-2">
-                    {!notification.isRead && (
+                    <div className="flex items-center space-x-2">
+                      {!notification.isRead && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleMarkAsRead(notification.id)}
+                          disabled={loadingStates[notification.id]}
+                          className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleMarkAsRead(notification.id)}
+                        onClick={() => handleDelete(notification.id)}
                         disabled={loadingStates[notification.id]}
-                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
-                        <Check className="h-4 w-4" />
+                        <X className="h-4 w-4" />
                       </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(notification.id)}
-                      disabled={loadingStates[notification.id]}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </CardContent>
         </Card>
       ))}

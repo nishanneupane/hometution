@@ -193,8 +193,8 @@ export function generateTuitionRequestApproval(
             }</li>
             ${
               vacancyDetails.requestType === "school"
-                ? vacancyDetails.salary
-                  ? `<li><strong>Salary:</strong> ${vacancyDetails.salary}</li>`
+                ? vacancyDetails.expectedFees
+                  ? `<li><strong>Salary:</strong> ${vacancyDetails.expectedFees}</li>`
                   : ""
                 : vacancyDetails.expectedFees
                 ? `<li><strong>Expected Fees:</strong> ${vacancyDetails.expectedFees}</li>`

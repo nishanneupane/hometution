@@ -113,7 +113,7 @@ export default function Chatbot() {
             <button
                 aria-label={open ? "Close chatbot" : "Open chatbot"}
                 onClick={() => setOpen((o) => !o)}
-                className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-colors z-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-colors z-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
                 <MessageCircle className="h-6 w-6" />
             </button>
@@ -123,7 +123,7 @@ export default function Chatbot() {
                     role="dialog"
                     aria-modal="true"
                     aria-label="Chatbot assistance window"
-                    className="fixed bottom-20 right-6 bg-white rounded-lg shadow-lg w-[480px] max-h-[480px] flex flex-col z-50"
+                    className="fixed bottom-16 right-2 sm:bottom-20 sm:right-6 bg-white rounded-lg shadow-lg w-[95%] sm:w-[480px] h-[70vh] sm:max-h-[480px] flex flex-col z-50"
                     style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
                 >
                     <header className="flex items-center justify-between p-3 border-b">
@@ -146,7 +146,7 @@ export default function Chatbot() {
                         {messages.map((msg, i) => (
                             <div
                                 key={i}
-                                className={`max-w-[85%] p-4 rounded-lg break-words ${msg.from === "user"
+                                className={`max-w-[85%] p-3 sm:p-4 rounded-lg break-words ${msg.from === "user"
                                         ? "bg-blue-600 text-white self-end rounded-br-none"
                                         : "bg-white border border-gray-300 text-gray-800 self-start rounded-bl-none"
                                     }`}
@@ -163,16 +163,16 @@ export default function Chatbot() {
                         {/* User input */}
                         <form
                             onSubmit={(e) => {
-                                e.preventDefault()
-                                handleSend()
+                                e.preventDefault();
+                                handleSend();
                             }}
-                            className="flex items-center p-3"
+                            className="flex items-center p-2 sm:p-3"
                         >
                             <input
                                 type="text"
                                 aria-label="Type your message"
                                 placeholder="तपाईंको प्रश्न यहाँ लेख्नुहोस्..."
-                                className="flex-grow px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="flex-grow px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
@@ -180,7 +180,7 @@ export default function Chatbot() {
                             <button
                                 type="submit"
                                 aria-label="Send message"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-md flex items-center justify-center transition"
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-r-md flex items-center justify-center transition"
                             >
                                 <Send className="h-5 w-5" />
                             </button>
@@ -189,13 +189,13 @@ export default function Chatbot() {
                         {/* FAQ quick select */}
                         <nav
                             aria-label="Frequently asked questions"
-                            className="flex overflow-x-auto space-x-2 px-3 pb-3"
+                            className="flex overflow-x-auto space-x-2 px-2 sm:px-3 pb-2 sm:pb-3"
                         >
                             {faqData.map(({ question, answer }, i) => (
                                 <button
                                     key={i}
                                     onClick={() => handleFaqClick(question, answer)}
-                                    className="flex-shrink-0 bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="flex-shrink-0 bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm transition focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 >
                                     {question}
                                 </button>
@@ -205,5 +205,6 @@ export default function Chatbot() {
                 </section>
             )}
         </>
+
     )
 }

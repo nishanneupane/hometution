@@ -165,27 +165,11 @@ export async function updateTeacher(id: string, formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
-      profilePicture: formData.get("profilePicture") as string,
       ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
-      citizenship: formData.get("citizenship") as string,
-      cv: formData.get("cv") as string,
     };
 
     const validatedData = teacherRegistrationSchema.parse(data);
-
-    const duplicateTeacher = await prisma.teacher.findFirst({
-      where: {
-        OR: [{ phoneOrWhatsapp: data.phoneOrWhatsapp }, { email: data.email }],
-      },
-    });
-
-    if (duplicateTeacher) {
-      return {
-        success: false,
-        message: "Teacher Already created with this number & email",
-      };
-    }
 
     await prisma.teacher.update({
       where: { id },
@@ -201,7 +185,6 @@ export async function updateTeacher(id: string, formData: FormData) {
 }
 
 export async function approveTeacher(id: string) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const teacher = await prisma.teacher.findUnique({
       where: { id },
@@ -422,5 +405,56 @@ export async function applyRequest({
   } catch (error) {
     console.error("Error submitting application:", error);
     return { success: false, message: "Failed to submit application" };
+  }
+}
+
+export async function sendMessageToTeachers(
+  teacherIds: string[],
+  message: string
+) {
+  try {
+    // Filter out undefined or null IDs
+    const validTeacherIds = teacherIds.filter((id) => id != null && id !== "");
+
+    if (validTeacherIds.length === 0) {
+      return { success: false, message: "No valid teacher IDs provided" };
+    }
+
+    const teachers = await prisma.teacher.findMany({
+      where: { id: { in: validTeacherIds } },
+      select: { id: true, email: true, name: true },
+    });
+
+    if (teachers.length === 0) {
+      return {
+        success: false,
+        message: "No teachers found for the provided IDs",
+      };
+    }
+
+    await Promise.all(
+      teachers.map(async (teacher) => {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-vacancy-message`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              teacherEmail: teacher.email,
+              teacherName: teacher.name,
+              message,
+            }),
+          }
+        );
+      })
+    );
+
+    return {
+      success: true,
+      message: `Vacancy message sent successfully to ${teachers.length} teacher(s)`,
+    };
+  } catch (error) {
+    console.error("Error sending vacancy messages:", error);
+    return { success: false, message: "Failed to send vacancy messages" };
   }
 }

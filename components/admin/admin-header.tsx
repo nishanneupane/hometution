@@ -214,7 +214,11 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
                         ? "bg-blue-50 border-blue-200 hover:bg-blue-100"
                         : "bg-gray-50 border-gray-200 hover:bg-gray-100"
                         }`}
-                      onClick={() => handleNotificationClick(notification)}
+                      onClick={async () => {
+                        handleNotificationClick(notification)
+                        router.push(notification.type === "student_registration" ? "/admin/students" : notification.type === "teacher_application" ? "/admin/teachers" : "/admin/requests")
+                        setNotificationDialogOpen(false)
+                      }}
                     >
                       <div className="flex items-start space-x-3">
                         <div className="text-2xl">{getNotificationIcon(notification.type)}</div>

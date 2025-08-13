@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Home */}
         <Link
@@ -54,11 +54,11 @@ export default function AdminLoginPage() {
         <Card className="border-0 shadow-2xl bg-white/95 backdrop-blur">
           <CardHeader className="text-center pb-8">
             <div className="flex justify-center mb-4">
-              <div className="p-3 bg-slate-900 rounded-2xl">
+              <div className="p-3 bg-blue-900 rounded-2xl">
                 <Shield className="h-8 w-8 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-slate-900">Admin Portal</CardTitle>
+            <CardTitle className="text-2xl font-bold text-blue-900">Admin Portal</CardTitle>
             <CardDescription className="text-base text-slate-600">
               Sign in to access the admin dashboard
             </CardDescription>
@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
 
               <Button
                 type="submit"
-                className="w-full h-11 text-base bg-slate-900 hover:bg-slate-800"
+                className="w-full h-11 text-base bg-blue-900 hover:bg-blue-800"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In to Admin Panel"}

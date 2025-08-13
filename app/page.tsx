@@ -165,6 +165,7 @@ export default function HomePage() {
 
         <MDWelcomeSection />
 
+
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
@@ -240,6 +241,29 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section id="group-tuition" className="relative py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl shadow-lg overflow-hidden max-w-6xl mx-auto">
+          <div className="container mx-auto px-4 text-center space-y-4 relative z-10">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Quality Tuition, Shared Cost 💡
+            </h2>
+            <p className="text-base md:text-lg text-blue-100 max-w-3xl mx-auto">
+              Learn with friends or peers in small, focused groups — taught by the same expert tutors from our home tuition program. Affordable, effective, and limited seats only.
+            </p>
+            <Link
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdI5SyEBW2y48dnglnth_eCzArSqfN08kpLUzCgB5Gf17VmPA/viewform?usp=dialog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold px-6 py-3 rounded-lg shadow-md text-sm md:text-base transition"
+            >
+              Fill the Form & Join Now
+            </Link>
+          </div>
+
+          {/* Glow accents */}
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-yellow-400 rounded-full blur-2xl opacity-20"></div>
+          <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-300 rounded-full blur-2xl opacity-20"></div>
         </section>
 
         {/* Testimonials Section */}

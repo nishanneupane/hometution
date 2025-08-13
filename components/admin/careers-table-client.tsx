@@ -294,8 +294,8 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                     <div className="flex justify-between items-center gap-2">
                                         <div className="flex items-center justify-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
                                             <CreditCard className="h-6 w-6 text-green-700" />
-                                            <span className="text-green-900 font-extrabold text-lg flex items-center gap-1">
-                                                Salary :{formatSalary(student.expectedFees)}
+                                            <span className="text-green-900 font-extrabold text-[15px] flex items-center gap-1">
+                                                Salary : {formatSalary(student.expectedFees)}
                                             </span>
                                         </div>
 

@@ -1,30 +1,90 @@
-# Hr home tuition platform
+HR Home Tuition Platform
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A modern, scalable web platform designed to connect students with experienced home tutors. Seamlessly manage student registrations, tutor profiles, tuition requests, and more in a user-friendly interface.
+Features
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/nishanneupanes-projects/v0-hr-home-tuition-platform)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/lgPZ7Qm8KdG)
+    Student Registration & Profile Management: Easily register and manage student details, including personal information, subjects, and preferences.
 
-## Overview
+    Tutor Profiles & Availability: Create and manage tutor profiles with details on expertise, availability, and schedules.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+    Tuition Requests & Assignment System: Efficiently match students with suitable tutors based on subject, location, and availability.
 
-## Deployment
+    Notifications: Receive real-time alerts for new tuition requests and updates.
 
-Your project is live at:
+    User-Friendly Dashboard: Intuitive admin and user dashboards for streamlined management and interaction.
 
-**[https://vercel.com/nishanneupanes-projects/v0-hr-home-tuition-platform](https://vercel.com/nishanneupanes-projects/v0-hr-home-tuition-platform)**
+    Responsive Design: Optimized for both desktop and mobile devices, ensuring accessibility for all users.
 
-## Build your app
+Tech Stack
 
-Continue building your app on:
+    Frontend: Next.js, React, TypeScript, Tailwind CSS, Shadcn UI
 
-**[https://v0.dev/chat/projects/lgPZ7Qm8KdG](https://v0.dev/chat/projects/lgPZ7Qm8KdG)**
+    Backend: Node.js, Next.js API routes
 
-## How It Works
+    Database: PostgreSQL (or MySQL, MongoDB, etc., based on configuration)
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+    Authentication: NextAuth.js (optional, for user login)
+
+    Deployment: Vercel, Render, or any Node.js-compatible hosting service
+
+Getting Started
+Prerequisites
+
+    Node.js: Version 18 or higher
+
+    npm or yarn: Package manager for dependencies
+
+    Database: PostgreSQL (recommended), MySQL, or any supported database
+
+    Git: For cloning the repository
+
+Installation
+
+    Clone the Repository
+
+git clone https://github.com/your-username/hr-home-tuition.git
+cd hr-home-tuition
+
+Install Dependencies
+
+npm install
+
+# or
+
+yarn install
+
+Set Up Environment Variables
+Create a .env.local file in the root directory and add:
+
+DATABASE_URL=your-database-connection-string
+NEXT_PUBLIC_API_URL=http://localhost:3000
+
+Replace your-database-connection-string with your actual database URL (e.g., postgresql://user:password@localhost:5432/dbname).
+
+Run the Development Server
+
+npm run dev
+
+# or
+
+yarn dev
+
+Open http://localhost:3000 in your browser to view the application.
+
+Build for Production
+
+    npm run build
+    npm start
+    # or
+    yarn build
+    yarn start
+
+Deployment
+
+Deploy the platform to a hosting service like Vercel, Render, or a custom Node.js server:
+
+    Vercel: Connect your GitHub repository to Vercel, configure environment variables, and deploy automatically on git push.
+
+    Render: Create a new web service, connect your GitHub repository, set environment variables, and deploy.
+
+    Custom Server: Build the project (npm run build) and run npm start. Ensure your database is accessible and environment variables are set.

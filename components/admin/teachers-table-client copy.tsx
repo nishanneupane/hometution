@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { TeacherForm } from "@/components/admin/teacher-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteTeacher, approveTeacher, rejectTeacher, sendMessageToTeachers } from "@/lib/actions/teacher-actions"
-import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter, ArrowRight, MessageSquare, ChevronRight, ChevronLeft } from "lucide-react"
+import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -19,6 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import Link from "next/link"
@@ -28,78 +29,8 @@ interface TeachersTableClientProps {
   teachers: any[]
 }
 
-interface PaginationProps {
-  totalItems: number
-  itemsPerPage: number
-  currentPage: number
-  onPageChange: (page: number) => void
-}
-function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }: PaginationProps) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1)
-    }
-  }
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1)
-    }
-  }
-
-  const getPageNumbers = () => {
-    const pageNumbers = []
-    const maxVisiblePages = 5
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1)
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i)
-    }
-    return pageNumbers
-  }
-
-  return (
-    <div className="flex items-center justify-center space-x-2 mt-6">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handlePrevious}
-        disabled={currentPage === 1}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
-      {getPageNumbers().map((page) => (
-        <Button
-          key={page}
-          variant={currentPage === page ? "default" : "outline"}
-          size="sm"
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </Button>
-      ))}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleNext}
-        disabled={currentPage === totalPages}
-      >
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    </div>
-  )
-}
-
 export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const [selectedTeacher, setSelectedTeacher] = useState<any>(null)
-  const [bulkSend, setBulkSend] = useState(true)
   const [teacherFormOpen, setTeacherFormOpen] = useState(false)
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [messageConfirmOpen, setMessageConfirmOpen] = useState(false)
@@ -114,9 +45,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const [filterMunicipality, setFilterMunicipality] = useState<string | null>(null)
   const [filterProvince, setFilterProvince] = useState<string | null>(null)
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 9
-
   const handleEdit = (teacher: any) => {
     setSelectedTeacher(teacher)
     setFormMode("edit")
@@ -128,36 +56,12 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     setDeleteConfirmOpen(true)
   }
 
-  const handleSendMessage = (teacher?: any) => {
-    if (!Array.isArray(teacher)) {
-      setSelectedTeacher(teacher)
-      setBulkSend(false)
-    } else {
-      setSelectedTeacher(null)
-      setBulkSend(true)
-    }
-    setMessageConfirmOpen(true)
-  }
-
   const handleConfirmDelete = async () => {
-    if (!selectedTeacher?.id) {
-      toast.error("No teacher selected.")
-      setDeleteConfirmOpen(false)
+    if (!selectedTeacher) {
       return { success: false, message: "No teacher selected." }
     }
-    const result = await deleteTeacher(selectedTeacher.id)
-    if (result.success) {
-      toast.success(result.message)
-    } else {
-      toast.error(result.message)
-    }
-    setDeleteConfirmOpen(false)
-    return result
+    return await deleteTeacher(selectedTeacher.id)
   }
-
-
-
-
 
   const handleApprove = async (teacherId: string) => {
     const result = await approveTeacher(teacherId)
@@ -188,7 +92,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   // Filter teachers based on search term and filters
   const filteredTeachers = useMemo(() => {
     return teachers.filter((teacher) => {
-      if (!teacher.id) return false // Skip teachers with undefined/null IDs
       const searchLower = searchTerm.toLowerCase()
       const idMatch = teacher.id.toString() === searchTerm
       const textMatch = searchTerm
@@ -214,39 +117,6 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     })
   }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved, filterWard, filterMunicipality, filterProvince])
 
-  const handleConfirmSendMessage = async () => {
-    const message = `A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.`
-    let result
-    let validTeacherIds: string[] = []
-
-    if (bulkSend) {
-      validTeacherIds = filteredTeachers
-        .filter(teacher => teacher?.id && typeof teacher.id === 'string' && teacher.id.trim() !== '')
-        .map(teacher => teacher.id)
-      if (validTeacherIds.length === 0) {
-        toast.error("No valid teachers found in the filtered list. Try adjusting your search or filters.")
-        setMessageConfirmOpen(false)
-        return { success: false, message: "No valid teachers found." }
-      }
-      result = await sendMessageToTeachers(validTeacherIds, message)
-    } else {
-      if (!selectedTeacher?.id || typeof selectedTeacher.id !== 'string' || selectedTeacher.id.trim() === '') {
-        toast.error("No valid teacher selected.")
-        setMessageConfirmOpen(false)
-        return { success: false, message: "No valid teacher selected." }
-      }
-      validTeacherIds = [selectedTeacher.id]
-      result = await sendMessageToTeachers(validTeacherIds, message)
-    }
-
-    if (result.success) {
-      toast.success(bulkSend ? `Message sent to ${validTeacherIds.length} teacher(s) successfully!` : `Message sent to ${selectedTeacher.name} successfully!`)
-    } else {
-      toast.error(result.message)
-    }
-    setMessageConfirmOpen(false)
-  }
-
   // Reset filters
   const handleResetFilters = () => {
     setFilterCity(null)
@@ -261,10 +131,25 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   // Check if any search or filter is applied
   const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null || filterWard || filterMunicipality || filterProvince
 
-  const paginatedTeachers = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage
-    return filteredTeachers.slice(startIndex, startIndex + itemsPerPage)
-  }, [filteredTeachers, currentPage])
+  const handleConfirmSendMessage = async () => {
+    if (!selectedTeacher) {
+      return { success: false, message: "No teacher selected." }
+    }
+    const message = `A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.`
+    const result = await sendMessageToTeachers([selectedTeacher.id], message)
+    if (result.success) {
+      toast.success(`Message sent to ${selectedTeacher.name} successfully!`)
+    } else {
+      toast.error(result.message)
+    }
+    setMessageConfirmOpen(false)
+  }
+
+  const handleSendMessage = (teacher: any) => {
+    setSelectedTeacher(teacher)
+    setMessageConfirmOpen(true)
+  }
+
   return (
     <>
       <div className="mb-6 space-y-4">
@@ -277,12 +162,10 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
+            <Button onClick={() => handleSendMessage(filteredTeachers)} className="shrink-0">
+              Send Vacancy Message
+            </Button>
           </div>
-          <Button onClick={() => handleSendMessage(filteredTeachers)} className="shrink-0">
-            <MessageSquare className="h-4 w-4 mr-2" />
-            Send to All
-          </Button>
-
           <Dialog open={filterOpen} onOpenChange={setFilterOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="shrink-0 bg-transparent">
@@ -290,7 +173,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                 Filters
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] ">
               <DialogHeader>
                 <DialogTitle>Filter Teachers</DialogTitle>
               </DialogHeader>
@@ -412,7 +295,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         </div>
       </div>
 
-      {paginatedTeachers.length === 0 ? (
+      {filteredTeachers.length === 0 ? (
         <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <GraduationCap className="h-16 w-16 text-gray-300 mb-4" />
@@ -428,7 +311,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedTeachers.map((teacher) => (
+          {filteredTeachers.map((teacher) => (
             <Card key={teacher.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -448,6 +331,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                                 {teacher.teacherCode}
                               </Badge>
                             </div>
+                            {/* Right Arrow Icon */}
                             <ArrowRight className="h-4 w-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                           </div>
                         </TooltipTrigger>
@@ -458,7 +342,14 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                     </TooltipProvider>
                   </Link>
 
-
+                  <div className="flex space-x-1">
+                    <Button variant="ghost" size="sm" onClick={() => handleEdit(teacher)}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(teacher)}>
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
@@ -504,37 +395,17 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                   </div>
                 )}
 
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm">
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">Applications</span>
                     <Badge variant="secondary">{teacher.applications?.length || 0}</Badge>
                   </div>
-
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm" onClick={() => handleEdit(teacher)}>
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(teacher)}>
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleSendMessage(teacher)}>
-                      <MessageSquare className="h-4 w-4 text-blue-500" />
-                    </Button>
-                  </div>
                 </div>
-
               </CardContent>
             </Card>
           ))}
         </div>
       )}
-
-      <Pagination
-        totalItems={filteredTeachers.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
 
       <TeacherForm open={teacherFormOpen} onOpenChange={setTeacherFormOpen} teacher={selectedTeacher} mode={formMode} />
 
@@ -553,14 +424,8 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
           </DialogHeader>
           <div className="py-4">
             <p className="text-sm text-gray-600">
-              {bulkSend
-                ? `Are you sure you want to send a vacancy notification to teacher(s)?`
-                : selectedTeacher && selectedTeacher.name
-                  ? `Are you sure you want to send a vacancy notification to ${selectedTeacher.name}?`
-                  : `Are you sure you want to send a vacancy notification?`
-              }
+              Are you sure you want to send a vacancy notification to {selectedTeacher?.name}?
             </p>
-
             <p className="text-sm text-gray-600 mt-2">
               Message: A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.
             </p>

@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { convertToAmPm } from "../utils";
 
 export async function approveApplication(id: string) {
   try {
@@ -25,12 +26,16 @@ export async function approveApplication(id: string) {
 
     const student = application.tuitionRequest.student;
     const vacancyDetails = {
-      name: student.name,
+      name: `${
+        student.requestType === "school" ? student.schoolName : student.name
+      }`,
       phone: student.phoneOrWhatsapp,
       requestType: student.requestType,
-      location: `${student.city}, ${student.municipality}, ${student.district}, ${student.province}`,
+      location: `${student.city}, ${student.municipality}-${student.ward}, ${student.district}, ${student.province}`,
       subjects: student.subject.join(", "),
-      preferredTime: `${student.preferredTimeFrom} - ${student.preferredTimeTo}`,
+      preferredTime: `${convertToAmPm(
+        student.preferredTimeFrom
+      )} - ${convertToAmPm(student.preferredTimeTo)}`,
       expectedFees: student.expectedFees || "Not specified",
       vacancyId: student.id,
     };
