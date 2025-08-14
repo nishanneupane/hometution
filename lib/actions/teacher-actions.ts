@@ -410,12 +410,20 @@ export async function applyRequest({
 
 export async function sendMessageToTeachers(
   teacherIds: string[],
-  message: string
-) {
+  message: string,
+  imageUrl?: string
+): Promise<{ success: boolean; message: string }> {
   try {
-    // Filter out undefined or null IDs
-    const validTeacherIds = teacherIds.filter((id) => id != null && id !== "");
+    if (!message.trim()) {
+      return { success: false, message: "Message cannot be empty" };
+    }
+    if (imageUrl && !imageUrl) {
+      return { success: false, message: "Invalid image URL" };
+    }
 
+    const validTeacherIds = teacherIds.filter(
+      (id) => id && typeof id === "string" && id.trim() !== ""
+    );
     if (validTeacherIds.length === 0) {
       return { success: false, message: "No valid teacher IDs provided" };
     }
@@ -432,22 +440,51 @@ export async function sendMessageToTeachers(
       };
     }
 
-    await Promise.all(
+    const results = await Promise.all(
       teachers.map(async (teacher) => {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-vacancy-message`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              teacherEmail: teacher.email,
-              teacherName: teacher.name,
-              message,
-            }),
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-vacancy-message`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                teacherEmail: teacher.email,
+                teacherName: teacher.name,
+                message,
+                imageUrl,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to send message to ${teacher.email}: ${response.statusText}`
+            );
           }
-        );
+
+          return { success: true, teacherId: teacher.id };
+        } catch (error) {
+          console.error(`Error sending message to ${teacher.email}:`, error);
+          return {
+            success: false,
+            teacherId: teacher.id,
+            error: String(error),
+          };
+        }
       })
     );
+
+    const failedSends = results.filter((result) => !result.success);
+    if (failedSends.length > 0) {
+      const errorMessage = `Failed to send message to ${
+        failedSends.length
+      } teacher(s): ${failedSends.map((r) => r.teacherId).join(", ")}`;
+      return { success: false, message: errorMessage };
+    }
+
+    revalidatePath("/admin/teachers");
+    revalidatePath("/admin");
 
     return {
       success: true,
@@ -455,6 +492,9 @@ export async function sendMessageToTeachers(
     };
   } catch (error) {
     console.error("Error sending vacancy messages:", error);
-    return { success: false, message: "Failed to send vacancy messages" };
+    return {
+      success: false,
+      message: "Failed to send vacancy messages due to server error",
+    };
   }
 }

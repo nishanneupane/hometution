@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { TeacherForm } from "@/components/admin/teacher-form"
 import { DeleteConfirmation } from "@/components/admin/delete-confirmation"
 import { deleteTeacher, approveTeacher, rejectTeacher, sendMessageToTeachers } from "@/lib/actions/teacher-actions"
-import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter, ArrowRight, MessageSquare, ChevronRight, ChevronLeft } from "lucide-react"
+import { Edit, Trash2, Phone, MapPin, CheckCircle, XCircle, GraduationCap, Search, Filter, ArrowRight, MessageSquare, ChevronRight, ChevronLeft, Upload, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -23,6 +23,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { UploadButton } from "@/lib/uploadthing"
+import { Textarea } from "../ui/textarea"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 interface TeachersTableClientProps {
   teachers: any[]
@@ -113,6 +116,11 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const [filterWard, setFilterWard] = useState<string | null>(null)
   const [filterMunicipality, setFilterMunicipality] = useState<string | null>(null)
   const [filterProvince, setFilterProvince] = useState<string | null>(null)
+
+  const defaultMessage = `A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.`
+  const [messageType, setMessageType] = useState<'default' | 'custom'>('default')
+  const [customMessage, setCustomMessage] = useState('')
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
@@ -215,7 +223,13 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved, filterWard, filterMunicipality, filterProvince])
 
   const handleConfirmSendMessage = async () => {
-    const message = `A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.`
+    if (messageType === 'custom' && !customMessage.trim() && !imageUrl) {
+      toast.error("For custom, provide at least a message or an image.")
+      return { success: false, message: "Invalid custom input." }
+    }
+
+    const message = messageType === 'default' ? defaultMessage : customMessage
+    const sendImageUrl = messageType === 'default' ? undefined : imageUrl
     let result
     let validTeacherIds: string[] = []
 
@@ -228,7 +242,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         setMessageConfirmOpen(false)
         return { success: false, message: "No valid teachers found." }
       }
-      result = await sendMessageToTeachers(validTeacherIds, message)
+      result = await sendMessageToTeachers(validTeacherIds, message, sendImageUrl)
     } else {
       if (!selectedTeacher?.id || typeof selectedTeacher.id !== 'string' || selectedTeacher.id.trim() === '') {
         toast.error("No valid teacher selected.")
@@ -236,7 +250,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         return { success: false, message: "No valid teacher selected." }
       }
       validTeacherIds = [selectedTeacher.id]
-      result = await sendMessageToTeachers(validTeacherIds, message)
+      result = await sendMessageToTeachers(validTeacherIds, message, sendImageUrl)
     }
 
     if (result.success) {
@@ -245,8 +259,10 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
       toast.error(result.message)
     }
     setMessageConfirmOpen(false)
+    setMessageType('default')
+    setCustomMessage('')
+    setImageUrl(undefined)
   }
-
   // Reset filters
   const handleResetFilters = () => {
     setFilterCity(null)
@@ -258,13 +274,14 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     setFilterProvince(null)
   }
 
-  // Check if any search or filter is applied
   const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null || filterWard || filterMunicipality || filterProvince
 
   const paginatedTeachers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
     return filteredTeachers.slice(startIndex, startIndex + itemsPerPage)
   }, [filteredTeachers, currentPage])
+
+
   return (
     <>
       <div className="mb-6 space-y-4">
@@ -551,18 +568,82 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
           <DialogHeader>
             <DialogTitle>Send Vacancy Message</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
+          <div className="py-4 space-y-4">
+            <RadioGroup value={messageType} onValueChange={(v) => setMessageType(v as 'default' | 'custom')}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="default" id="default" />
+                <Label htmlFor="default">Default Message</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="custom" id="custom" />
+                <Label htmlFor="custom">Custom Message</Label>
+              </div>
+            </RadioGroup>
+
+            {messageType === 'default' ? (
+              <p className="text-sm text-gray-600">
+                Message: {defaultMessage}
+              </p>
+            ) : (
+              <div className="max-h-[300px] overflow-auto p-2">
+                <div className="space-y-2">
+                  <Label>Custom Message (required if no image)</Label>
+                  <Textarea
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="Enter your custom message"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Upload Image (required if no message)</Label>
+                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center relative">
+                    {imageUrl ? (
+                      <>
+                        <img
+                          src={imageUrl}
+                          alt="Uploaded image"
+                          className="w-full max-h-48 object-contain mx-auto rounded"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setImageUrl(undefined)}
+                          className="absolute top-2 right-2 p-1 rounded-full hover:bg-red-100"
+                        >
+                          <X className="h-4 w-4 text-red-500" />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground mb-2">Upload an image</p>
+                        <p className="text-xs text-muted-foreground mb-4">PNG, JPG up to 8MB</p>
+                        <UploadButton
+                          endpoint="image"
+                          onClientUploadComplete={(res) => {
+                            if (res && res[0]) {
+                              setImageUrl(res[0].url)
+                            }
+                          }}
+                          onUploadError={(err) => console.error(err)}
+                          appearance={{
+                            button: "bg-blue-600 border border-input text-background hover:bg-blue-700",
+                          }}
+                        />
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <p className="text-sm text-gray-600">
               {bulkSend
-                ? `Are you sure you want to send a vacancy notification to teacher(s)?`
+                ? `Are you sure you want to send this to ${filteredTeachers.length} teacher(s)?`
                 : selectedTeacher && selectedTeacher.name
-                  ? `Are you sure you want to send a vacancy notification to ${selectedTeacher.name}?`
-                  : `Are you sure you want to send a vacancy notification?`
-              }
-            </p>
-
-            <p className="text-sm text-gray-600 mt-2">
-              Message: A vacancy is available in your area! Please check out https://hrhometuition/careers and apply based on your choice and area.
+                  ? `Are you sure you want to send this to ${selectedTeacher.name}?`
+                  : `Are you sure you want to send this?`}
             </p>
           </div>
           <DialogFooter>
