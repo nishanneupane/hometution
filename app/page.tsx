@@ -252,7 +252,7 @@ export default function HomePage() {
               Learn with friends or peers in small, focused groups — taught by the same expert tutors from our home tuition program. Affordable, effective, and limited seats only.
             </p>
             <Link
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdI5SyEBW2y48dnglnth_eCzArSqfN08kpLUzCgB5Gf17VmPA/viewform?usp=dialog"
+              href="https://docs.google.com/forms/d/e/1FAIpQLScv0ZD3fJS6snQkX9uzammaYy48yX2RmpBdYwrhBxdOOO-daw/viewform?usp=header"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold px-6 py-3 rounded-lg shadow-md text-sm md:text-base transition"
