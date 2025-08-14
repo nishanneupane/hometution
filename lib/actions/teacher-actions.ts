@@ -81,6 +81,7 @@ export async function createTeacherRequest(formData: FormData) {
         title: "New Teacher Application",
         message: `${validatedData.name} has applied to become a teacher`,
         type: "teacher_registration",
+        link: `${process.env.NEXT_PUBLIC_SITE_URL}/admin/teachers/${teacher.id}`,
       },
     });
 
@@ -397,6 +398,7 @@ export async function applyRequest({
             : tuitionRequest.student.name
         }.`,
         type: "teacher_application",
+        link: `${process.env.NEXT_PUBLIC_SITE_URL}/admin/requests`,
       },
     });
 

@@ -99,7 +99,7 @@ export function NotificationsTableClient({ notifications }: NotificationsTableCl
             }`}
         >
           <CardContent className="p-6">
-            <Link href={`${notification.type === "student_registration" ? "/admin/students" : notification.type === "teacher_application" ? "/admin/teachers" : "/admin/requests"}`}>
+            <Link href={`${notification.link}`}>
               <div className="flex items-start space-x-4">
                 <div className={`p-3 rounded-full ${getNotificationColor(notification.type)}`}>
                   {getNotificationIcon(notification.type)}

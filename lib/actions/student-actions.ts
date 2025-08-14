@@ -55,6 +55,7 @@ export async function createStudentRequest(formData: FormData) {
           ", "
         )}`,
         type: "student_registration",
+        link: `${process.env.NEXT_PUBLIC_SITE_URL}/admin/students/${student.id}`,
       },
     });
 
