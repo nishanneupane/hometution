@@ -1,27 +1,26 @@
-import type React from "react"
-import { redirect } from "next/navigation"
-import { AdminSidebar } from "@/components/admin/admin-sidebar"
-import { AdminHeader } from "@/components/admin/admin-header"
-import { getAdminSession } from "@/lib/actions/auth-actions"
+import type React from "react";
+import { redirect } from "next/navigation";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
+
+import { getAdminSession } from "@/lib/actions/auth-actions";
+import { SidebarProvider } from "@/lib/sidebar-context";
+import { AdminContentWrapper } from "@/components/AdminContentWrapper";
 
 export default async function AdminLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const session = await getAdminSession()
+  const session = await getAdminSession();
 
   if (!session) {
-    redirect("/login")
+    redirect("/login");
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <SidebarProvider>
       <AdminSidebar />
-      <div className="lg:pl-72">
-        <AdminHeader admin={session} />
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
-      </div>
-    </div>
-  )
+      <AdminContentWrapper admin={session}>{children}</AdminContentWrapper>
+    </SidebarProvider>
+  );
 }

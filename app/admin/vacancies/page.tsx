@@ -107,7 +107,7 @@ export default function VacanciesPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="space-y-8 p-6 bg-gray-50 min-h-screen">
+    <div className="space-y-8 pb-6 bg-gray-50 min-h-screen">
 
       <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
         <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">

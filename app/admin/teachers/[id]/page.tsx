@@ -7,6 +7,7 @@ import { MapPin, Mail, Phone, User, FileText, List } from 'lucide-react';
 import Link from 'next/link';
 import CopyTeacherCodeButton from './copy-teacher-code';
 import { getTimeAgo } from '@/lib/utils';
+import TeacherActions from './_components/teacher-actions';
 
 interface TeacherIdPageProps {
     params: {
@@ -215,7 +216,8 @@ const TeacherIdPage = async ({ params }: TeacherIdPageProps) => {
                         </div>
 
                         {/* CTA */}
-                        <div className="flex justify-end mt-8">
+                        <div className="flex justify-end mt-8 gap-2">
+                            <TeacherActions teacher={teacher} />
                             <Button
                                 className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 transition-all"
                                 asChild

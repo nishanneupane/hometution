@@ -248,7 +248,14 @@ export async function getActiveStudentRequests() {
 export async function getVacancies() {
   try {
     const vacancies = await prisma.tuitionRequest.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: [
+        {
+          status: "asc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
       include: {
         student: {
           select: {
@@ -298,6 +305,9 @@ export async function getStudentById(id: string) {
     const student = await prisma.student.findFirst({
       where: {
         id,
+      },
+      include: {
+        tuitionRequests: true,
       },
     });
 

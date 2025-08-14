@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { approveApplication, inviteToOffice, rejectApplication } from "@/lib/actions/application-actions"
 import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone, User, School, Building } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 interface RequestsTableClientProps {
   requests: any[]
@@ -66,6 +67,7 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                     {request.student.name.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
+
                 <div>
                   <div className="flex items-center space-x-2 mb-1">
                     <h3 className="text-lg font-semibold text-gray-900">{request.student.name}</h3>
@@ -90,7 +92,14 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                   <p className="text-gray-600">{request.student.schoolName}</p>
                 </div>
               </div>
-              <Badge variant={request.status === "active" ? "default" : "secondary"}>{request.status}</Badge>
+              <div className="flex gap-2">
+                <Badge variant={request.status === "active" ? "default" : "secondary"}>{request.status}</Badge>
+                <Link href={`/admin/requests/${request.id}`} passHref>
+                  <Button variant="link" className="p-0 h-auto">
+                    View All
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -128,11 +137,22 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
 
             {request.applications.length > 0 ? (
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-4">
-                  Teacher Applications ({request.applications.length})
-                </h4>
+                <div className="flex items-center justify-between mb-4">
+
+
+                  <h4 className="text-sm font-medium text-gray-900 mb-4">
+                    Teacher Applications ({request.applications.length})
+                  </h4>
+                  {request.applications.length > 2 && (
+                    <Link href={`/vacancies/${request.id}`} passHref>
+                      <Button variant="link" className="p-0 h-auto">
+                        View All
+                      </Button>
+                    </Link>
+                  )}
+                </div>
                 <div className="space-y-4">
-                  {request.applications.map((application: any) => (
+                  {request.applications.slice(0, 2).map((application: any) => (
                     <div key={application.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center space-x-4">
                         <Avatar className="h-10 w-10 hidden md:flex">

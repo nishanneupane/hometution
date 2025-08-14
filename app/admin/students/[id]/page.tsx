@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { MapPin, Mail, Phone, User, FileText, List, School, Clock, DollarSign, BookOpen } from 'lucide-react'
 import Link from 'next/link'
+import { formatSalary } from '@/lib/utils'
 
 interface StudentIdPageProps {
     params: {
@@ -188,7 +189,7 @@ const StudentIdPage = async ({ params }: StudentIdPageProps) => {
                                             <DollarSign className="h-5 w-5 text-blue-600" />
                                             <div>
                                                 <p className="text-sm font-medium text-gray-700">Expected Fees</p>
-                                                <p className="text-gray-800">{student.expectedFees}</p>
+                                                <p className="text-gray-800">{formatSalary(student.expectedFees)}</p>
                                             </div>
                                         </div>
                                     )}

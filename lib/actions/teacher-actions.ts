@@ -398,7 +398,7 @@ export async function applyRequest({
             : tuitionRequest.student.name
         }.`,
         type: "teacher_application",
-        link: `${process.env.NEXT_PUBLIC_SITE_URL}/admin/requests`,
+        link: `${process.env.NEXT_PUBLIC_SITE_URL}/admin/requests/${tuitionRequest.id}`,
       },
     });
 

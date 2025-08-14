@@ -140,6 +140,11 @@ export async function getTuitionRequestById(id: string) {
       },
       include: {
         student: true,
+        applications: {
+          include: {
+            teacher: true,
+          },
+        },
       },
     });
 
