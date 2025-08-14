@@ -216,7 +216,7 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
                         }`}
                       onClick={async () => {
                         handleNotificationClick(notification)
-                        router.push(notification.type === "student_registration" ? "/admin/students" : notification.type === "teacher_application" ? "/admin/teachers" : "/admin/requests")
+                        router.push(notification.link)
                         setNotificationDialogOpen(false)
                       }}
                     >
