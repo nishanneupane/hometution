@@ -72,13 +72,13 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
       // Navigate based on notification type
       switch (notification.type) {
         case "student_registration":
-          router.push("/admin/students")
+          router.push(notification.link ? notification.link : "/admin/students")
           break
         case "teacher_application":
-          router.push("/admin/teachers")
+          router.push(notification.link ? notification.link : "/admin/teachers")
           break
         case "tuition_request":
-          router.push("/admin/requests")
+          router.push(notification.link ? notification.link : "/admin/requests")
           break
         default:
           break
