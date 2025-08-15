@@ -19,6 +19,10 @@ import {
   BookOpen,
   ChevronLeft,
   ChevronRight,
+  Info,
+  Mail,
+  Facebook,
+  FormInput,
 } from "lucide-react";
 import Image from "next/image";
 import { useSidebar } from "@/lib/sidebar-context";
@@ -32,6 +36,7 @@ const navigation = [
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Notifications", href: "/admin/notifications", icon: Bell },
+  { name: "Reports", href: "/admin/report", icon: Info },
 ];
 
 export function AdminSidebar() {
@@ -116,25 +121,58 @@ export function AdminSidebar() {
                   )}
                 >
                   <item.icon className="h-5 w-5 flex-shrink-0" />
-                  {!isCollapsed && <span className="ml-3 hidden sm:inline">{item.name}</span>}
+                  {(isMobileMenuOpen || !isCollapsed) && (
+                    <span className="ml-3">{item.name}</span>
+                  )}
                 </Link>
               );
             })}
           </nav>
         </ScrollArea>
 
-        {/* Footer */}
-        <div className="border-t border-slate-200 p-3">
-          <div className="flex items-center justify-center sm:justify-start space-x-3 text-sm text-slate-600">
-            <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
-              <div className="h-2 w-2 rounded-full bg-green-500"></div>
-            </div>
-            {!isCollapsed && (
-              <div className="hidden sm:block">
-                <p className="font-medium text-slate-900">System Status</p>
-                <p className="text-xs text-green-600">All systems operational</p>
-              </div>
-            )}
+        <div className="border-t border-slate-200 p-4">
+          {!isCollapsed && (
+            <h3 className="text-sm font-semibold text-slate-800 mb-3 hidden sm:block">
+              Quick Links
+            </h3>
+          )}
+          <div className={`flex ${isCollapsed && "flex-col justify-center"} items-center overflow-auto whitespace-nowrap scrollbar-hide gap-2`}>
+            <a
+              href="https://mail.zoho.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center h-8 w-8 rounded-full bg-blue-50 hover:bg-blue-100 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Zoho Mail"
+            >
+              <Mail className="h-4 w-4 text-blue-600 group-hover:text-blue-700" />
+              <span className="absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-xs text-white group-hover:block sm:hidden">
+                Zoho Mail
+              </span>
+            </a>
+            <a
+              href="https://business.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center h-8 w-8 rounded-full bg-blue-50 hover:bg-blue-100 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Facebook Business Suite"
+            >
+              <Facebook className="h-4 w-4 text-blue-600 group-hover:text-blue-700" />
+              <span className="absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-xs text-white group-hover:block sm:hidden">
+                Facebook Business
+              </span>
+            </a>
+            <a
+              href="https://forms.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center h-8 w-8 rounded-full bg-blue-50 hover:bg-blue-100 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Google Forms"
+            >
+              <FormInput className="h-4 w-4 text-blue-600 group-hover:text-blue-700" />
+              <span className="absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-xs text-white group-hover:block sm:hidden">
+                Google Forms
+              </span>
+            </a>
           </div>
         </div>
       </div>

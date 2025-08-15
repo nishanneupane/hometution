@@ -124,6 +124,10 @@ export default function StudentRegistrationPage() {
             <p className="text-xl text-muted-foreground">
               Fill out this form and qualified tutors in your area will apply to teach you
             </p>
+            <div className="inline-block w-full max-w-md bg-yellow-300 text-yellow-900 font-semibold px-4 py-2 rounded-md shadow-md animate-pulse text-center">
+              🎉 Free 2-Day Home Tuition Demo  🎉
+            </div>
+
           </div>
           <Card>
             <CardHeader>

@@ -144,7 +144,7 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                     Teacher Applications ({request.applications.length})
                   </h4>
                   {request.applications.length > 2 && (
-                    <Link href={`/vacancies/${request.id}`} passHref>
+                    <Link href={`/admin/requests/${request.id}`} passHref>
                       <Button variant="link" className="p-0 h-auto">
                         View All
                       </Button>

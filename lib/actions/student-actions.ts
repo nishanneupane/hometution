@@ -260,6 +260,7 @@ export async function getVacancies() {
         student: {
           select: {
             name: true,
+            class: true,
           },
         },
       },

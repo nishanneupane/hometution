@@ -37,7 +37,7 @@ interface DashboardChartProps {
 
 export function DashboardChart({ monthlyData, subjectData, growthPercent }: DashboardChartProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-6">
       {/* Monthly Growth Chart */}
       <Card className="border-0 shadow-sm">
         <CardHeader>
@@ -74,7 +74,7 @@ export function DashboardChart({ monthlyData, subjectData, growthPercent }: Dash
       </Card>
 
       {/* Subject Distribution */}
-      <Card className="border-0 shadow-sm">
+      {/* <Card className="border-0 shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg">Subject Distribution</CardTitle>
           <CardDescription>Most requested subjects</CardDescription>
@@ -117,7 +117,7 @@ export function DashboardChart({ monthlyData, subjectData, growthPercent }: Dash
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }

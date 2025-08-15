@@ -1,4 +1,4 @@
-import { getStudentById } from '@/lib/actions/student-actions'
+import { getStudentById, updateVacancy } from '@/lib/actions/student-actions'
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { MapPin, Mail, Phone, User, FileText, List, School, Clock, DollarSign, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { formatSalary } from '@/lib/utils'
+import StudentActions from './_components/student-actions'
 
 interface StudentIdPageProps {
     params: {
@@ -17,6 +18,7 @@ interface TuitionRequest {
     id: string
     createdAt: Date
     status: string
+    isApproved: boolean
 }
 
 interface Student {
@@ -62,6 +64,15 @@ const formatTime = (time: string): string => {
 
 const StudentIdPage = async ({ params }: StudentIdPageProps) => {
     const student: Student | null = await getStudentById(params.id)
+
+    const handleApprove = async (id: string, isApproved: boolean, status: 'active' | 'filled' | 'cancelled'): Promise<void> => {
+        const newApproved = !isApproved;
+        try {
+            await updateVacancy({ id: id.toString(), isApproved: newApproved, status });
+        } catch (error) {
+            console.error('Error updating approval:', error);
+        }
+    };
 
     if (!student) {
         return (
@@ -264,15 +275,14 @@ const StudentIdPage = async ({ params }: StudentIdPageProps) => {
                             )}
                         </div>
 
-                        {/* CTA */}
-                        <div className="flex justify-end mt-8">
-                            <Button
-                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 transition-all"
-                                asChild
-                            >
-                                <Link href="/admin/students">Back to Students</Link>
-                            </Button>
-                        </div>
+                        {
+                            student.tuitionRequests && student.tuitionRequests.length > 0 && (
+                                <StudentActions
+                                    studentId={student.tuitionRequests[0].id}
+                                    isApproved={student.tuitionRequests[0].isApproved}
+                                />
+                            )
+                        }
                     </CardContent>
                 </Card>
             </div>

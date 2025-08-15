@@ -21,7 +21,7 @@ export async function approveApplication(id: string) {
 
     await prisma.tuitionRequest.update({
       where: { id: application.tuitionRequestId },
-      data: { isApproved: false, status: "filled" },
+      data: { status: "filled" },
     });
 
     const student = application.tuitionRequest.student;
@@ -66,7 +66,14 @@ export async function inviteToOffice(applicationId: string) {
   try {
     const application = await prisma.application.update({
       where: { id: applicationId },
-      data: { status: "invited" },
+      data: {
+        status: "invited",
+        tuitionRequest: {
+          update: {
+            status: "demo",
+          },
+        },
+      },
       include: {
         teacher: { select: { email: true, name: true } },
       },

@@ -112,14 +112,19 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                         </span>
                     </div>
 
-                    {/* Salary & Gender */}
 
-                    <div className="flex items-center justify-center gap-2 bg-green-100 border border-green-400 rounded-md px-4 py-1 shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <CreditCard className="h-6 w-6 text-green-700" />
-                        <span className="text-green-900 font-extrabold text-[15px] flex items-center gap-1">
-                            Salary : {formatSalary(student.expectedFees)}
-                        </span>
+
+                    <div className="bg-green-100 border border-green-400 rounded-md shadow-md px-4 py-1 flex items-center justify-center h-10">
+                        <div className="flex items-center gap-2">
+                            <CreditCard className="h-6 w-6 text-green-700 flex-shrink-0" />
+                            <span className="text-green-900 font-extrabold text-[15px] leading-none">
+                                Salary: {formatSalary(student.expectedFees)}
+                            </span>
+                        </div>
                     </div>
+
+
+
                 </div>
             </CardContent>
         </div>

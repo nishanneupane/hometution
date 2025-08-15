@@ -78,9 +78,13 @@ export default function Chatbot() {
     }
 
     const handleSend = () => {
-        if (!input.trim()) return
+        if (!input.trim()) return;
 
-        const userMsg = input.trim()
+        const userMsg = input.trim();
+
+        const whatsappNumber = "9767482282"; // No "+" here for the API link
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(userMsg)}`;
+
         setMessages((prev) => [
             ...prev,
             { from: "user", text: userMsg },
@@ -89,16 +93,27 @@ export default function Chatbot() {
                 text: (
                     <>
                         जवाफ दिनमा असमर्थ भएकोमा माफी चाहन्छु। कृपया हाम्रो कार्यालय, दिल्लीबजार काठमाडौंमा आउनुहोस् वा{" "}
-                        <a href="tel:+9779767482282" className="text-blue-600 underline">
+                        <a href={`tel:+${whatsappNumber}`} className="text-blue-600 underline">
                             +977 9767482282
                         </a>{" "}
-                        मा कल गर्नुहोस्।
+                        मा कल गर्नुहोस्।<br />
+                        वा{" "}
+                        <a
+                            href={whatsappUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-600 underline"
+                        >
+                            WhatsApp मा च्याट गर्नुहोस्
+                        </a>{" "}
+                        ।
                     </>
                 ),
             },
-        ])
-        setInput("")
-    }
+        ]);
+
+        setInput("");
+    };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -147,8 +162,8 @@ export default function Chatbot() {
                             <div
                                 key={i}
                                 className={`max-w-[85%] p-3 sm:p-4 rounded-lg break-words ${msg.from === "user"
-                                        ? "bg-blue-600 text-white self-end rounded-br-none"
-                                        : "bg-white border border-gray-300 text-gray-800 self-start rounded-bl-none"
+                                    ? "bg-blue-600 text-white self-end rounded-br-none"
+                                    : "bg-white border border-gray-300 text-gray-800 self-start rounded-bl-none"
                                     }`}
                                 aria-label={msg.from === "user" ? "User message" : "Bot response"}
                             >

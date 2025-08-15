@@ -21,6 +21,7 @@ interface TuitionRequest {
   updatedAt: string;
   student: {
     name: string
+    class: string
   }
 }
 
@@ -157,6 +158,7 @@ export default function VacanciesPage() {
                   <TableHeader>
                     <TableRow className="bg-gray-50">
                       <TableHead className="font-semibold text-gray-700">Student Name</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Class</TableHead>
                       <TableHead className="font-semibold text-gray-700">Status</TableHead>
                       <TableHead className="font-semibold text-gray-700">Approved</TableHead>
                       <TableHead className="font-semibold text-gray-700">Created</TableHead>
@@ -187,6 +189,10 @@ export default function VacanciesPage() {
                             </span>
                           </Link>
                         </TableCell>
+
+                        <TableCell className="text-gray-600">
+                          {vacancy.student.class}
+                        </TableCell>
                         <TableCell>
                           <Badge
                             variant={vacancy.status === 'active' ? 'default' : vacancy.status === 'filled' ? 'secondary' : 'destructive'}
@@ -196,18 +202,29 @@ export default function VacanciesPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleApprove(vacancy.id, vacancy.isApproved, vacancy.status)}
-                            className="hover:bg-gray-100 rounded-full p-2"
-                          >
-                            {vacancy.isApproved ? (
+
+                          {vacancy.isApproved ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleApprove(vacancy.id, vacancy.isApproved, vacancy.status)}
+                              className=" rounded-full p-2"
+                            >
                               <CheckCircle className="h-5 w-5 text-green-500" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-red-500" />
-                            )}
-                          </Button>
+                              Click to Unverify
+                            </Button>
+
+                          ) : (
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleApprove(vacancy.id, vacancy.isApproved, vacancy.status)}
+                              className=" rounded-full p-2"
+                            >
+                              <XCircle className="h-5 w-5 text-white" />
+                              Click to Verify
+                            </Button>
+                          )}
                         </TableCell>
                         <TableCell className="text-gray-600">
                           {new Date(vacancy.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} {/* Improved date format */}

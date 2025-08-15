@@ -166,8 +166,11 @@ export async function updateTeacher(id: string, formData: FormData) {
       district: formData.get("district") as string,
       municipality: formData.get("municipality") as string,
       city: formData.get("city") as string,
+      profilePicture: formData.get("profilePicture") as string,
       ward: formData.get("ward") as string,
       gender: formData.get("gender") as "male" | "female" | "other",
+      citizenship: formData.get("citizenship") as string,
+      cv: formData.get("cv") as string,
     };
 
     const validatedData = teacherRegistrationSchema.parse(data);

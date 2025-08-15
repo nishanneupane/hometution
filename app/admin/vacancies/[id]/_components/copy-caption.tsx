@@ -33,7 +33,7 @@ const CopyCaption: React.FC<CopyCaptionProps> = ({ student }) => {
 
     const caption = `
 ${student.requestType === "school" ? "School Teacher Needed" : "Home Tuition Teacher Needed"} in ${student.city}.
-Apply through this link: https://hrhometuition.com/careers
+Apply through this link: https://hrhometuition.com/careers/${student.id}
   `.trim();
 
     const handleCopy = async () => {
