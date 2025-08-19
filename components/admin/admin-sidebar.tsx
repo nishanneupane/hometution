@@ -23,6 +23,8 @@ import {
   Mail,
   Facebook,
   FormInput,
+  Apple,
+  PhoneCall,
 } from "lucide-react";
 import Image from "next/image";
 import { useSidebar } from "@/lib/sidebar-context";
@@ -171,6 +173,18 @@ export function AdminSidebar() {
               <FormInput className="h-4 w-4 text-blue-600 group-hover:text-blue-700" />
               <span className="absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-xs text-white group-hover:block sm:hidden">
                 Google Forms
+              </span>
+            </a>
+            <a
+              href="https://web.whatsapp.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center h-8 w-8 rounded-full bg-blue-50 hover:bg-blue-100 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Whatsapp web"
+            >
+              <PhoneCall className="h-4 w-4 text-green-600 group-hover:text-green-700" />
+              <span className="absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-xs text-white group-hover:block sm:hidden">
+                Whatsapp
               </span>
             </a>
           </div>

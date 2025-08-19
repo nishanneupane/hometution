@@ -228,17 +228,18 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                               <CheckCircle className="h-4 w-4 mr-1" />
                               <p className="hidden md:block">Approve</p>
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleRejectApplication(application.id)}
-                              className="text-red-600 border-red-600 hover:bg-red-50"
-                            >
-                              <XCircle className="h-4 w-4 mr-1" />
-                              <p className="hidden md:block">Reject</p>
-                            </Button>
+
                           </div>
                         )}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleRejectApplication(application.id)}
+                          className="text-red-600 border-red-600 hover:bg-red-50"
+                        >
+                          <XCircle className="h-4 w-4 mr-1" />
+                          <p className="hidden md:block">Reject</p>
+                        </Button>
                       </div>
                     </div>
                   ))}

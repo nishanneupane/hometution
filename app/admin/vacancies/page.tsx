@@ -142,6 +142,7 @@ export default function VacanciesPage() {
                   <SelectItem value="active">Active</SelectItem>
                   <SelectItem value="filled">Filled</SelectItem>
                   <SelectItem value="cancelled">Cancelled</SelectItem>
+                  <SelectItem value="demo">Demo</SelectItem>
                 </SelectContent>
               </Select>
             </div>
