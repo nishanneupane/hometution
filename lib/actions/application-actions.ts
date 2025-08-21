@@ -119,7 +119,7 @@ export async function getTuitionRequests() {
     const requests = await prisma.tuitionRequest.findMany({
       where: {
         isApproved: true,
-        status: "active",
+        status: { in: ["active", "demo"] },
       },
       include: {
         student: true,

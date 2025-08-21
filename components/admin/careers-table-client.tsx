@@ -27,8 +27,10 @@ interface CareersTableClientProps {
 export function CareersTableClient({ students }: CareersTableClientProps) {
     const [searchTerm, setSearchTerm] = useState("")
     const [filterOpen, setFilterOpen] = useState(false)
-    const [filterCity, setFilterCity] = useState<string | null>(null)
+    const [province, setProvince] = useState<string | null>(null)
     const [filterDistrict, setFilterDistrict] = useState<string | null>(null)
+    const [filterMun, setFilterMun] = useState<string | null>(null)
+    const [filterClass, setFilterClass] = useState<string | null>(null)
     const [filterGender, setFilterGender] = useState<string | null>(null)
     const [filterRequestType, setFilterRequestType] = useState<string | null>(null)
     const [filterSubject, setFilterSubject] = useState<string | null>(null)
@@ -36,8 +38,10 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
     const vacancyId = searchParams.get("id")
 
     // Extract unique values for filter options
-    const uniqueCities = [...new Set(students.map((student) => student.city))].sort()
+    const uniqueProvinces = [...new Set(students.map((student) => student.province))].sort()
     const uniqueDistricts = [...new Set(students.map((student) => student.district))].sort()
+    const uniqueMuns = [...new Set(students.map((student) => student.municipality))].sort()
+    const uniqueClasses = [...new Set(students.map((student) => student.class))].sort()
     const uniqueGenders = [...new Set(students.map((student) => student.gender))].sort()
     const uniqueRequestTypes = [...new Set(students.map((student) => student.requestType))].sort()
     const uniqueSubjects = [...new Set(students.flatMap((student) => student.subject))].sort()
@@ -55,26 +59,30 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                 student.subject.some((subj: string) => subj.toLowerCase().includes(searchLower)) ||
                 student.class.toLowerCase().includes(searchLower)
                 : true
-            const cityMatch = filterCity ? student.city === filterCity : true
             const districtMatch = filterDistrict ? student.district === filterDistrict : true
+            const provinceMatch = province ? student.province === province : true
+            const munMatch = filterMun ? student.municipality === filterMun : true
+            const classMatch = filterClass ? student.class === filterClass : true
             const genderMatch = filterGender ? student.gender === filterGender : true
             const requestTypeMatch = filterRequestType ? student.requestType === filterRequestType : true
             const subjectMatch = filterSubject ? student.subject.includes(filterSubject) : true
-            return textMatch && cityMatch && districtMatch && genderMatch && requestTypeMatch && subjectMatch
+            return textMatch && districtMatch && genderMatch && requestTypeMatch && subjectMatch && provinceMatch && munMatch && classMatch
         })
-    }, [students, searchTerm, filterCity, filterDistrict, filterGender, filterRequestType, filterSubject])
+    }, [students, searchTerm, filterDistrict, filterGender, filterRequestType, filterSubject, province, filterMun, filterClass])
 
     // Reset filters
     const handleResetFilters = () => {
-        setFilterCity(null)
         setFilterDistrict(null)
         setFilterGender(null)
         setFilterRequestType(null)
         setFilterSubject(null)
+        setProvince(null)
+        setFilterMun(null)
+        setFilterClass(null)
     }
 
     // Check if any search or filter is applied
-    const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterRequestType || filterSubject
+    const isSearchOrFilterApplied = searchTerm || filterDistrict || filterGender || filterRequestType || filterSubject || province || filterMun || filterClass
 
     useEffect(() => {
         if (vacancyId) {
@@ -106,19 +114,34 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
-                                <DialogTitle>Filter Tuition Requests</DialogTitle>
+                                <DialogTitle>Filter vacancies</DialogTitle>
                             </DialogHeader>
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-4 py-4 h-[400px] overflow-y-auto px-2">
                                 <div className="space-y-2">
-                                    <Label className="text-sm font-medium">City</Label>
-                                    <Select value={filterCity || ""} onValueChange={(value) => setFilterCity(value || null)}>
+                                    <Label className="text-sm font-medium">Province</Label>
+                                    <Select value={province || ""} onValueChange={(value) => setProvince(value || null)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select city" />
+                                            <SelectValue placeholder="Select province" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {uniqueCities.map((city) => (
-                                                <SelectItem key={city} value={city}>
-                                                    {city}
+                                            {uniqueProvinces.map((province) => (
+                                                <SelectItem key={province} value={province}>
+                                                    {province}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium">Municipality</Label>
+                                    <Select value={filterMun || ""} onValueChange={(value) => setFilterMun(value || null)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select municipality" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {uniqueMuns.map((municipality) => (
+                                                <SelectItem key={municipality} value={municipality}>
+                                                    {municipality}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -130,13 +153,14 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select district" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="max-h-60 overflow-y-auto">
                                             {uniqueDistricts.map((district) => (
                                                 <SelectItem key={district} value={district}>
                                                     {district}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
+
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
@@ -149,6 +173,21 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                             {uniqueGenders.map((gender) => (
                                                 <SelectItem key={gender} value={gender}>
                                                     {gender}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium">Class</Label>
+                                    <Select value={filterClass || ""} onValueChange={(value) => setFilterClass(value || null)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select class" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {uniqueClasses.map((className) => (
+                                                <SelectItem key={className} value={className}>
+                                                    {className}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -201,7 +240,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                     <CardContent className="flex flex-col items-center justify-center py-16">
                         <BookOpen className="h-16 w-16 text-gray-300 mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {isSearchOrFilterApplied ? "No matching tuition requests found" : "No tuition requests available"}
+                            {isSearchOrFilterApplied ? "No matching vacancies found" : "No vacancies available"}
                         </h3>
                         <p className="text-gray-600 text-center max-w-md">
                             {isSearchOrFilterApplied
@@ -211,7 +250,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-semibold">
                     {filteredStudents.map((student) => (
                         <Card
                             id={`vacancy-${student.id}`}
@@ -250,7 +289,7 @@ export function CareersTableClient({ students }: CareersTableClientProps) {
                                     <div className="flex items-center gap-2">
                                         <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0" />
                                         <span>
-                                            <strong>Location:</strong> {student.province}, {student.municipality}-
+                                            <strong>Location:</strong> {student.province}, {student.district}, {student.municipality}-
                                             {student.ward}, {student.city}
                                         </span>
                                     </div>

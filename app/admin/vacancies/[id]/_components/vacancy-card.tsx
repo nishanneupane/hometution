@@ -9,6 +9,7 @@ interface Student {
     requestType: 'school' | 'student';
     province: string;
     municipality: string;
+    district: string;
     ward: string;
     city: string;
     class: string;
@@ -73,7 +74,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({ student, convertToAmPm }) => 
                     <div className="flex items-center gap-2">
                         <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0" />
                         <span>
-                            <strong>Location:</strong> {student.province}, {student.municipality}-
+                            <strong>Location:</strong> {student.province}, {student.district}, {student.municipality}-
                             {student.ward}, {student.city}
                         </span>
                     </div>
