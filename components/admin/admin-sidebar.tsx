@@ -25,6 +25,7 @@ import {
   FormInput,
   Apple,
   PhoneCall,
+  NewspaperIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useSidebar } from "@/lib/sidebar-context";
@@ -38,6 +39,7 @@ const navigation = [
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Notifications", href: "/admin/notifications", icon: Bell },
+  { name: "Notices", href: "/admin/notices", icon: NewspaperIcon },
   { name: "Reports", href: "/admin/report", icon: Info },
 ];
 

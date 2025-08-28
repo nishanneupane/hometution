@@ -11,6 +11,8 @@ import { BookOpen, Users, GraduationCap, MapPin, Star, ArrowRight, CheckCircle }
 import Link from "next/link"
 import Image from "next/image"
 import ChatbotButton from "@/components/ChatbotButton"
+import { getNotices } from "@/lib/actions/notice-actions"
+import { NoticeModal } from "@/components/notice-modal"
 
 function TestimonialsSkeleton() {
   return (
@@ -91,11 +93,17 @@ async function TestimonialsSection() {
   )
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { notices } = await getNotices(1, 1);
   return (
     <>
       <div className="min-h-screen bg-background">
         <Navbar />
+        {notices.length > 0 && (
+          <Suspense fallback={null}>
+            <NoticeModal notice={notices[0]} />
+          </Suspense>
+        )}
 
         <section className="relative py-20 bg-gradient-to-br from-blue-50 via-white to-slate-50 overflow-hidden">
           <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
