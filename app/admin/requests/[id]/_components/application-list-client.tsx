@@ -8,6 +8,7 @@ import { CheckCircle, XCircle, FileText, Building } from "lucide-react"
 import { toast } from "sonner"
 import { approveApplication, inviteToOffice, rejectApplication } from "@/lib/actions/application-actions"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 interface ApplicationListClientProps {
     applications: any[]
@@ -71,11 +72,13 @@ export function ApplicationListClient({ applications }: ApplicationListClientPro
             {appState.map((application: any) => (
                 <div key={application.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                        <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-secondary text-secondary-foreground">
-                                {application.teacher.name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
+                        <Link href={`/admin/teachers/${application.teacher.id}`}>
+                            <Avatar className="h-10 w-10 hidden md:flex cursor-pointer hover:opacity-80 transition">
+                                <AvatarFallback className="bg-secondary text-secondary-foreground">
+                                    {application.teacher.name.charAt(0).toUpperCase()}
+                                </AvatarFallback>
+                            </Avatar>
+                        </Link>
                         <div>
                             <p className="font-medium text-gray-900">{application.teacher.name}</p>
                             <div className="flex items-center flex-wrap gap-2 text-sm text-gray-600 mt-1">

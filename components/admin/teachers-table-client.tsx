@@ -106,12 +106,14 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const [teacherFormOpen, setTeacherFormOpen] = useState(false)
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [messageConfirmOpen, setMessageConfirmOpen] = useState(false)
+  const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [formMode, setFormMode] = useState<"create" | "edit">("create")
   const [searchTerm, setSearchTerm] = useState("")
   const [filterOpen, setFilterOpen] = useState(false)
   const [filterCity, setFilterCity] = useState<string | null>(null)
   const [filterDistrict, setFilterDistrict] = useState<string | null>(null)
   const [filterGender, setFilterGender] = useState<string | null>(null)
+  const [filterLevel, setFilterLevel] = useState<string | null>(null)
   const [filterApproved, setFilterApproved] = useState<boolean | null>(null)
   const [filterWard, setFilterWard] = useState<string | null>(null)
   const [filterMunicipality, setFilterMunicipality] = useState<string | null>(null)
@@ -189,6 +191,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
   const uniqueCities = [...new Set(teachers.map((teacher) => teacher.city))].sort()
   const uniqueDistricts = [...new Set(teachers.map((teacher) => teacher.district))].sort()
   const uniqueGenders = [...new Set(teachers.map((teacher) => teacher.gender))].sort()
+  const uniqueLevels = [...new Set(teachers.map((teacher) => teacher.priority))].sort()
   const uniqueWards = [...new Set(teachers.map((teacher) => teacher.ward))].sort()
   const uniqueMunicipalities = [...new Set(teachers.map((teacher) => teacher.municipality))].sort()
   const uniqueProvinces = [...new Set(teachers.map((teacher) => teacher.province))].sort()
@@ -214,13 +217,14 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
       const cityMatch = filterCity ? teacher.city === filterCity : true
       const districtMatch = filterDistrict ? teacher.district === filterDistrict : true
       const genderMatch = filterGender ? teacher.gender === filterGender : true
+      const levelMatch = filterLevel ? teacher.priority === filterLevel : true
       const approvedMatch = filterApproved !== null ? teacher.isApproved === filterApproved : true
       const wardMatch = filterWard ? teacher.ward === filterWard : true
       const municipalityMatch = filterMunicipality ? teacher.municipality === filterMunicipality : true
       const provinceMatch = filterProvince ? teacher.province === filterProvince : true
-      return textMatch && cityMatch && districtMatch && genderMatch && approvedMatch && wardMatch && municipalityMatch && provinceMatch
+      return textMatch && cityMatch && districtMatch && genderMatch && approvedMatch && wardMatch && municipalityMatch && provinceMatch && levelMatch
     })
-  }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved, filterWard, filterMunicipality, filterProvince])
+  }, [teachers, searchTerm, filterCity, filterDistrict, filterGender, filterApproved, filterWard, filterMunicipality, filterProvince, filterLevel])
 
   const handleConfirmSendMessage = async () => {
     if (messageType === 'custom' && !customMessage.trim() && !imageUrl) {
@@ -242,7 +246,7 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
         setMessageConfirmOpen(false)
         return { success: false, message: "No valid teachers found." }
       }
-      result = await sendMessageToTeachers(validTeacherIds, message, sendImageUrl)
+      result = await sendMessageToTeachers(validTeacherIds, message, sendImageUrl, selectedEmail ?? undefined)
     } else {
       if (!selectedTeacher?.id || typeof selectedTeacher.id !== 'string' || selectedTeacher.id.trim() === '') {
         toast.error("No valid teacher selected.")
@@ -268,13 +272,14 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
     setFilterCity(null)
     setFilterDistrict(null)
     setFilterGender(null)
+    setFilterLevel(null)
     setFilterApproved(null)
     setFilterWard(null)
     setFilterMunicipality(null)
     setFilterProvince(null)
   }
 
-  const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null || filterWard || filterMunicipality || filterProvince
+  const isSearchOrFilterApplied = searchTerm || filterCity || filterDistrict || filterGender || filterApproved !== null || filterWard || filterMunicipality || filterProvince || filterLevel
 
   const paginatedTeachers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
@@ -397,6 +402,21 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       {uniqueGenders.map((gender) => (
                         <SelectItem key={gender} value={gender}>
                           {gender}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Level</Label>
+                  <Select value={filterLevel || ""} onValueChange={(value) => setFilterLevel(value || null)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueLevels.map((level) => (
+                        <SelectItem key={level} value={level}>
+                          {level}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -634,6 +654,25 @@ export function TeachersTableClient({ teachers }: TeachersTableClientProps) {
                       </>
                     )}
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Send From</Label>
+                  <Select
+                    value={selectedEmail || ""}
+                    onValueChange={(value) => setSelectedEmail(value || null)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select email" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="support@hrhometuition.com">support@hrhometuition.com</SelectItem>
+                      <SelectItem value="birendra.naral@hrhometuition.com">birendra.naral@hrhometuition.com</SelectItem>
+                      <SelectItem value="info@hrhometuition.com">info@hrhometuition.com</SelectItem>
+                      <SelectItem value="hr2025@hrhometuition.com">hr2025@hrhometuition.com</SelectItem>
+                      <SelectItem value="contact@hrhometuition.com">contact@hrhometuition.com</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             )}

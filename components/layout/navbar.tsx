@@ -30,16 +30,30 @@ export function Navbar() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>Kathmandu, Nepal</span>
+              <a
+                href="https://www.google.com/maps?q=27.705397,85.317167"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Kathmandu, Nepal
+              </a>
             </div>
+
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>+977 9767482282</span>
+              <a href="tel:+9779767482282" className="hover:underline">
+                +977 9767482282
+              </a>
             </div>
+
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              <span>info@hrhometuition.com</span>
+              <a href="mailto:info@hrhometuition.com" className="hover:underline">
+                info@hrhometuition.com
+              </a>
             </div>
+
           </div>
           <div className="flex items-center gap-2">
             <Link href="/login">

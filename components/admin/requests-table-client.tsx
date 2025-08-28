@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { approveApplication, inviteToOffice, rejectApplication } from "@/lib/actions/application-actions"
+import { approveApplication, inviteToOffice, rejectApplication, sendToDemo } from "@/lib/actions/application-actions"
 import { CheckCircle, XCircle, FileText, MapPin, Clock, Phone, User, School, Building } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
@@ -16,6 +16,14 @@ interface RequestsTableClientProps {
 export function RequestsTableClient({ requests }: RequestsTableClientProps) {
   const handleApproveApplication = async (applicationId: string) => {
     const result = await approveApplication(applicationId)
+    if (result.success) {
+      toast.success(result.message)
+    } else {
+      toast.error(result.message)
+    }
+  }
+  const handleSendToDemo = async (applicationId: string) => {
+    const result = await sendToDemo(applicationId)
     if (result.success) {
       toast.success(result.message)
     } else {
@@ -62,11 +70,13 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
           <CardContent className="p-6">
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-4">
-                <Avatar className="h-12 w-12 ">
-                  <AvatarFallback className="bg-primary text-white">
-                    {request.student.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                <Link href={`/admin/students/${request.student.id}`}>
+                  <Avatar className="h-12 w-12 cursor-pointer hover:opacity-80 transition">
+                    <AvatarFallback className="bg-primary text-white">
+                      {request.student.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
 
                 <div>
                   <div className="flex items-center space-x-2 mb-1">
@@ -155,11 +165,13 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                   {request.applications.slice(0, 2).map((application: any) => (
                     <div key={application.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center space-x-4">
-                        <Avatar className="h-10 w-10 hidden md:flex">
-                          <AvatarFallback className="bg-secondary text-secondary-foreground">
-                            {application.teacher.name.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
+                        <Link href={`/admin/teachers/${application.teacher.id}`}>
+                          <Avatar className="h-10 w-10 hidden md:flex cursor-pointer hover:opacity-80 transition">
+                            <AvatarFallback className="bg-secondary text-secondary-foreground">
+                              {application.teacher.name.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Link>
                         <div>
                           <p className="font-medium text-gray-900">{application.teacher.name}</p>
                           <div className="hidden md:flex items-center space-x-4 text-sm text-gray-600">
@@ -218,6 +230,20 @@ export function RequestsTableClient({ requests }: RequestsTableClientProps) {
                           </div>
                         )}
                         {application.status === "invited" && (
+                          <div className="flex space-x-2">
+
+                            <Button
+                              size="sm"
+                              onClick={() => handleSendToDemo(application.id)}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Send to Demo</p>
+                            </Button>
+
+                          </div>
+                        )}
+                        {application.status === "demo" && (
                           <div className="flex space-x-2">
 
                             <Button

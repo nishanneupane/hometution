@@ -178,11 +178,11 @@ export function StudentForm({ open, onOpenChange, student, mode }: StudentFormPr
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{requestType === "school" ? "Contact Person Name" : "Student Name"}</FormLabel>
+                    <FormLabel>{requestType === "school" ? "Contact Person Name" : "Student/Parent Name"}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder={
-                          requestType === "school" ? "Enter contact person name" : "Enter student name"
+                          requestType === "school" ? "Enter contact person name" : "Enter student/Parent name"
                         }
                         {...field}
                       />

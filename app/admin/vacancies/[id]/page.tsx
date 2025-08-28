@@ -17,6 +17,7 @@ interface Student {
     requestType: 'school' | 'student';
     province: string;
     municipality: string;
+    district: string;
     ward: string;
     city: string;
     class: string;

@@ -52,6 +52,8 @@ model Teacher {
   ward            String?
   gender          String
   profilePicture  String?
+  leftPayment     String?
+  priority        String?
   citizenship     String? // UploadThing URL
   cv              String? // UploadThing URL
   teacherCode     String   @unique

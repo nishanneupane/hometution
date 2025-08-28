@@ -8,7 +8,6 @@ import Link from 'next/link';
 import CopyTeacherCodeButton from './copy-teacher-code';
 import { getTimeAgo } from '@/lib/utils';
 import TeacherActions from './_components/teacher-actions';
-import TeacherLevelPaymentForm from './_components/teacher-level-payment-form';
 
 interface TeacherIdPageProps {
     params: {
@@ -39,14 +38,13 @@ interface Teacher {
     cv: string | null;
     teacherCode: string;
     isApproved: boolean;
-    leftPayment: string | null;
-    priority: string | null;
     applications: Application[];
 }
 
+
 const TeacherIdPage = async ({ params }: TeacherIdPageProps) => {
     // @ts-ignore
-    const teacher: Teacher | null = await getTeacherById((await params).id);
+    const teacher: Teacher | null = await getTeacherById(params.id);
 
     if (!teacher) {
         return (
@@ -99,7 +97,6 @@ const TeacherIdPage = async ({ params }: TeacherIdPageProps) => {
                                     </p>
                                     <CopyTeacherCodeButton teacherCode={teacher.teacherCode} />
                                 </div>
-                                <TeacherLevelPaymentForm teacher={teacher} />
                             </div>
 
                             {/* Personal Details */}

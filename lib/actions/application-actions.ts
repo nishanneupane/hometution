@@ -68,11 +68,11 @@ export async function inviteToOffice(applicationId: string) {
       where: { id: applicationId },
       data: {
         status: "invited",
-        tuitionRequest: {
-          update: {
-            status: "demo",
-          },
-        },
+        // tuitionRequest: {
+        //   update: {
+        //     status: "demo",
+        //   },
+        // },
       },
       include: {
         teacher: { select: { email: true, name: true } },
@@ -98,12 +98,67 @@ export async function inviteToOffice(applicationId: string) {
     return { success: false, message: "Failed to send office invitation" };
   }
 }
+export async function sendToDemo(applicationId: string) {
+  try {
+    await prisma.application.update({
+      where: { id: applicationId },
+      data: {
+        status: "demo",
+        tuitionRequest: {
+          update: {
+            status: "demo",
+          },
+        },
+      },
+    });
+
+    revalidatePath("/admin");
+    return { success: true, message: "Invitation to office sent successfully" };
+  } catch (error) {
+    console.error("Error sending office invitation:", error);
+    return { success: false, message: "Failed to send office invitation" };
+  }
+}
 
 export async function rejectApplication(id: string) {
   try {
-    await prisma.application.update({
+    const application = await prisma.application.update({
       where: { id },
       data: { status: "rejected" },
+      include: {
+        teacher: { select: { email: true, name: true } },
+        tuitionRequest: {
+          include: {
+            student: true,
+          },
+        },
+      },
+    });
+
+    const student = application.tuitionRequest.student;
+    const vacancyDetails = {
+      name: `${
+        student.requestType === "school" ? student.schoolName : student.name
+      }`,
+      phone: student.phoneOrWhatsapp,
+      requestType: student.requestType,
+      location: `${student.city}, ${student.municipality}-${student.ward}, ${student.district}, ${student.province}`,
+      subjects: student.subject.join(", "),
+      preferredTime: `${convertToAmPm(
+        student.preferredTimeFrom
+      )} - ${convertToAmPm(student.preferredTimeTo)}`,
+      expectedFees: student.expectedFees || "Not specified",
+      vacancyId: student.id,
+    };
+
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/reject-application`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        teacherEmail: application.teacher.email,
+        teacherName: application.teacher.name,
+        vacancyDetails,
+      }),
     });
 
     revalidatePath("/admin");

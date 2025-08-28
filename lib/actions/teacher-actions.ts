@@ -413,10 +413,102 @@ export async function applyRequest({
   }
 }
 
+// export async function sendMessageToTeachers(
+//   teacherIds: string[],
+//   message: string,
+//   imageUrl?: string
+// ): Promise<{ success: boolean; message: string }> {
+//   try {
+//     if (!message.trim()) {
+//       return { success: false, message: "Message cannot be empty" };
+//     }
+//     if (imageUrl && !imageUrl) {
+//       return { success: false, message: "Invalid image URL" };
+//     }
+
+//     const validTeacherIds = teacherIds.filter(
+//       (id) => id && typeof id === "string" && id.trim() !== ""
+//     );
+//     if (validTeacherIds.length === 0) {
+//       return { success: false, message: "No valid teacher IDs provided" };
+//     }
+
+//     const teachers = await prisma.teacher.findMany({
+//       where: { id: { in: validTeacherIds } },
+//       select: { id: true, email: true, name: true },
+//     });
+
+//     if (teachers.length === 0) {
+//       return {
+//         success: false,
+//         message: "No teachers found for the provided IDs",
+//       };
+//     }
+
+//     const results = await Promise.all(
+//       teachers.map(async (teacher) => {
+//         try {
+//           const response = await fetch(
+//             `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-vacancy-message`,
+//             {
+//               method: "POST",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify({
+//                 teacherEmail: teacher.email,
+//                 teacherName: teacher.name,
+//                 message,
+//                 imageUrl,
+//               }),
+//             }
+//           );
+
+//           if (!response.ok) {
+//             throw new Error(
+//               `Failed to send message to ${teacher.email}: ${response.statusText}`
+//             );
+//           }
+
+//           return { success: true, teacherId: teacher.id };
+//         } catch (error) {
+//           console.error(`Error sending message to ${teacher.email}:`, error);
+//           return {
+//             success: false,
+//             teacherId: teacher.id,
+//             error: String(error),
+//           };
+//         }
+//       })
+//     );
+
+//     const failedSends = results.filter((result) => !result.success);
+//     if (failedSends.length > 0) {
+//       const errorMessage = `Failed to send message to ${
+//         failedSends.length
+//       } teacher(s): ${failedSends.map((r) => r.teacherId).join(", ")}`;
+//       return { success: false, message: errorMessage };
+//     }
+
+//     revalidatePath("/admin/teachers");
+//     revalidatePath("/admin");
+
+//     return {
+//       success: true,
+//       message: `Vacancy message sent successfully to ${teachers.length} teacher(s)`,
+//     };
+//   } catch (error) {
+//     console.error("Error sending vacancy messages:", error);
+//     return {
+//       success: false,
+//       message: "Failed to send vacancy messages due to server error",
+//     };
+//   }
+// }
+
 export async function sendMessageToTeachers(
   teacherIds: string[],
   message: string,
-  imageUrl?: string
+  imageUrl?: string,
+  selectedEmail?: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     if (!message.trim()) {
@@ -445,46 +537,69 @@ export async function sendMessageToTeachers(
       };
     }
 
-    const results = await Promise.all(
-      teachers.map(async (teacher) => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-vacancy-message`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                teacherEmail: teacher.email,
-                teacherName: teacher.name,
-                message,
-                imageUrl,
-              }),
-            }
-          );
+    const validFromEmails = [
+      "support@hrhometuition.com",
+      "birendra.naral@hrhometuition.com",
+      "info@hrhometuition.com",
+      "hr2025@hrhometuition.com",
+      "contact@hrhometuition.com",
+    ];
 
-          if (!response.ok) {
-            throw new Error(
-              `Failed to send message to ${teacher.email}: ${response.statusText}`
-            );
+    const batchEmails = teachers.map((teacher, index) => {
+      // If selectedEmail is provided and valid, use it; otherwise, distribute across validFromEmails
+      const fromEmail =
+        selectedEmail && validFromEmails.includes(selectedEmail)
+          ? selectedEmail
+          : validFromEmails[index % validFromEmails.length];
+
+      return {
+        from: `HR Home Tuition <${fromEmail}>`,
+        to: [teacher.email],
+        subject: "New Vacancy Available!",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2>Hello ${teacher.name},</h2>
+            <p>${message}</p>
+            ${
+              imageUrl
+                ? `<img src="${imageUrl}" alt="Vacancy Image" style="max-width: 100%; height: auto; margin-top: 10px;" />`
+                : ""
+            }
+            <p>Best regards,<br>HR Home Tuition Team</p>
+          </div>
+        `,
+      };
+    });
+
+    // Split into chunks of 100 emails for batch API
+    const chunkSize = 100;
+    const emailChunks = [];
+    for (let i = 0; i < batchEmails.length; i += chunkSize) {
+      emailChunks.push(batchEmails.slice(i, i + chunkSize));
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const results = await Promise.all(
+      emailChunks.map(async (chunk) => {
+        try {
+          const { data, error } = await resend.batch.send(chunk);
+
+          if (error) {
+            throw new Error(`Failed to send batch: ${error.message}`);
           }
 
-          return { success: true, teacherId: teacher.id };
+          return { success: true, data };
         } catch (error) {
-          console.error(`Error sending message to ${teacher.email}:`, error);
-          return {
-            success: false,
-            teacherId: teacher.id,
-            error: String(error),
-          };
+          console.error("Error sending batch:", error);
+          return { success: false, error: String(error) };
         }
       })
     );
 
-    const failedSends = results.filter((result) => !result.success);
-    if (failedSends.length > 0) {
-      const errorMessage = `Failed to send message to ${
-        failedSends.length
-      } teacher(s): ${failedSends.map((r) => r.teacherId).join(", ")}`;
+    const failedBatches = results.filter((result) => !result.success);
+    if (failedBatches.length > 0) {
+      const errorMessage = `Failed to send ${failedBatches.length} batch(es)`;
       return { success: false, message: errorMessage };
     }
 
@@ -501,5 +616,34 @@ export async function sendMessageToTeachers(
       success: false,
       message: "Failed to send vacancy messages due to server error",
     };
+  }
+}
+
+export async function updateTeacherLevel(id: string, priority: string) {
+  try {
+    await prisma.teacher.update({
+      where: { id },
+      data: { priority },
+    });
+    revalidatePath(`/teachers/${id}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating teacher level:", error);
+    return { success: false, error: "Failed to update level" };
+  }
+}
+
+export async function updateTeacherPayment(id: string, leftPayment: string) {
+  try {
+    const cleanedPayment = leftPayment.replace(/[^0-9]/g, "");
+    await prisma.teacher.update({
+      where: { id },
+      data: { leftPayment: cleanedPayment },
+    });
+    revalidatePath(`/teachers/${id}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating teacher payment:", error);
+    return { success: false, error: "Failed to update payment" };
   }
 }

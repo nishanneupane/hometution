@@ -267,3 +267,58 @@ export function generateOfficeInvitationSimple(teacherName: string): string {
     </div>
   `;
 }
+
+export function generateTuitionRequestRejection(
+  teacherName: string,
+  vacancyDetails: {
+    requestType: "student" | "school";
+    name: string;
+    vacancyId: string;
+  }
+): string {
+  return `
+    <div style="font-family: 'Segoe UI', sans-serif; background-color: #f5f7fa; padding: 0; margin: 0;">
+      <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        
+        <!-- Header -->
+        <div style="background: linear-gradient(90deg, #dc2626, #991b1b); padding: 30px; text-align: center; color: white;">
+          <img src="https://hrhometuition.com/images/hrlogo.png" alt="HR Home Tuition" style="max-width: 80px; margin-bottom: 15px; border-radius: 50%;" />
+          <h1 style="margin: 0; font-size: 26px; font-weight: 600;">Application Update</h1>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 30px;">
+          <h2 style="color: #111827; font-size: 22px; font-weight: 600; margin-top: 0;">Hi ${teacherName},</h2>
+          <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            Thank you for applying to the tuition request from ${
+              vacancyDetails.requestType === "school" ? "school" : "student"
+            } <strong>${vacancyDetails.name}</strong>.
+          </p>
+          <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            After reviewing your application, we regret to inform you that you were not selected for this opportunity. 
+          </p>
+          <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            We truly appreciate the effort you put into applying, and we encourage you to keep checking new vacancies on our careers page.
+          </p>
+
+          <div style="text-align: center; margin-top: 25px;">
+            <a href="https://hrhometuition.com/careers" 
+              style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+              View Other Openings
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 14px; color: #6b7280;">
+          <p style="margin: 0;">📍 Dilli Bazar, Kathmandu, Nepal</p>
+          <p style="margin: 0;">📞 +977 9767482282</p>
+          <p style="margin-top: 8px;">
+            <a href="https://hrhometuition.com" style="color: #2563eb; text-decoration: none;">hrhometuition.com</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  `;
+}

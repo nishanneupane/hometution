@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { FileText, MapPin, Clock, Phone, User, School } from "lucide-react"
 import { ApplicationListClient } from "./_components/application-list-client"
 import { getTuitionRequestById } from "@/lib/actions/application-actions"
+import Link from "next/link"
 
 export default async function VacancyPage({ params }: { params: { id: string } }) {
     const { id } = await params
@@ -25,11 +26,13 @@ export default async function VacancyPage({ params }: { params: { id: string } }
                     <div className="flex items-start justify-between mb-6">
                         {/* Student/School Info (Static) */}
                         <div className="flex items-center space-x-4">
-                            <Avatar className="h-12 w-12 ">
-                                <AvatarFallback className="bg-primary text-white">
-                                    {request.student.name.charAt(0).toUpperCase()}
-                                </AvatarFallback>
-                            </Avatar>
+                            <Link href={`/admin/students/${request.student.id}`}>
+                                <Avatar className="h-12 w-12 cursor-pointer hover:opacity-80 transition">
+                                    <AvatarFallback className="bg-primary text-white">
+                                        {request.student.name.charAt(0).toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </Link>
                             <div>
                                 <div className="flex items-center space-x-2 mb-1">
                                     <h3 className="text-lg font-semibold text-gray-900">{request.student.name}</h3>

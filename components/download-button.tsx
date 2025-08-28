@@ -16,48 +16,50 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ vacancyId }) => {
         try {
             await document.fonts.ready;
 
+            // Make sure all images are loaded
             const images = Array.from(element.querySelectorAll("img"));
             await Promise.all(
-                images.map((img) => {
-                    if (img.complete) return Promise.resolve();
-                    return new Promise((resolve, reject) => {
-                        img.onload = resolve;
-                        img.onerror = reject;
-                    });
-                })
+                images.map((img) =>
+                    img.complete
+                        ? Promise.resolve()
+                        : new Promise((resolve, reject) => {
+                            img.onload = resolve;
+                            img.onerror = reject;
+                        })
+                )
             );
 
-            // Clone to a neutral container
+            // Clone node without forcing width/height
             const clone = element.cloneNode(true) as HTMLElement;
-            clone.style.position = "absolute";
+            clone.style.position = "fixed";
             clone.style.top = "-9999px";
             clone.style.left = "-9999px";
-            clone.style.width = "400px";
-            clone.style.height = "420px";
-            clone.style.boxShadow = "none";
             clone.style.margin = "0";
-
+            clone.style.boxShadow = "none"; // prevents double shadows in export
             document.body.appendChild(clone);
 
+            // Use the real element’s bounding box
+            const rect = element.getBoundingClientRect();
+            clone.style.width = `${rect.width}px`;
+            clone.style.height = `${rect.height}px`;
+
             const canvas = await html2canvas(clone, {
-                scale: 3,
+                scale: 2, // 2 is usually sharp enough; 3 can balloon file size
                 useCORS: true,
-                logging: false,
                 backgroundColor: "#ffffff",
             });
 
             document.body.removeChild(clone);
 
+            // Trigger download
             const link = document.createElement("a");
-            link.href = canvas.toDataURL("image/png", 1.0);
+            link.href = canvas.toDataURL("image/png");
             link.download = `vacancy-${vacancyId}.png`;
             link.click();
-
         } catch (error) {
             console.error("Error generating canvas:", error);
         }
     };
-
 
     return (
         <Button
