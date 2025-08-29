@@ -59,7 +59,7 @@ export default function StudentRegistrationPage() {
       parentCtzOrStudentCtz: "",
       extraInfo: "",
       ward: "",
-      board: "",
+      board: "NEB",
       class: "",
       expectedFees: "",
       gender: undefined,
@@ -279,7 +279,7 @@ export default function StudentRegistrationPage() {
                       )}
                     />
 
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="board"
                       render={({ field }) => (
@@ -291,7 +291,7 @@ export default function StudentRegistrationPage() {
                           <FormMessage />
                         </FormItem>
                       )}
-                    />
+                    /> */}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                     <FormField

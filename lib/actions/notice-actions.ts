@@ -37,6 +37,7 @@ export async function createNotice(formData: FormData) {
   });
 
   revalidatePath("/admin/notices");
+  revalidatePath("/admin");
   return notice;
 }
 
@@ -77,6 +78,7 @@ export async function updateNotice(formData: FormData) {
   });
 
   revalidatePath("/admin/notices");
+  revalidatePath("/admin");
   return notice;
 }
 
@@ -94,4 +96,5 @@ export async function deleteNotice(formData: FormData) {
   await prisma.notice.delete({ where: { id } });
 
   revalidatePath("/admin/notices");
+  revalidatePath("/admin");
 }

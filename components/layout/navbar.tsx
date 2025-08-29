@@ -55,14 +55,14 @@ export function Navbar() {
             </div>
 
           </div>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Link href="/login">
               <Button variant="secondary" size="sm" >
                 Admin Panel
               </Button>
             </Link>
 
-          </div>
+          </div> */}
         </div>
       </div>
 

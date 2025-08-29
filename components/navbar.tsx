@@ -46,14 +46,14 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <Link href="/admin">
               <Button variant="outline" size="sm">
                 <Settings className="h-4 w-4 mr-2" />
                 Admin
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
