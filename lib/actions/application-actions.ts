@@ -24,35 +24,6 @@ export async function approveApplication(id: string) {
       data: { status: "filled" },
     });
 
-    const student = application.tuitionRequest.student;
-    const vacancyDetails = {
-      name: `${
-        student.requestType === "school" ? student.schoolName : student.name
-      }`,
-      phone: student.phoneOrWhatsapp,
-      requestType: student.requestType,
-      location: `${student.city}, ${student.municipality}-${student.ward}, ${student.district}, ${student.province}`,
-      subjects: student.subject.join(", "),
-      preferredTime: `${convertToAmPm(
-        student.preferredTimeFrom
-      )} - ${convertToAmPm(student.preferredTimeTo)}`,
-      expectedFees: student.expectedFees || "Not specified",
-      vacancyId: student.id,
-    };
-
-    await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-request-approval`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          teacherEmail: application.teacher.email,
-          teacherName: application.teacher.name,
-          vacancyDetails,
-        }),
-      }
-    );
-
     revalidatePath("/admin");
     revalidatePath("/careers");
     return { success: true, message: "Application approved successfully" };
@@ -100,7 +71,7 @@ export async function inviteToOffice(applicationId: string) {
 }
 export async function sendToDemo(applicationId: string) {
   try {
-    await prisma.application.update({
+    const application = await prisma.application.update({
       where: { id: applicationId },
       data: {
         status: "demo",
@@ -110,9 +81,48 @@ export async function sendToDemo(applicationId: string) {
           },
         },
       },
+      include: {
+        teacher: { select: { email: true, name: true } },
+        tuitionRequest: {
+          include: {
+            student: true,
+          },
+        },
+      },
     });
 
+    const student = application.tuitionRequest.student;
+    const vacancyDetails = {
+      name: `${
+        student.requestType === "school" ? student.schoolName : student.name
+      }`,
+      phone: student.phoneOrWhatsapp,
+      requestType: student.requestType,
+      location: `${student.city}, ${student.municipality}-${student.ward}, ${student.district}, ${student.province}`,
+      subjects: student.subject.join(", "),
+      preferredTime: `${convertToAmPm(
+        student.preferredTimeFrom
+      )} - ${convertToAmPm(student.preferredTimeTo)}`,
+      expectedFees: student.expectedFees || "Not specified",
+      vacancyId: student.id,
+    };
+
+    await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/send-request-approval`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacherEmail: application.teacher.email,
+          teacherName: application.teacher.name,
+          vacancyDetails,
+        }),
+      }
+    );
+
     revalidatePath("/admin");
+    revalidatePath("/admin/requests");
+    revalidatePath("/careers");
     return { success: true, message: "Invitation to office sent successfully" };
   } catch (error) {
     console.error("Error sending office invitation:", error);
@@ -124,7 +134,14 @@ export async function rejectApplication(id: string) {
   try {
     const application = await prisma.application.update({
       where: { id },
-      data: { status: "rejected" },
+      data: {
+        status: "rejected",
+        tuitionRequest: {
+          update: {
+            status: "active",
+          },
+        },
+      },
       include: {
         teacher: { select: { email: true, name: true } },
         tuitionRequest: {

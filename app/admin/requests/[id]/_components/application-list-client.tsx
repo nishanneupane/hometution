@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { CheckCircle, XCircle, FileText, Building } from "lucide-react"
 import { toast } from "sonner"
-import { approveApplication, inviteToOffice, rejectApplication } from "@/lib/actions/application-actions"
+import { approveApplication, inviteToOffice, rejectApplication, sendToDemo } from "@/lib/actions/application-actions"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
@@ -52,6 +52,15 @@ export function ApplicationListClient({ applications }: ApplicationListClientPro
                 app.id === applicationId ? { ...app, status: "invited" } : app
             ))
             router.refresh()
+        } else {
+            toast.error(result.message)
+        }
+    }
+
+    const handleSendToDemo = async (applicationId: string) => {
+        const result = await sendToDemo(applicationId)
+        if (result.success) {
+            toast.success(result.message)
         } else {
             toast.error(result.message)
         }
@@ -113,32 +122,65 @@ export function ApplicationListClient({ applications }: ApplicationListClientPro
                                     onClick={() => handleInviteToOffice(application.id)}
                                     className="bg-blue-600 hover:bg-blue-700"
                                 >
-                                    <Building className="h-4 w-4 md:mr-1" />
+                                    <Building className="h-4 w-4 mr-1" />
                                     <p className="hidden md:block">Invite to Office</p>
                                 </Button>
+                                {/* <Button
+                              size="sm"
+                              onClick={() => handleApproveApplication(application.id)}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Approve</p>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRejectApplication(application.id)}
+                              className="text-red-600 border-red-600 hover:bg-red-50"
+                            >
+                              <XCircle className="h-4 w-4 mr-1" />
+                              <p className="hidden md:block">Reject</p>
+                            </Button> */}
                             </div>
                         )}
                         {application.status === "invited" && (
                             <div className="flex space-x-2">
+
+                                <Button
+                                    size="sm"
+                                    onClick={() => handleSendToDemo(application.id)}
+                                    className="bg-green-600 hover:bg-green-700"
+                                >
+                                    <CheckCircle className="h-4 w-4 mr-1" />
+                                    <p className="hidden md:block">Send to Demo</p>
+                                </Button>
+
+                            </div>
+                        )}
+                        {application.status === "demo" && (
+                            <div className="flex space-x-2">
+
                                 <Button
                                     size="sm"
                                     onClick={() => handleApproveApplication(application.id)}
                                     className="bg-green-600 hover:bg-green-700"
                                 >
-                                    <CheckCircle className="h-4 w-4 md:mr-1" />
+                                    <CheckCircle className="h-4 w-4 mr-1" />
                                     <p className="hidden md:block">Approve</p>
                                 </Button>
-                                <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => handleRejectApplication(application.id)}
-                                    className="text-red-600 border-red-600 hover:bg-red-50"
-                                >
-                                    <XCircle className="h-4 w-4 md:mr-1" />
-                                    <p className="hidden md:block">Reject</p>
-                                </Button>
+
                             </div>
                         )}
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleRejectApplication(application.id)}
+                            className="text-red-600 border-red-600 hover:bg-red-50"
+                        >
+                            <XCircle className="h-4 w-4 mr-1" />
+                            <p className="hidden md:block">Reject</p>
+                        </Button>
                     </div>
                 </div>
             ))}
